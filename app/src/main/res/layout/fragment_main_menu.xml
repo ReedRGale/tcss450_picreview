@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="group1.tcss450.uw.edu.picreview.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="group1.tcss450.uw.edu.picreview.MainMenuFragment">
 
     <Button
         android:id="@+id/bSearch"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="139dp"
