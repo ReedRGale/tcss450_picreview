@@ -7,4 +7,8 @@
     <string name="button_search">Search</string>
     <!-- Main Menu -->
 
+    <!-- Search -->
+    <string name="hint_search">(i.e. name, related tags…)</string>
+    <!-- Search -->
+
 </resources>
