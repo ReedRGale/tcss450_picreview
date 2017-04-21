@@ -9,9 +9,12 @@
 
     <!-- Search -->
     <string name="hint_search">(i.e. name, related tags…)</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!-- Search -->
+
+    <!-- Confirm Pic -->
+    <string name="button_confirm">Yes!</string>
+    <string name="button_deny">No!</string>
+    <string name="display_confirmation">Does this look right?</string>
+    <!-- Confirm Pic -->
 
 </resources>
