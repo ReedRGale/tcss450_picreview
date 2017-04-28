@@ -20,6 +20,10 @@
     <string name="button_forward">Forward</string>
 
     <string name="edit_caption">Describe your picture...</string>
+
+    <string name="button_my_location">Use Your Location?</string>
+    <string name="button_search_location">Search for Locations Nearby?</string>
+    <string name="button_no_location">No Location?</string>
     <!-- Confirm Pic -->
 
 </resources>
