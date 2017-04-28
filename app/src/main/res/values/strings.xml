@@ -15,6 +15,11 @@
     <string name="button_confirm">Yes!</string>
     <string name="button_deny">No!</string>
     <string name="display_confirmation">Does this look right?</string>
+
+    <string name="button_back">Back</string>
+    <string name="button_forward">Forward</string>
+
+    <string name="edit_caption">Describe your picture...</string>
     <!-- Confirm Pic -->
 
 </resources>

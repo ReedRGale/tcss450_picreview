@@ -10,55 +10,40 @@ import android.view.ViewGroup;
 
 
 /**
- * A fragment to handle confirming whether the image for picReview is pleasing to the user or not.
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link CaptionFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
  */
-public class ConfirmPicFragment extends Fragment
-{
+public class CaptionFragment extends Fragment {
+
     private OnFragmentInteractionListener mListener;
 
-    // Required empty public constructor
-    public ConfirmPicFragment() {}
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        // TODO: Determine if we need to do this.
-
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
+    public CaptionFragment() {
+        // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_confirm_pic, container, false);
+        return inflater.inflate(R.layout.fragment_caption, container, false);
     }
 
-    /**
-     * A method to move to the next fragment in picReview generation.
-     *
-     * @param uri is an artifact of autogeneration.
-     */
-    public void onYesPressed(Uri uri)
-    {
+    public void onBackPressed(Uri uri) {
+
         // TODO: Not yet implemented.
+
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
-    /**
-     * A method to move back to the camera to remake the review.
-     *
-     * @param uri is an artifact of autogeneration.
-     */
-    public void onNoPressed(Uri uri)
-    {
+    public void onForwardPressed(Uri uri) {
+
         // TODO: Not yet implemented.
+
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
