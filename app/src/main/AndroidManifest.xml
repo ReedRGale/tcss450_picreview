@@ -21,4 +21,11 @@
         </activity>
     </application>
 
+    <!-- Features required
+    https://developer.android.com/training/camera/photobasics.html -->
+    <uses-feature android:name="android.hardware.camera" />
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
 </manifest>
