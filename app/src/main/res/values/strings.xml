@@ -27,6 +27,9 @@
 
     <string name="button_like">Like</string>
     <string name="button_dislike">Dislike</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="display_pic_review_confirmation">Is that everything?</string>
     <!-- Confirm Pic -->
 
 </resources>
