@@ -12,5 +12,6 @@
     <string name="no_password">No password entered</string>
     <string name="no_pass_match">Passwords must match</string>
     <string name="no_confirm_pass">Please confirm your password</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>
