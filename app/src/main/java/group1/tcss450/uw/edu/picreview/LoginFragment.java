@@ -47,9 +47,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private String returnedMessage;
 
-    private boolean success;
-
-
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -65,15 +62,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         user_text = (EditText) v.findViewById(R.id.login_username_box);
         pass_text = (EditText) v.findViewById(R.id.login_password_box);
-        success = false;
         return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -113,11 +102,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         {
             AsyncTask<String, Void, String> task = new PostWebServiceTask();
             task.execute(PARTIAL_URL, user_text.getText().toString(), pass_text.getText().toString());
-            if (success)
-            {
-                // Show a message client-side letting the user know the password was incorrect
-            }
-
         }
 
     }
@@ -142,7 +126,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                         + "=" + URLEncoder.encode(strings[1], "UTF-8")
                         + "&" + URLEncoder.encode("Password", "UTF-8")
                         + "=" + URLEncoder.encode(strings[2], "UTF-8");
-                //Log.d("data", data);
                 wr.write(data);
                 wr.flush();
                 InputStream content = urlConnection.getInputStream();
@@ -162,15 +145,18 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
         @Override
         protected void onPostExecute(String result) {
-            Log.d("BUG", result);
-            Toast.makeText(getContext(), result, Toast.LENGTH_LONG)
-                    .show();
-            // Something wrong with the network or the URL.
-/*            if (result.startsWith("Unable to")) {
-                Toast.makeText(getContext(), result, Toast.LENGTH_LONG)
+            if (result.equals(getString(R.string.DBSuccessMessage)))
+            {
+                Toast.makeText(getContext(), "Login was successful", Toast.LENGTH_LONG)
                         .show();
-                return;
-            }*/
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Failed to login. Please re-enter your credentials and try again.", Toast.LENGTH_LONG)
+                        .show();
+                user_text.setText("");
+                pass_text.setText("");
+            }
         }
     }
 
@@ -185,7 +171,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(String toStart);
     }
 }

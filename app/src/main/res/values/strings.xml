@@ -13,4 +13,10 @@
     <string name="no_pass_match">Passwords must match</string>
     <string name="no_confirm_pass">Please confirm your password</string>
 
+    <!-- Fragment names to pass in order to start. -->
+    <string name="toStartLoginFragment">LoginFragment</string>
+    <string name="toStartRegisterFragment">RegisterFragment</string>
+
+    <string name="DBSuccessMessage">Success</string>
+
 </resources>

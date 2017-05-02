@@ -38,11 +38,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
-            "~demyan15/db/";
+            "~demyan15/";
 
     private String returnedMessage;
-
-    private boolean success = false;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -64,11 +62,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         return v;
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {
@@ -118,10 +111,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         {
             AsyncTask<String, Void, String> task = new PostWebServiceTask();
             task.execute(PARTIAL_URL, user_box.getText().toString(), pass_box.getText().toString());
-            if (success)
-            {
-                // Do something
-            }
         }
     }
 
@@ -164,14 +153,17 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(getContext(), result, Toast.LENGTH_LONG)
-                    .show();
-            // Something wrong with the network or the URL.
-/*            if (result.startsWith("Unable to")) {
-                Toast.makeText(getContext(), result, Toast.LENGTH_LONG)
+
+            if (result.equals(getString(R.string.DBSuccessMessage)))
+            {
+                Toast.makeText(getContext(), "Registration was successful", Toast.LENGTH_LONG)
                         .show();
-                return;
-            }*/
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Failed to register. Please try again with different credentials.", Toast.LENGTH_LONG)
+                        .show();
+            }
         }
     }
 
@@ -186,7 +178,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(String toStart);
     }
 }
