@@ -48,8 +48,8 @@ public class ConfirmPicFragment     extends     Fragment
         ArrayList<Button> ba = new ArrayList<Button>();
 
         // Add all buttons.
-        ba.add((Button) v.findViewById(R.id.bDeny));
-        ba.add((Button) v.findViewById(R.id.bConfirm));
+        ba.add((Button) v.findViewById(R.id.bReviewDeny));
+        ba.add((Button) v.findViewById(R.id.bReviewConfirm));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -96,10 +96,10 @@ public class ConfirmPicFragment     extends     Fragment
     public void onClick(View view)
     {
         switch (view.getId()) {
-            case R.id.bConfirm:
+            case R.id.bReviewConfirm:
                 onYesPressed();
                 break;
-            case R.id.bDeny:
+            case R.id.bReviewDeny:
                 onNoPressed();
                 break;
         }

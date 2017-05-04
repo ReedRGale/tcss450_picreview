@@ -14,7 +14,7 @@ public enum Frags
     MAIN_MENU,
 
     // Review Service
-    CONFIRM_PIC,    // Will be used when we have the photo fragment.
+    CONFIRM_PIC,
     PHOTO,          // Will be used when we have the photo fragment.
     CAPTION,
     LIKE_DISLIKE,

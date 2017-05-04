@@ -7,11 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
 
 /**
@@ -20,7 +24,9 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
  * {@link PicReviewConfirmFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class PicReviewConfirmFragment extends Fragment {
+public class PicReviewConfirmFragment   extends     Fragment
+                                        implements  View.OnClickListener
+{
 
     private OnFragmentInteractionListener mListener;
 
@@ -28,9 +34,21 @@ public class PicReviewConfirmFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pic_review_confirm, container, false);
+        View v = inflater.inflate(R.layout.fragment_pic_review_confirm, container, false);
+
+        ArrayList<Button> ba = new ArrayList<Button>();
+
+        // Add all buttons.
+        ba.add((Button) v.findViewById(R.id.bReviewConfirm));
+        ba.add((Button) v.findViewById(R.id.bReviewDeny));
+
+        // Add the listeners.
+        for (Button b : ba) { b.setOnClickListener(this); }
+
+        return v;
     }
 
     public void onYesPressed()
@@ -40,7 +58,7 @@ public class PicReviewConfirmFragment extends Fragment {
 
     public void onNoPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+        if (mListener != null) { mListener.onFragmentTransition(LOCATION); }
     }
 
     @Override
@@ -60,6 +78,20 @@ public class PicReviewConfirmFragment extends Fragment {
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.bReviewConfirm:
+                onYesPressed();
+                break;
+            case R.id.bReviewDeny:
+                onNoPressed();
+                break;
+        }
     }
 
     /**
