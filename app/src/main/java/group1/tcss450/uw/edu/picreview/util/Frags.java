@@ -8,5 +8,7 @@ public enum Frags
 {
     SEARCH,
     REVIEW,
+    USER_ACCESS,
+    DATA_TEST,
     UNIMPLEMENTED
 }

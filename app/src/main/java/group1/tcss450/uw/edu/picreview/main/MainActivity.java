@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.main;
 
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,6 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
@@ -197,6 +199,16 @@ public class MainActivity   extends     AppCompatActivity
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, confirmPicFragment)
                         .addToBackStack(null);
+                break;
+            case USER_ACCESS:
+                // TODO: Find more permanent location for this feature.
+                UserAccessFragment userAccessFragment = new UserAccessFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, userAccessFragment)
+                        .addToBackStack(null);
+                break;
+            case DATA_TEST:
+                // TODO: Add Dema's Test.
                 break;
         }
 

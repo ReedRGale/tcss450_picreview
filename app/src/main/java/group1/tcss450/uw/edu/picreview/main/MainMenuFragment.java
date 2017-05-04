@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.main;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
@@ -30,13 +31,6 @@ public class MainMenuFragment   extends     Fragment
     public MainMenuFragment() {}
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) { }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
@@ -48,6 +42,10 @@ public class MainMenuFragment   extends     Fragment
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bSearch));
         ba.add((Button) v.findViewById(R.id.bReview));
+
+        // TODO: find more permanent locations for these features.
+        ba.add((Button) v.findViewById(R.id.bTempUserAccess));
+        ba.add((Button) v.findViewById(R.id.bTempTest));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -65,8 +63,16 @@ public class MainMenuFragment   extends     Fragment
             case R.id.bReview:
                 onReviewPressed();
                 break;
+            case R.id.bTempUserAccess:
+                onUserAccessPressed();
+                break;
+            case R.id.bTempTest:
+                onDataTestPressed();
+                break;
         }
     }
+
+
 
     /**
      * Method that implements functionality of the search button.
@@ -86,8 +92,29 @@ public class MainMenuFragment   extends     Fragment
         if (mListener != null) { mListener.onFragmentTransition(REVIEW); }
     }
 
+    /**
+     * Method that implements functionality of the review button.
+     * Specifically, it takes us to another fragment where we can review items.
+     */
+    private void onUserAccessPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(USER_ACCESS); }
+    }
+
+
+
+    /**
+     * Method that implements functionality of the review button.
+     * Specifically, it takes us to another fragment where we can review items.
+     */
+    private void onDataTestPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(DATA_TEST); }
+    }
+
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener)
         {
@@ -106,6 +133,8 @@ public class MainMenuFragment   extends     Fragment
         super.onDetach();
         mListener = null;
     }
+
+
 
     /**
      * This interface must be implemented by activities that contain this
