@@ -1,7 +1,6 @@
 package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
-import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
 
 /**
  * A simple {@link Fragment} subclass.
