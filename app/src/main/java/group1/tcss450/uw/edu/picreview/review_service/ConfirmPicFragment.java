@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.Frags;
+
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 
 
 /**
@@ -47,7 +52,7 @@ public class ConfirmPicFragment extends Fragment
     {
         // TODO: Not yet implemented.
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentTransition(UNIMPLEMENTED);
         }
     }
 
@@ -60,7 +65,7 @@ public class ConfirmPicFragment extends Fragment
     {
         // TODO: Not yet implemented.
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onFragmentTransition(UNIMPLEMENTED);
         }
     }
 
@@ -89,6 +94,6 @@ public class ConfirmPicFragment extends Fragment
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentTransition(Frags target);
     }
 }

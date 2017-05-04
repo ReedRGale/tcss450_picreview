@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import group1.tcss450.uw.edu.picreview.R;
 
 
 /**

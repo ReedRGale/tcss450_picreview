@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,18 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import group1.tcss450.uw.edu.picreview.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link CaptionFragment.OnFragmentInteractionListener} interface
+ * {@link PicReviewConfirmFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class CaptionFragment extends Fragment {
+public class PicReviewConfirmFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public CaptionFragment() {
+    public PicReviewConfirmFragment() {
         // Required empty public constructor
     }
 
@@ -28,22 +30,18 @@ public class CaptionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_caption, container, false);
+        return inflater.inflate(R.layout.fragment_pic_review_confirm, container, false);
     }
 
-    public void onBackPressed(Uri uri) {
-
-        // TODO: Not yet implemented.
-
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onYesPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
-    public void onForwardPressed(Uri uri) {
-
-        // TODO: Not yet implemented.
-
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onNoPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
@@ -71,6 +69,10 @@ public class CaptionFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
+     * <p>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

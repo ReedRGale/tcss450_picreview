@@ -1,6 +1,7 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.search_service;
 
-// TODO: Figure out how to move elements on the screen.
+// TODO: How do we want to approach this problem?
+// TODO: Design an XML format for this.
 
 import android.content.Context;
 import android.net.Uri;
@@ -10,29 +11,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import group1.tcss450.uw.edu.picreview.R;
+
+
 /**
- * A fragment designed to hold the logic for searching the database for picReviews.
+ * A fragment designed to handle presenting extra detail of a fragment.
  */
-public class SearchFragment extends Fragment
+public class DetailsFragment extends Fragment
 {
-    // This is the activity that swaps this fragment in and out.
     private OnFragmentInteractionListener mListener;
 
     // Required empty public constructor
-    public SearchFragment() { }
+    public DetailsFragment() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return a new instance of the fragment.
+     * @return A new instance of a DetailsFragment.
      */
-    public static SearchFragment newInstance(String param1, String param2)
+    public static DetailsFragment newInstance(String param1, String param2)
     {
+        // TODO: Finish this if it needs completion.
 
-        // TODO: Implement factory method.
-
-        SearchFragment fragment = new SearchFragment();
+        DetailsFragment fragment = new DetailsFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -41,7 +43,7 @@ public class SearchFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        // TODO: Implement if need be.
+        // TODO: Implement this if needed.
 
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
@@ -52,22 +54,22 @@ public class SearchFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        return inflater.inflate(R.layout.fragment_details, container, false);
     }
 
     /**
-     * Method that begins a search for a picReview.
-     *
-     * @param query is the arg used to retrieve info from the database.
+     * This method should handle enlarging the picReview icon when pressed.
+     * @param uri is a remnant of being auto-generated.
      */
-    public void onButtonPressed(String query) {
+    public void onEnlargePressed(Uri uri)
+    {
+        // TODO: Figure out the type of info that needs to be pushed into this, if anything.
 
-        // TODO: Not yet implemented.
-
-        if (mListener != null) { }
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override

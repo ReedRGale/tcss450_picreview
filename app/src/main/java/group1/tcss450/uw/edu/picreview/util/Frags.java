@@ -7,5 +7,6 @@ package group1.tcss450.uw.edu.picreview.util;
 public enum Frags
 {
     SEARCH,
-    REVIEW
+    REVIEW,
+    UNIMPLEMENTED
 }

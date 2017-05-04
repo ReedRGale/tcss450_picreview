@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,17 +8,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import group1.tcss450.uw.edu.picreview.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
- * This is designed to allow the user to pick a location for the picture.
- * No location by default.
+ * Activities that contain this fragment must implement the
+ * {@link CaptionFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
  */
-public class LocationPickerFragment extends Fragment {
+public class CaptionFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public LocationPickerFragment() {
+    public CaptionFragment() {
         // Required empty public constructor
     }
 
@@ -27,11 +30,11 @@ public class LocationPickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location_picker, container, false);
+        return inflater.inflate(R.layout.fragment_caption, container, false);
     }
 
+    public void onBackPressed(Uri uri) {
 
-    public void onMyLocationPressed(Uri uri) {
         // TODO: Not yet implemented.
 
         if (mListener != null) {
@@ -39,15 +42,8 @@ public class LocationPickerFragment extends Fragment {
         }
     }
 
-    public void onSearchLocationPressed(Uri uri) {
-        // TODO: Not yet implemented.
+    public void onForwardPressed(Uri uri) {
 
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    public void onNoLocationPressed(Uri uri) {
         // TODO: Not yet implemented.
 
         if (mListener != null) {

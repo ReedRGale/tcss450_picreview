@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview;
+package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,18 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import group1.tcss450.uw.edu.picreview.R;
+
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PicReviewConfirmFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * This is designed to allow the user to pick a location for the picture.
+ * No location by default.
  */
-public class PicReviewConfirmFragment extends Fragment {
+public class LocationPickerFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public PicReviewConfirmFragment() {
+    public LocationPickerFragment() {
         // Required empty public constructor
     }
 
@@ -28,18 +29,29 @@ public class PicReviewConfirmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pic_review_confirm, container, false);
+        return inflater.inflate(R.layout.fragment_location_picker, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onYesPressed(Uri uri) {
+
+    public void onMyLocationPressed(Uri uri) {
+        // TODO: Not yet implemented.
+
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onNoPressed(Uri uri) {
+    public void onSearchLocationPressed(Uri uri) {
+        // TODO: Not yet implemented.
+
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    public void onNoLocationPressed(Uri uri) {
+        // TODO: Not yet implemented.
+
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
@@ -67,10 +79,6 @@ public class PicReviewConfirmFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

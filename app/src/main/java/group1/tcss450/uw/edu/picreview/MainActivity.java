@@ -1,14 +1,12 @@
 package group1.tcss450.uw.edu.picreview;
 
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -18,6 +16,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
+import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
+import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
+import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 
 /**
@@ -31,7 +33,9 @@ public class MainActivity   extends     AppCompatActivity
                             implements  LoginFragment.OnFragmentInteractionListener,
                                         RegisterFragment.OnFragmentInteractionListener,
                                         UserAccessFragment.OnFragmentInteractionListener,
-                                        MainMenuFragment.OnFragmentInteractionListener
+                                        MainMenuFragment.OnFragmentInteractionListener,
+                                        SearchFragment.OnFragmentInteractionListener,
+                                        ConfirmPicFragment.OnFragmentInteractionListener
 
 {
 
@@ -177,13 +181,26 @@ public class MainActivity   extends     AppCompatActivity
      */
     public void onFragmentTransition(Frags target)
     {
+        FragmentTransaction transaction = null;
+
+        // Prime the transaction to the proper case.
         switch (target) {
             case SEARCH:
-            // TODO
+                SearchFragment searchFragment = new SearchFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, searchFragment)
+                        .addToBackStack(null);
                 break;
             case REVIEW:
-            // TODO
+                // TODO: Change this such that it leads to the camera.
+                ConfirmPicFragment confirmPicFragment = new ConfirmPicFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, confirmPicFragment)
+                        .addToBackStack(null);
                 break;
         }
+
+        // Change the fragment, assuming that reached a valid case.
+        if (transaction != null) { transaction.commit(); }
     }
 }
