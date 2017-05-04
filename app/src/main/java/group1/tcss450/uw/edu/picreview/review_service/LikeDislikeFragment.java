@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.Frags;
+
+import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
 
 
 /**
@@ -33,34 +36,26 @@ public class LikeDislikeFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onLikePressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onDislikePressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onBackPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onForwardPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onForwardPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -71,7 +66,8 @@ public class LikeDislikeFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach()
+    {
         super.onDetach();
         mListener = null;
     }
@@ -81,13 +77,9 @@ public class LikeDislikeFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnFragmentInteractionListener
+    {
+        void onFragmentTransition(Frags target);
     }
 }

@@ -22,6 +22,7 @@ import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
 import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
+import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 
@@ -39,7 +40,8 @@ public class MainActivity   extends     AppCompatActivity
                                         MainMenuFragment.OnFragmentInteractionListener,
                                         SearchFragment.OnFragmentInteractionListener,
                                         ConfirmPicFragment.OnFragmentInteractionListener,
-                                        CaptionFragment.OnFragmentInteractionListener
+                                        CaptionFragment.OnFragmentInteractionListener,
+                                        LikeDislikeFragment.OnFragmentInteractionListener
 
 {
 
@@ -197,9 +199,9 @@ public class MainActivity   extends     AppCompatActivity
                 break;
             case REVIEW:
                 // TODO: Change this such that it leads to the camera.
-                ConfirmPicFragment confirmPicFragment = new ConfirmPicFragment();
+                ConfirmPicFragment pictureFragment = new ConfirmPicFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, confirmPicFragment)
+                        .replace(R.id.fragmentContainer, pictureFragment)
                         .addToBackStack(null);
                 break;
             case USER_ACCESS:
@@ -210,14 +212,24 @@ public class MainActivity   extends     AppCompatActivity
                         .addToBackStack(null);
                 break;
             case MAIN_MENU:
-                // TODO: Find more permanent location for this feature.
                 MainMenuFragment mainMenuFragment = new MainMenuFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, mainMenuFragment)
                         .addToBackStack(null);
                 break;
+            case CONFIRM_PIC:
+                ConfirmPicFragment confirmPicFragment = new ConfirmPicFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, confirmPicFragment)
+                        .addToBackStack(null);
+                break;
+            case LIKE_DISLIKE:
+                LikeDislikeFragment likeDislikeFragment = new LikeDislikeFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, likeDislikeFragment)
+                        .addToBackStack(null);
+                break;
             case CAPTION:
-                // TODO: Find more permanent location for this feature.
                 CaptionFragment captionFragment = new CaptionFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, captionFragment)
@@ -228,7 +240,7 @@ public class MainActivity   extends     AppCompatActivity
                 break;
         }
 
-        // Change the fragment, assuming that reached a valid case.
+        // Change the fragment, assuming we reached a valid case.
         if (transaction != null) { transaction.commit(); }
     }
 }
