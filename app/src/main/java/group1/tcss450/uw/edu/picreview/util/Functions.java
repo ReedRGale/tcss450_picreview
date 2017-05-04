@@ -8,5 +8,6 @@ package group1.tcss450.uw.edu.picreview.util;
 public enum Functions
 {
     LIKE,
-    DISLIKE
+    DISLIKE,
+    UNIMPLEMENTED
 }

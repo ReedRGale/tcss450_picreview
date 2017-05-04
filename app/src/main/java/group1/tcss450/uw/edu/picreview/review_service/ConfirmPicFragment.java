@@ -48,8 +48,8 @@ public class ConfirmPicFragment     extends     Fragment
         ArrayList<Button> ba = new ArrayList<Button>();
 
         // Add all buttons.
-        ba.add((Button) v.findViewById(R.id.bConfirm));
         ba.add((Button) v.findViewById(R.id.bDeny));
+        ba.add((Button) v.findViewById(R.id.bConfirm));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }

@@ -7,50 +7,68 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Functions;
 
-import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
+import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
+import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**
  * A simple {@link Fragment} subclass designed to handle adding the like or dislike
  * piece of information to the PicReview object.
  */
-public class LikeDislikeFragment extends Fragment {
+public class LikeDislikeFragment    extends     Fragment
+                                    implements  View.OnClickListener
+{
 
     private OnFragmentInteractionListener mListener;
 
-    public LikeDislikeFragment() {
-        // Required empty public constructor
-    }
-
+    public LikeDislikeFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_like_dislike, container, false);
+        View v = inflater.inflate(R.layout.fragment_like_dislike, container, false);
+
+        ArrayList<Button> ba = new ArrayList<Button>();
+
+        // Add all buttons.
+        ba.add((Button) v.findViewById(R.id.bBackLikeDislike));
+        ba.add((Button) v.findViewById(R.id.bForwardLikeDislike));
+
+        // Add the listeners.
+        for (Button b : ba) { b.setOnClickListener(this); }
+
+        return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onLikePressed(Uri uri) {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+    public void onLikePressed()
+    {
+        if (mListener != null) { mListener.onFunctionCall(LIKE); }
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onDislikePressed(Uri uri) {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+    public void onDislikePressed()
+    {
+        if (mListener != null) { mListener.onFunctionCall(DISLIKE); }
     }
 
-    public void onBackPressed(Uri uri) {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+    public void onBackPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
     }
 
     public void onForwardPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+        if (mListener != null) { mListener.onFragmentTransition(LOCATION); }
     }
 
     @Override
@@ -72,6 +90,25 @@ public class LikeDislikeFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId()) {
+            case R.id.bBackLikeDislike:
+                onBackPressed();
+                break;
+            case R.id.bForwardLikeDislike:
+                onForwardPressed();
+                break;
+            case R.id.bLike:
+                onLikePressed();
+                break;
+            case R.id.bDislike:
+                onDislikePressed();
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -81,5 +118,6 @@ public class LikeDislikeFragment extends Fragment {
     public interface OnFragmentInteractionListener
     {
         void onFragmentTransition(Frags target);
+        void onFunctionCall(Functions target);
     }
 }

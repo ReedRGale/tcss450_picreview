@@ -23,8 +23,10 @@ import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
 import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
+import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Functions;
 
 /**
  * Credentials to SQL database. Use SQLyog or MYSQL workbench to login.
@@ -41,7 +43,8 @@ public class MainActivity   extends     AppCompatActivity
                                         SearchFragment.OnFragmentInteractionListener,
                                         ConfirmPicFragment.OnFragmentInteractionListener,
                                         CaptionFragment.OnFragmentInteractionListener,
-                                        LikeDislikeFragment.OnFragmentInteractionListener
+                                        LikeDislikeFragment.OnFragmentInteractionListener,
+                                        LocationPickerFragment.OnFragmentInteractionListener
 
 {
 
@@ -223,16 +226,22 @@ public class MainActivity   extends     AppCompatActivity
                         .replace(R.id.fragmentContainer, confirmPicFragment)
                         .addToBackStack(null);
                 break;
+            case CAPTION:
+                CaptionFragment captionFragment = new CaptionFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, captionFragment)
+                        .addToBackStack(null);
+                break;
             case LIKE_DISLIKE:
                 LikeDislikeFragment likeDislikeFragment = new LikeDislikeFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, likeDislikeFragment)
                         .addToBackStack(null);
                 break;
-            case CAPTION:
-                CaptionFragment captionFragment = new CaptionFragment();
+            case LOCATION:
+                LocationPickerFragment locationPickerFragment = new LocationPickerFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, captionFragment)
+                        .replace(R.id.fragmentContainer, locationPickerFragment)
                         .addToBackStack(null);
                 break;
             case DATA_TEST:
@@ -242,5 +251,11 @@ public class MainActivity   extends     AppCompatActivity
 
         // Change the fragment, assuming we reached a valid case.
         if (transaction != null) { transaction.commit(); }
+    }
+
+    @Override
+    public void onFunctionCall(Functions target) 
+    {
+        // TODO: Implement functionality later.
     }
 }
