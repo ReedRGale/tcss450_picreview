@@ -24,6 +24,7 @@ import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
+import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
@@ -44,7 +45,8 @@ public class MainActivity   extends     AppCompatActivity
                                         ConfirmPicFragment.OnFragmentInteractionListener,
                                         CaptionFragment.OnFragmentInteractionListener,
                                         LikeDislikeFragment.OnFragmentInteractionListener,
-                                        LocationPickerFragment.OnFragmentInteractionListener
+                                        LocationPickerFragment.OnFragmentInteractionListener,
+                                        PicReviewConfirmFragment.OnFragmentInteractionListener
 
 {
 
@@ -242,6 +244,12 @@ public class MainActivity   extends     AppCompatActivity
                 LocationPickerFragment locationPickerFragment = new LocationPickerFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, locationPickerFragment)
+                        .addToBackStack(null);
+                break;
+            case CONFIRM_REVIEW:
+                PicReviewConfirmFragment picReviewConfirmFragment = new PicReviewConfirmFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, picReviewConfirmFragment)
                         .addToBackStack(null);
                 break;
             case DATA_TEST:

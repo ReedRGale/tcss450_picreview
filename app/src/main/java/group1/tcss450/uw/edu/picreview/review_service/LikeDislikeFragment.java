@@ -44,6 +44,8 @@ public class LikeDislikeFragment    extends     Fragment
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bBackLikeDislike));
         ba.add((Button) v.findViewById(R.id.bForwardLikeDislike));
+        ba.add((Button) v.findViewById(R.id.bLike));
+        ba.add((Button) v.findViewById(R.id.bDislike));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -56,8 +58,7 @@ public class LikeDislikeFragment    extends     Fragment
         if (mListener != null) { mListener.onFunctionCall(LIKE); }
     }
 
-    public void onDislikePressed()
-    {
+    public void onDislikePressed() {
         if (mListener != null) { mListener.onFunctionCall(DISLIKE); }
     }
 
@@ -93,7 +94,8 @@ public class LikeDislikeFragment    extends     Fragment
     @Override
     public void onClick(View view)
     {
-        switch (view.getId()) {
+        switch (view.getId())
+        {
             case R.id.bBackLikeDislike:
                 onBackPressed();
                 break;

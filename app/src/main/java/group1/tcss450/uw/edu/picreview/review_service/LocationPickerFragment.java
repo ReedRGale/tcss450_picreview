@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
@@ -20,20 +23,35 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.*;
  * This is designed to allow the user to pick a location for the picture.
  * No location by default.
  */
-public class LocationPickerFragment extends Fragment {
+public class LocationPickerFragment     extends     Fragment
+                                        implements  View.OnClickListener
+{
 
     private OnFragmentInteractionListener mListener;
 
-    public LocationPickerFragment() {
-        // Required empty public constructor
-    }
+    public LocationPickerFragment() { }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_location_picker, container, false);
+        View v = inflater.inflate(R.layout.fragment_location_picker, container, false);
+
+        ArrayList<Button> ba = new ArrayList<Button>();
+
+        // Add all buttons.
+        ba.add((Button) v.findViewById(R.id.bNoLocation));
+        ba.add((Button) v.findViewById(R.id.bMyLocation));
+        ba.add((Button) v.findViewById(R.id.bNearbyLocations));
+        ba.add((Button) v.findViewById(R.id.bPickerBack));
+        ba.add((Button) v.findViewById(R.id.bPickerForward));
+
+        // Add the listeners.
+        for (Button b : ba) { b.setOnClickListener(this); }
+
+        return v;
     }
 
 
@@ -44,13 +62,24 @@ public class LocationPickerFragment extends Fragment {
 
     public void onSearchLocationPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+        if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
 
     public void onNoLocationPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
+        if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
+
+    public void onForwardPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(CONFIRM_REVIEW); }
+    }
+
+    public void onBackPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }
+    }
+
 
     @Override
     public void onAttach(Context context)
@@ -69,6 +98,29 @@ public class LocationPickerFragment extends Fragment {
     {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId())
+        {
+            case R.id.bPickerBack:
+                onBackPressed();
+                break;
+            case R.id.bPickerForward:
+                onForwardPressed();
+                break;
+            case R.id.bNoLocation:
+                onNoLocationPressed();
+                break;
+            case R.id.bNearbyLocations:
+                onSearchLocationPressed();
+                break;
+            case R.id.bMyLocation:
+                onMyLocationPressed();
+                break;
+        }
     }
 
     /**
