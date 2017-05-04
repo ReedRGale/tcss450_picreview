@@ -28,8 +28,25 @@
     <string name="button_like">Like</string>
     <string name="button_dislike">Dislike</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="display_pic_review_confirmation">Is that everything?</string>
+
     <!-- Confirm Pic -->
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="submit_button_text">Submit</string>
+
+    <!-- Error messages -->
+    <string name="no_username">No username entered</string>
+    <string name="no_password">No password entered</string>
+    <string name="no_pass_match">Passwords must match</string>
+    <string name="no_confirm_pass">Please confirm your password</string>
+    <string name="title_activity_maps">Map</string>
+
+    <!-- Fragment names to pass in order to start. -->
+    <string name="toStartLoginFragment">LoginFragment</string>
+    <string name="toStartRegisterFragment">RegisterFragment</string>
+
+    <string name="DBSuccessMessage">Success</string>
 
 </resources>
