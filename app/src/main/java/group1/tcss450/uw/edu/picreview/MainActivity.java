@@ -18,28 +18,39 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 
+import group1.tcss450.uw.edu.picreview.util.Frags;
+
 /**
  * Credentials to SQL database. Use SQLyog or MYSQL workbench to login.
  * Username: demyan15
  * Password: UnunItHo
  */
 
-public class MainActivity extends AppCompatActivity implements LoginFragment.OnFragmentInteractionListener,
-                                            RegisterFragment.OnFragmentInteractionListener, UserAccessFragment.OnFragmentInteractionListener {
+public class MainActivity   extends     AppCompatActivity
+
+                            implements  LoginFragment.OnFragmentInteractionListener,
+                                        RegisterFragment.OnFragmentInteractionListener,
+                                        UserAccessFragment.OnFragmentInteractionListener,
+                                        MainMenuFragment.OnFragmentInteractionListener
+
+{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+//        Suppressing this because it was causing errors
+//        ~  Jared Lowery
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
 
         if (savedInstanceState == null)
         {
             if (findViewById(R.id.fragmentContainer) != null)
             {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.fragmentContainer, new UserAccessFragment())
+                        .add(R.id.fragmentContainer, new MainMenuFragment())
                         .commit();
             }
         }
@@ -51,11 +62,17 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         Log.d("Action", "Gets HERE: " + toStart);
         if (toStart.equals(getString(R.string.toStartLoginFragment)))
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new LoginFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new LoginFragment())
+                    .addToBackStack(null).commit();
         }
         else if (toStart.equals(getString(R.string.toStartRegisterFragment)))
         {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, new RegisterFragment()).addToBackStack(null).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainer, new RegisterFragment())
+                    .addToBackStack(null).commit();
         }
     }
 
@@ -155,5 +172,18 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         }
     }
 
-    // TODO:  Implement the button listener interfaces.
+    /**
+     * {@inheritDoc}
+     */
+    public void onFragmentTransition(Frags target)
+    {
+        switch (target) {
+            case SEARCH:
+            // TODO
+                break;
+            case REVIEW:
+            // TODO
+                break;
+        }
+    }
 }

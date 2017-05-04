@@ -1,12 +1,15 @@
 package group1.tcss450.uw.edu.picreview;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import group1.tcss450.uw.edu.picreview.util.Frags;
+
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 
 
 /**
@@ -22,26 +25,9 @@ public class MainMenuFragment extends Fragment
     // Required empty public constructor
     public MainMenuFragment() {}
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment MainMenuFragment.
-     */
-    public static MainMenuFragment newInstance() {
-
-        // TODO: Implement factory method.
-
-        MainMenuFragment fragment = new MainMenuFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        // TODO: Implement this, if need be.
         super.onCreate(savedInstanceState);
         if (getArguments() != null) { }
     }
@@ -57,42 +43,40 @@ public class MainMenuFragment extends Fragment
     /**
      * Method that implements functionality of the search button.
      * Specifically, it takes us to another fragment where we can search for reviews.
-     * @param uri a remnant of generated code--probably to be changed.
+     * @param view is presumably the view this came from.
      */
-    public void onSearchPressed(Uri uri)
+    public void onSearchPressed(View view)
     {
-        // TODO: Not yet implemented.
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        if (mListener != null) { mListener.onFragmentTransition(SEARCH); }
     }
 
     /**
      * Method that implements functionality of the review button.
      * Specifically, it takes us to another fragment where we can review items.
-     * @param uri  remnant of generated code--probably to be changed.
+     * @param view is presumably the view this came from.
      */
-    public void onReviewPressed(Uri uri)
+    public void onReviewPressed(View view)
     {
-        // TODO: Not yet implemented.
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        if (mListener != null) { mListener.onFragmentTransition(REVIEW); }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof OnFragmentInteractionListener)
+        {
             mListener = (OnFragmentInteractionListener) context;
-        } else {
+        }
+        else
+        {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach()
+    {
         super.onDetach();
         mListener = null;
     }
@@ -103,8 +87,12 @@ public class MainMenuFragment extends Fragment
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnFragmentInteractionListener
+    {
+        /**
+         * Transfer from one fragment to another.
+         * @param target the target fragment to swap to.
+         */
+        void onFragmentTransition(Frags target);
     }
 }
