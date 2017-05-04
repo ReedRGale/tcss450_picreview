@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.Frags;
+
+import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
 
 
 /**
@@ -21,9 +24,7 @@ public class CaptionFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public CaptionFragment() {
-        // Required empty public constructor
-    }
+    public CaptionFragment() { }
 
 
     @Override
@@ -33,22 +34,14 @@ public class CaptionFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_caption, container, false);
     }
 
-    public void onBackPressed(Uri uri) {
-
-        // TODO: Not yet implemented.
-
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onBackPressed()
+    {
+        if (mListener != null) {  mListener.onFragmentTransition(UNIMPLEMENTED); }
     }
 
-    public void onForwardPressed(Uri uri) {
-
-        // TODO: Not yet implemented.
-
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    public void onForwardPressed()
+    {
+        if (mListener != null) { mListener.onFragmentTransition(UNIMPLEMENTED); }
     }
 
     @Override
@@ -74,8 +67,8 @@ public class CaptionFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    public interface OnFragmentInteractionListener
+    {
+        void onFragmentTransition(Frags target);
     }
 }

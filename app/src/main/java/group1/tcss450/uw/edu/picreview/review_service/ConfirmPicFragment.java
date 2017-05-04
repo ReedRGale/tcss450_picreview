@@ -1,12 +1,14 @@
 package group1.tcss450.uw.edu.picreview.review_service;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
@@ -17,7 +19,8 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 /**
  * A fragment to handle confirming whether the image for picReview is pleasing to the user or not.
  */
-public class ConfirmPicFragment extends Fragment
+public class ConfirmPicFragment     extends     Fragment
+                                    implements  View.OnClickListener
 {
     private OnFragmentInteractionListener mListener;
 
@@ -40,37 +43,40 @@ public class ConfirmPicFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_confirm_pic, container, false);
+        View v = inflater.inflate(R.layout.fragment_confirm_pic, container, false);
+
+        ArrayList<Button> ba = new ArrayList<Button>();
+
+        // Add all buttons.
+        ba.add((Button) v.findViewById(R.id.bConfirm));
+        ba.add((Button) v.findViewById(R.id.bDeny));
+
+        // Add the listeners.
+        for (Button b : ba) { b.setOnClickListener(this); }
+
+        return v;
     }
 
     /**
      * A method to move to the next fragment in picReview generation.
-     *
-     * @param uri is an artifact of autogeneration.
      */
-    public void onYesPressed(Uri uri)
+    public void onYesPressed()
     {
-        // TODO: Not yet implemented.
-        if (mListener != null) {
-            mListener.onFragmentTransition(UNIMPLEMENTED);
-        }
+        if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
     }
 
     /**
      * A method to move back to the camera to remake the review.
-     *
-     * @param uri is an artifact of autogeneration.
      */
-    public void onNoPressed(Uri uri)
+    public void onNoPressed()
     {
-        // TODO: Not yet implemented.
-        if (mListener != null) {
-            mListener.onFragmentTransition(UNIMPLEMENTED);
-        }
+        // TODO: When photo fragment is implemented, change this.
+        if (mListener != null) { mListener.onFragmentTransition(MAIN_MENU); }
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -86,14 +92,27 @@ public class ConfirmPicFragment extends Fragment
         mListener = null;
     }
 
+    @Override
+    public void onClick(View view)
+    {
+        switch (view.getId()) {
+            case R.id.bConfirm:
+                onYesPressed();
+                break;
+            case R.id.bDeny:
+                onNoPressed();
+                break;
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+    public interface OnFragmentInteractionListener
+    {
         void onFragmentTransition(Frags target);
     }
 }

@@ -20,6 +20,7 @@ import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
+import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
@@ -37,7 +38,8 @@ public class MainActivity   extends     AppCompatActivity
                                         UserAccessFragment.OnFragmentInteractionListener,
                                         MainMenuFragment.OnFragmentInteractionListener,
                                         SearchFragment.OnFragmentInteractionListener,
-                                        ConfirmPicFragment.OnFragmentInteractionListener
+                                        ConfirmPicFragment.OnFragmentInteractionListener,
+                                        CaptionFragment.OnFragmentInteractionListener
 
 {
 
@@ -205,6 +207,20 @@ public class MainActivity   extends     AppCompatActivity
                 UserAccessFragment userAccessFragment = new UserAccessFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, userAccessFragment)
+                        .addToBackStack(null);
+                break;
+            case MAIN_MENU:
+                // TODO: Find more permanent location for this feature.
+                MainMenuFragment mainMenuFragment = new MainMenuFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, mainMenuFragment)
+                        .addToBackStack(null);
+                break;
+            case CAPTION:
+                // TODO: Find more permanent location for this feature.
+                CaptionFragment captionFragment = new CaptionFragment();
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, captionFragment)
                         .addToBackStack(null);
                 break;
             case DATA_TEST:
