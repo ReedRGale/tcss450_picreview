@@ -1,8 +1,11 @@
 package group1.tcss450.uw.edu.picreview;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +47,7 @@ public class MainMenuFragment extends Fragment
         // TODO: Implement this, if need be.
         super.onCreate(savedInstanceState);
         if (getArguments() != null) { }
+
     }
 
     @Override

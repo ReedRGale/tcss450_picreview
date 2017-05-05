@@ -1,13 +1,16 @@
 package group1.tcss450.uw.edu.picreview;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         if (savedInstanceState == null)
         {
@@ -43,8 +46,21 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.OnF
                         .commit();
             }
         }
+
+        FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                launchActivity();
+            }
+        });
     }
 
+    private void launchActivity() {
+
+        Intent intent = new Intent(this, MapsActivity.class);
+        startActivity(intent);
+    }
 
     @Override
     public void onFragmentInteraction(String toStart) {
