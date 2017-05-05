@@ -7,6 +7,11 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -15,6 +20,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
@@ -22,6 +28,7 @@ import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
 import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
+import group1.tcss450.uw.edu.picreview.review_service.DisplayReviewsFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
@@ -92,101 +99,6 @@ public class MainActivity   extends     AppCompatActivity
     }
 
 
-
-
-
-
-    // Transfer these over later to proper fragment
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private class saveNewReviewService extends AsyncTask<String, Void, String> {
-        private final String SERVICE = "http://cssgate.insttech.washington.edu/" +
-                "~demyan15/" + "makeReview.php";
-        @Override
-        protected String doInBackground(String... strings) {
-            if (strings.length != 3) {
-                throw new IllegalArgumentException("Three String arguments required.");
-            }
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            try {
-                URL urlObject = new URL(SERVICE);
-                urlConnection = (HttpURLConnection) urlObject.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-                String data = URLEncoder.encode("Username", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[0], "UTF-8")
-                        + "&" + URLEncoder.encode("tag", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[1], "UTF-8")
-                        + "&" + URLEncoder.encode("reviewText", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[2], "UTF-8");
-                wr.write(data);
-                wr.flush();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
-                while ((s = buffer.readLine()) != null) {
-                    response += s;
-                }
-            } catch (Exception e) {
-                response = "Unable to connect, Reason: "
-                        + e.getMessage();
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-            return response;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-           // Toast.makeText(getContext(), "Result: " + result, Toast.LENGTH_LONG)
-           //         .show();
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private class getUserReviewsService extends AsyncTask<String, Void, String> {
-        private final String SERVICE = "http://cssgate.insttech.washington.edu/" +
-                "~demyan15/" + "getUserReviews.php";
-        @Override
-        protected String doInBackground(String... strings) {
-            if (strings.length != 1) {
-                throw new IllegalArgumentException("One String arguments required.");
-            }
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            try {
-                URL urlObject = new URL(SERVICE);
-                urlConnection = (HttpURLConnection) urlObject.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-                String data = URLEncoder.encode("Username", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[0], "UTF-8");
-                wr.write(data);
-                wr.flush();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
-                while ((s = buffer.readLine()) != null) {
-                    response += s;
-                }
-            } catch (Exception e) {
-                response = "Unable to connect, Reason: "
-                        + e.getMessage();
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-            return response;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-           // Toast.makeText(getContext(), "Result: " + result, Toast.LENGTH_LONG)
-           //         .show();
-        }
-    }
-
     /**
      * {@inheritDoc}
      */
@@ -253,7 +165,8 @@ public class MainActivity   extends     AppCompatActivity
                         .addToBackStack(null);
                 break;
             case DATA_TEST:
-                // TODO: Add Dema's Test.
+                AsyncTask<String, Void, String> task = new getUserReviewsService();
+                task.execute("John");
                 break;
         }
 
@@ -265,5 +178,123 @@ public class MainActivity   extends     AppCompatActivity
     public void onFunctionCall(Functions target) 
     {
         // TODO: Implement functionality later.
+    }
+
+    // Transfer these over later to proper fragment
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    private class saveNewReviewService extends AsyncTask<String, Void, String> {
+        private final String SERVICE = "http://cssgate.insttech.washington.edu/" +
+                "~demyan15/" + "makeReview.php";
+        @Override
+        protected String doInBackground(String... strings) {
+            if (strings.length != 3) {
+                throw new IllegalArgumentException("Three String arguments required.");
+            }
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL urlObject = new URL(SERVICE);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                String data = URLEncoder.encode("Username", "UTF-8")
+                        + "=" + URLEncoder.encode(strings[0], "UTF-8")
+                        + "&" + URLEncoder.encode("tag", "UTF-8")
+                        + "=" + URLEncoder.encode(strings[1], "UTF-8")
+                        + "&" + URLEncoder.encode("reviewText", "UTF-8")
+                        + "=" + URLEncoder.encode(strings[2], "UTF-8");
+                wr.write(data);
+                wr.flush();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    response += s;
+                }
+            } catch (Exception e) {
+                response = "Unable to connect, Reason: "
+                        + e.getMessage();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return response;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            // Toast.makeText(getContext(), "Result: " + result, Toast.LENGTH_LONG)
+            //         .show();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
+    private class getUserReviewsService extends AsyncTask<String, Void, String> {
+        private final String SERVICE = "http://cssgate.insttech.washington.edu/" +
+                "~demyan15/" + "getUserReviews.php";
+        @Override
+        protected String doInBackground(String... strings) {
+            if (strings.length != 1) {
+                throw new IllegalArgumentException("One String arguments required.");
+            }
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL urlObject = new URL(SERVICE);
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                String data = URLEncoder.encode("Username", "UTF-8")
+                        + "=" + URLEncoder.encode(strings[0], "UTF-8");
+                wr.write(data);
+                wr.flush();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    response += s;
+                }
+            } catch (Exception e) {
+                response = "Unable to connect, Reason: "
+                        + e.getMessage();
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+            return response;
+        }
+        @Override
+        protected void onPostExecute(String result) {
+
+
+            try {
+                JSONObject returnedObject = new JSONObject(result);
+                JSONArray returnedArray = returnedObject.getJSONArray("arrayToReturn");
+                ArrayList<String> reviews = new ArrayList<String>();
+
+                for (int i = 0; i < returnedArray.length(); i++)
+                {
+                    JSONObject review = returnedArray.getJSONObject(i);
+                    String s = "";
+                    s += "Review: \nTagged As: " + review.getString("tag") + "\n";
+                    s += "Comments: " + review.getString("reviewText") + "\n";
+                    reviews.add(s);
+                }
+
+                DisplayReviewsFragment reviewsFrag = new DisplayReviewsFragment();
+                Bundle b = new Bundle();
+                b.putStringArrayList("Reviews", reviews);
+                reviewsFrag.setArguments(b);
+
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, reviewsFrag)
+                        .addToBackStack(null).commit();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 }
