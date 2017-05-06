@@ -1,5 +1,11 @@
+/**
+ * Group: 1
+ * PicReview
+ */
+
 package group1.tcss450.uw.edu.picreview.main;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +28,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import group1.tcss450.uw.edu.picreview.MapsActivity;
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
@@ -36,12 +43,9 @@ import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
-/**
- * Credentials to SQL database. Use SQLyog or MYSQL workbench to login.
- * Username: demyan15
- * Password: UnunItHo
+/*
+ * Main activity that runs the app.
  */
-
 public class MainActivity   extends     AppCompatActivity
 
                             implements  LoginFragment.OnFragmentInteractionListener,
@@ -81,7 +85,6 @@ public class MainActivity   extends     AppCompatActivity
 
     @Override
     public void onFragmentInteraction(String toStart) {
-        Log.d("Action", "Gets HERE: " + toStart);
         if (toStart.equals(getString(R.string.toStartLoginFragment)))
         {
             getSupportFragmentManager()
@@ -95,6 +98,11 @@ public class MainActivity   extends     AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.fragmentContainer, new RegisterFragment())
                     .addToBackStack(null).commit();
+        }
+        else if (toStart.equals("StartMapsActivity"))
+        {
+            Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+            startActivity(i);
         }
     }
 
@@ -223,8 +231,7 @@ public class MainActivity   extends     AppCompatActivity
         }
         @Override
         protected void onPostExecute(String result) {
-            // Toast.makeText(getContext(), "Result: " + result, Toast.LENGTH_LONG)
-            //         .show();
+
         }
     }
 
@@ -264,9 +271,9 @@ public class MainActivity   extends     AppCompatActivity
             }
             return response;
         }
+
         @Override
         protected void onPostExecute(String result) {
-
 
             try {
                 JSONObject returnedObject = new JSONObject(result);

@@ -1,6 +1,7 @@
 package group1.tcss450.uw.edu.picreview.util;
 
 /**
+ * List of all fragments.
  * Created by Reed R Gale on 5/4/2017.
  */
 

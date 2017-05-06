@@ -15,7 +15,7 @@ import group1.tcss450.uw.edu.picreview.R;
 
 
 /**
- * A fragment designed to handle presenting extra detail of a fragment.
+ * A fragment designed to handle presenting extra detail of a review.
  */
 public class DetailsFragment extends Fragment
 {

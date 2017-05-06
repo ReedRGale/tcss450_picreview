@@ -24,9 +24,7 @@ import group1.tcss450.uw.edu.picreview.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link LoginFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Implements the login functionality.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
@@ -103,6 +101,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    /**
+     * Will hit the php code that checks with the database to see whether the credentials exist.
+     */
     private class PostWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "loginService.php";
         @Override

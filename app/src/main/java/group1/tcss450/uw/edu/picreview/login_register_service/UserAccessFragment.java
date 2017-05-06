@@ -12,10 +12,7 @@ import group1.tcss450.uw.edu.picreview.R;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link UserAccessFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Basically a sort of menu for user access to the app.
  */
 public class UserAccessFragment extends Fragment implements View.OnClickListener {
 

@@ -93,8 +93,7 @@ public class MainMenuFragment   extends     Fragment
     }
 
     /**
-     * Method that implements functionality of the review button.
-     * Specifically, it takes us to another fragment where we can review items.
+     * Method that launches functionality for registering/login.
      */
     private void onUserAccessPressed()
     {
@@ -104,8 +103,7 @@ public class MainMenuFragment   extends     Fragment
 
 
     /**
-     * Method that implements functionality of the review button.
-     * Specifically, it takes us to another fragment where we can review items.
+     * Method that launches fragment for getting data from our database.
      */
     private void onDataTestPressed()
     {

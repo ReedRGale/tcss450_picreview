@@ -16,16 +16,13 @@ import group1.tcss450.uw.edu.picreview.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link DisplayReviewsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link DisplayReviewsFragment newInstance} factory method to
- * create an instance of this fragment.
+ * Will display a list of reviews based on the list given it.
  */
 public class DisplayReviewsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    /* The view of this fragment. */
     LinearLayout mView;
 
     public DisplayReviewsFragment() {

@@ -53,20 +53,24 @@ public class LikeDislikeFragment    extends     Fragment
         return v;
     }
 
+    /* Will notify the proper method of the user's choice. */
     public void onLikePressed()
     {
         if (mListener != null) { mListener.onFunctionCall(LIKE); }
     }
 
+    /* Will notify the proper method of the user's choice. */
     public void onDislikePressed() {
         if (mListener != null) { mListener.onFunctionCall(DISLIKE); }
     }
 
+    /* Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
     }
 
+    /* Will go forward to the next step of the review process. */
     public void onForwardPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LOCATION); }

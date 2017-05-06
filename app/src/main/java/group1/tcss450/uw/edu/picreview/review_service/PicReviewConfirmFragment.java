@@ -18,9 +18,7 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PicReviewConfirmFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Last step of the review process. Will validate and save the review to a database.
  */
 public class PicReviewConfirmFragment   extends     Fragment
                                         implements  View.OnClickListener
@@ -49,11 +47,13 @@ public class PicReviewConfirmFragment   extends     Fragment
         return v;
     }
 
+    /* Will proceed with storing the review. */
     public void onYesPressed()
     {
         if (mListener != null)  { mListener.onFunctionCall(Functions.UNIMPLEMENTED);  }
     }
 
+    /* Will return to the previous step. */
     public void onNoPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LOCATION); }

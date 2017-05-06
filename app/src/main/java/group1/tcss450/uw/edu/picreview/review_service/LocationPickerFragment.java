@@ -55,26 +55,31 @@ public class LocationPickerFragment     extends     Fragment
     }
 
 
+    /* Functionality for use your location button. */
     public void onMyLocationPressed()
     {
         if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
 
+    /* Functionality for search nearby locations button. */
     public void onSearchLocationPressed()
     {
-        if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
+        if (mListener != null) { mListener.onFragmentInteraction("StartMapsActivity"); }
     }
 
+    /* Functionality for no location button. */
     public void onNoLocationPressed()
     {
         if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
 
+    /* Functionality for proceeding forward. */
     public void onForwardPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(CONFIRM_REVIEW); }
     }
 
+    /* Functionality for going back to previous step. */
     public void onBackPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }
@@ -131,6 +136,7 @@ public class LocationPickerFragment     extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        void onFragmentInteraction(String toStart);
         void onFragmentTransition(Frags target);
         void onFunctionCall(Functions target);
     }

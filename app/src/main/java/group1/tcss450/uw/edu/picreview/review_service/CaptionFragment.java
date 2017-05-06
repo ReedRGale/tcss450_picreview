@@ -21,9 +21,7 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CaptionFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Allows user to add a caption to their review.
  */
 public class CaptionFragment    extends     Fragment
                                 implements  View.OnClickListener
@@ -53,11 +51,13 @@ public class CaptionFragment    extends     Fragment
         return v;
     }
 
+    /* Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
         if (mListener != null) {  mListener.onFragmentTransition(CONFIRM_PIC); }
     }
 
+    /* Will go forward to the next step of the review process. */
     public void onForwardPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }

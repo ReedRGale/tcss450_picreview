@@ -24,9 +24,7 @@ import group1.tcss450.uw.edu.picreview.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link RegisterFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * Implements the registration functionality.
  */
 public class RegisterFragment extends Fragment implements View.OnClickListener {
 
@@ -37,11 +35,11 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private EditText pass_box;
     private EditText confirm_pass_box;
 
+    /* The location of the php scripts. */
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
             "~demyan15/";
 
-    private String returnedMessage;
 
     public RegisterFragment() {
         // Required empty public constructor
