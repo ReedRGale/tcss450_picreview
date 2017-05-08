@@ -1,6 +1,7 @@
 package group1.tcss450.uw.edu.picreview;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.support.annotation.NonNull;
@@ -17,6 +18,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,7 +33,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, GoogleMap.OnMapClickListener {
 
     private GoogleMap mGoogleMap;
 
@@ -69,10 +73,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
+
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(this, this)
                     .build();
         }
 
@@ -95,18 +103,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // Ask user for permission to access location
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
-                    MY_PERMISSIONS_LOCATIONS);
-        }
-
     }
 
+
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == PLACE_PICKER_REQUEST) {
+//            if (resultCode == RESULT_OK) {
+//                Place place = PlacePicker.getPlace(data, this);
+//                String toastMsg = String.format("Place: %s", place.getName());
+//                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
 
     /**
      * Manipulates the map once available.
@@ -130,27 +138,72 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Enable/Disable map scrolling
         mGoogleMap.getUiSettings().setScrollGesturesEnabled(false);
 
-//        // Checks if user has granted permission to use location
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            mGoogleMap.setMyLocationEnabled(true);
-//        } else {
-//            // Show rationale and request permission.
-//        }
+        getDeviceLocation();
+
+        //updateLocationUI();
 
         // Hardcode - Add a marker in Tacoma, WA, and move the camera.
         //LatLng latLng = new LatLng(47.2529, -122.4443);
         LatLng latLng = new LatLng(mLat, mLng);
+
         mGoogleMap.addMarker(new MarkerOptions().
                 position(latLng).
                 title("Marker in Tacoma"));
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mGoogleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
+
+    private void getDeviceLocation() {
+//        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+//                android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            mLocationPermissionGranted = true;
+//        } else {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+//        }
+        // A step later in the tutorial adds the code to get the device location.
+
+        // Ask user for permission to access location
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_LOCATIONS);
+        }
+    }
+
+//    private void updateLocationUI() {
+//        if (mMap == null) {
+//            return;
+//        }
+//
+//    /*
+//     * Request location permission, so that we can get the location of the
+//     * device. The result of the permission request is handled by a callback,
+//     * onRequestPermissionsResult.
+//     */
+//        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+//                android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED) {
+//            mLocationPermissionGranted = true;
+//        } else {
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+//                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+//        }
+//
+//        if (mLocationPermissionGranted) {
+//            mMap.setMyLocationEnabled(true);
+//            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+//        } else {
+//            mMap.setMyLocationEnabled(false);
+//            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+//            mLastKnownLocation = null;
+//        }
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
@@ -195,6 +248,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startLocationUpdates();
             }
         }
+
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -268,5 +325,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mGoogleApiClient.disconnect();
         }
         super.onStop();
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        double lat = latLng.latitude;
+        double lon = latLng.longitude;
+
+        Log.d(TAG, "onMapClick: " + lat + " " + lon);
     }
 }
