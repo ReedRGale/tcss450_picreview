@@ -14,6 +14,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -45,6 +48,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private double mLng = -122.4443;
 
     private static final String TAG = "MyLocationsActivity";
+
+    /**
+     * Request code passed to the PlacePicker intent to identify its result when it returns.
+     */
+    private static final int REQUEST_PLACE_PICKER = 1;
     /**
      * The desired interval for location updates. Inexact. Updates may be
      more or less frequent.
@@ -331,6 +339,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapClick(LatLng latLng) {
         double lat = latLng.latitude;
         double lon = latLng.longitude;
+
 
         Log.d(TAG, "onMapClick: " + lat + " " + lon);
     }

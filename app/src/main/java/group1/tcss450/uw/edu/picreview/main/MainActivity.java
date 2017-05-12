@@ -15,6 +15,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +67,13 @@ public class MainActivity   extends     AppCompatActivity
 
 {
 
+    /**
+     * Request code passed to the PlacePicker intent to identify its result when it returns.
+     */
+    private static final int REQUEST_PLACE_PICKER = 1;
+
+    private static final int PLACE_PICKER_REQUEST = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,8 +114,43 @@ public class MainActivity   extends     AppCompatActivity
         }
         else if (toStart.equals("StartMapsActivity"))
         {
-            Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-            startActivity(i);
+            try {
+                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                Intent intent = intentBuilder.build(this);
+                // Start the Intent by requesting a result, identified by a request code.
+                startActivityForResult(intent, REQUEST_PLACE_PICKER);
+
+                // Hide the pick option in the UI to prevent users from starting the picker
+                // multiple times.
+                //showPickAction(false);
+
+            } catch (GooglePlayServicesRepairableException e) {
+//                GooglePlayServicesUtil
+//                        .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+            } catch (GooglePlayServicesNotAvailableException e) {
+//                Toast.makeText(getActivity(), "Google Play Services is not available.",
+//                        Toast.LENGTH_LONG)
+//                        .show();
+            }
+//            Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+//            startActivity(i);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+//                Place place = PlacePicker.getPlace(data, this);
+                Place place = PlacePicker.getPlace(getApplicationContext(), data);
+
+                String address = place.getAddress().toString();
+                String location = place.getLatLng().toString();
+
+
+                String toastMsg = String.format("Name: %s Address: %s Location: %s", place.getName(), address, location);
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
