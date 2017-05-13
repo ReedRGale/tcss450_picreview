@@ -12,8 +12,10 @@ import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Functions;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
+import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**
@@ -89,7 +91,7 @@ public class MainMenuFragment   extends     Fragment
      */
     private void onReviewPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(REVIEW); }
+        if (mListener != null) { mListener.onFunctionCall(TAKE_PICTURE); }
     }
 
     /**
@@ -147,5 +149,11 @@ public class MainMenuFragment   extends     Fragment
          * @param target the target fragment to swap to.
          */
         void onFragmentTransition(Frags target);
+
+        /**
+         * Call some functionality that the app can handle.
+         * @param target the target fragment to swap to.
+         */
+        void onFunctionCall(Functions target);
     }
 }

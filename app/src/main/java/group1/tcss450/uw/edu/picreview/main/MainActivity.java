@@ -1,4 +1,4 @@
-/**
+/*
  * Group: 1
  * PicReview
  */
@@ -6,9 +6,12 @@
 package group1.tcss450.uw.edu.picreview.main;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -67,12 +70,11 @@ public class MainActivity   extends     AppCompatActivity
 
 {
 
-    /**
-     * Request code passed to the PlacePicker intent to identify its result when it returns.
-     */
+    /** Request code passed to the PlacePicker intent for identification. */
     private static final int REQUEST_PLACE_PICKER = 1;
 
-    private static final int PLACE_PICKER_REQUEST = 1;
+    /** Request code passed to camera for identification. */
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,24 +139,6 @@ public class MainActivity   extends     AppCompatActivity
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if (resultCode == RESULT_OK) {
-//                Place place = PlacePicker.getPlace(data, this);
-                Place place = PlacePicker.getPlace(getApplicationContext(), data);
-
-                String address = place.getAddress().toString();
-                String location = place.getLatLng().toString();
-
-
-                String toastMsg = String.format("Name: %s Address: %s Location: %s", place.getName(), address, location);
-                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
-
     /**
      * {@inheritDoc}
      */
@@ -168,13 +152,6 @@ public class MainActivity   extends     AppCompatActivity
                 SearchFragment searchFragment = new SearchFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, searchFragment)
-                        .addToBackStack(null);
-                break;
-            case REVIEW:
-                // TODO: Change this such that it leads to the camera.
-                ConfirmPicFragment pictureFragment = new ConfirmPicFragment();
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, pictureFragment)
                         .addToBackStack(null);
                 break;
             case USER_ACCESS:
@@ -233,10 +210,67 @@ public class MainActivity   extends     AppCompatActivity
     @Override
     public void onFunctionCall(Functions target) 
     {
-        // TODO: Implement functionality later.
+        // Prime the transaction to the proper case.
+        switch (target) {
+            case TAKE_PICTURE:
+                // TODO: Test this.
+                if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
+                {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                    {
+                        startActivityForResult( takePictureIntent,
+                                                REQUEST_IMAGE_CAPTURE);
+                    }
+                }
+                else
+                {
+                    // TODO: Create a failure dialog box.
+                }
+                break;
+        }
+
     }
 
-    // Transfer these over later to proper fragment
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        // Check which request we're responding to
+        switch (requestCode)
+        {
+            case REQUEST_PLACE_PICKER:
+                if (resultCode == RESULT_OK)
+                {
+//                  Place place = PlacePicker.getPlace(data, this);
+                    Place place = PlacePicker.getPlace(getApplicationContext(), data);
+
+                    String address = place.getAddress().toString();
+                    String location = place.getLatLng().toString();
+
+                    String toastMsg = String.format("Name: %s Address: %s Location: %s", place.getName(), address, location);
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                }
+                break;
+            case REQUEST_IMAGE_CAPTURE:
+                if (resultCode == RESULT_OK)
+                {
+                    // Change the fragment to the confirmPic.
+
+                    // Retrieve image from activity call.
+                    Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+
+                    Log.d("onActivityResult", "Made it here!");
+
+                    // Change image on confirmPic to the taken picture.
+                    // mImageView.setImageBitmap(imageBitmap);
+                }
+                break;
+        }
+    }
+
+
+    // TODO: Transfer these over later to proper fragment
     @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class saveNewReviewService extends AsyncTask<String, Void, String> {
         private final String SERVICE = "http://cssgate.insttech.washington.edu/" +

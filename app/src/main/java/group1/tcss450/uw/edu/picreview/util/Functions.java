@@ -9,5 +9,6 @@ public enum Functions
 {
     LIKE,
     DISLIKE,
+    TAKE_PICTURE,
     UNIMPLEMENTED
 }
