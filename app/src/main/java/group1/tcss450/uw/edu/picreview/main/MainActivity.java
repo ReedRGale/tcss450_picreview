@@ -16,6 +16,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -52,6 +53,8 @@ import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
+
 /*
  * Main activity that runs the app.
  */
@@ -75,6 +78,8 @@ public class MainActivity   extends     AppCompatActivity
 
     /** Request code passed to camera for identification. */
     private static final int REQUEST_IMAGE_CAPTURE = 2;
+
+    ImageView mImageView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,7 +246,6 @@ public class MainActivity   extends     AppCompatActivity
             case REQUEST_PLACE_PICKER:
                 if (resultCode == RESULT_OK)
                 {
-//                  Place place = PlacePicker.getPlace(data, this);
                     Place place = PlacePicker.getPlace(getApplicationContext(), data);
 
                     String address = place.getAddress().toString();
@@ -254,16 +258,16 @@ public class MainActivity   extends     AppCompatActivity
             case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK)
                 {
-                    // Change the fragment to the confirmPic.
-
                     // Retrieve image from activity call.
                     Bundle extras = data.getExtras();
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-                    Log.d("onActivityResult", "Made it here!");
-
                     // Change image on confirmPic to the taken picture.
-                    // mImageView.setImageBitmap(imageBitmap);
+                    if (mImageView == null)
+                    {
+                        mImageView = (ImageView) findViewById(R.id.testImageView);
+                        mImageView.setImageBitmap(imageBitmap);
+                    }
                 }
                 break;
         }

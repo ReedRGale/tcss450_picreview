@@ -91,7 +91,11 @@ public class MainMenuFragment   extends     Fragment
      */
     private void onReviewPressed()
     {
-        if (mListener != null) { mListener.onFunctionCall(TAKE_PICTURE); }
+        if (mListener != null)
+        {
+            mListener.onFragmentTransition(CONFIRM_PIC);
+            mListener.onFunctionCall(TAKE_PICTURE);
+        }
     }
 
     /**
