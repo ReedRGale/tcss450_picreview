@@ -1,20 +1,37 @@
 package group1.tcss450.uw.edu.picreview.review_service;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.DBUtility;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
+import group1.tcss450.uw.edu.picreview.util.Review;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+import static java.lang.Thread.sleep;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +43,12 @@ public class PicReviewConfirmFragment   extends     Fragment
 
     private OnFragmentInteractionListener mListener;
 
+    /* The review to be saved. */
+    private Review mReview;
+
+    /* Spinner that appears while review is saving. */
+    private ProgressBar waitSpinner;
+
     public PicReviewConfirmFragment() { }
 
     @Override
@@ -35,11 +58,23 @@ public class PicReviewConfirmFragment   extends     Fragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_pic_review_confirm, container, false);
 
+        waitSpinner = (ProgressBar) v.findViewById(R.id.progressBar);
+
         ArrayList<Button> ba = new ArrayList<Button>();
 
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bReviewConfirm));
         ba.add((Button) v.findViewById(R.id.bReviewDeny));
+
+        // TODO: Somehow pass the review or information to be saved to this fragment
+        mReview = new Review();
+        mReview.setCaption("Great Place");
+        mReview.setComments("Great Teriyaki");
+        mReview.setTag("Teriyaki");
+        mReview.setLikes(1);
+        mReview.setDislikes(0);
+        //mReview.setImage();
+        //mReview.setLocation();
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -47,10 +82,14 @@ public class PicReviewConfirmFragment   extends     Fragment
         return v;
     }
 
-    /* Will proceed with storing the review. */
+    /* Will proceed with storing the review by handing it off to an asynchronous task. */
     public void onYesPressed()
     {
-        if (mListener != null)  { mListener.onFunctionCall(Functions.UNIMPLEMENTED);  }
+        if (mListener != null && mReview != null)
+        {
+            AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
+            task.execute(mReview);
+        }
     }
 
     /* Will return to the previous step. */
@@ -102,5 +141,45 @@ public class PicReviewConfirmFragment   extends     Fragment
     {
         void onFragmentTransition(Frags target);
         void onFunctionCall(Functions target);
+    }
+
+    /**
+     * Will hit the php webservice that will save the review into the database.
+     */
+    private class PostWebServiceTask extends AsyncTask<Review, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            waitSpinner.setVisibility(View.VISIBLE);
+            for (int i = 0; i < 90; i++)
+            {
+                waitSpinner.incrementProgressBy(1);
+            }
+        }
+
+        @Override
+        protected Boolean doInBackground(Review... reviews) {
+            return DBUtility.saveReview(reviews[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            waitSpinner.incrementProgressBy(10);
+            waitSpinner.setVisibility(View.GONE);
+
+            if (result)
+            {
+                Toast.makeText(getContext(), "Review was successfully saved", Toast.LENGTH_LONG).show();
+
+                // TODO: Should either show the review or return to main menu
+            }
+            else
+            {
+                Toast.makeText(getContext(), "Failed to save Review. Please try again.", Toast.LENGTH_LONG).show();
+                waitSpinner.setProgress(0);
+            }
+
+            Log.d("RESPONSE", result.toString());
+        }
     }
 }

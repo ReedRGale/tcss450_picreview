@@ -20,6 +20,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.Frags;
 
 
 /**
@@ -82,11 +83,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         boolean canSubmit = true;
 
+        // Check username
         if(user_text.length() == 0)
         {
             canSubmit = false;
             user_text.setError(getString(R.string.no_username));
         }
+
         if (pass_text.length() == 0)
         {
             canSubmit = false;
@@ -147,6 +150,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             {
                 Toast.makeText(getContext(), "Login was successful", Toast.LENGTH_LONG)
                         .show();
+                mListener.onFragmentTransition(Frags.MAIN_MENU);
             }
             else
             {
@@ -169,6 +173,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String toStart);
+        void onFragmentTransition(Frags target);
     }
 }

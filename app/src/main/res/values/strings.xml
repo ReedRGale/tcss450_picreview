@@ -38,9 +38,12 @@
 
     <!-- Error messages -->
     <string name="no_username">No username entered</string>
+    <string name="short_username">Username must be more than 4 characters long and less than 26 characters</string>
     <string name="no_password">No password entered</string>
+    <string name="short_password">Password must be more than 4 characters long and less than 26 characters</string>
     <string name="no_pass_match">Passwords must match</string>
     <string name="no_confirm_pass">Please confirm your password</string>
+    <string name="pass_username_match">Username and Password cannot be the same.</string>
     <string name="title_activity_maps">Map</string>
 
     <!-- Fragment names to pass in order to start. -->

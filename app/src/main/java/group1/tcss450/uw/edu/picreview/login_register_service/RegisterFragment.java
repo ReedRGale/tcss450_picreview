@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.Frags;
 
 
 /**
@@ -89,11 +91,22 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             canSubmit = false;
             user_box.setError(getString(R.string.no_username));
         }
+        else if (user_box.length() < 4 || user_box.length() > 25)
+        {
+            canSubmit = false;
+            user_box.setError(getString(R.string.short_username));
+        }
+
 
         if (pass_box.length() == 0)
         {
             canSubmit = false;
             pass_box.setError(getString(R.string.no_password));
+        }
+        else if (pass_box.length() < 4 || pass_box.length() > 25)
+        {
+            canSubmit = false;
+            pass_box.setError(getString(R.string.short_password));
         }
         else if (confirm_pass_box.length() == 0)
         {
@@ -104,6 +117,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         {
             canSubmit = false;
             confirm_pass_box.setError(getString(R.string.no_pass_match));
+        }
+
+        if (user_box.getText().toString().equals(pass_box.getText().toString()))
+        {
+            canSubmit = false;
+            user_box.setError(getString(R.string.pass_username_match));
+
         }
 
         if(canSubmit)
@@ -157,6 +177,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             {
                 Toast.makeText(getContext(), "Registration was successful", Toast.LENGTH_LONG)
                         .show();
+                mListener.onFragmentTransition(Frags.MAIN_MENU);
+
             }
             else
             {
@@ -177,6 +199,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String toStart);
+        void onFragmentTransition(Frags target);
     }
 }

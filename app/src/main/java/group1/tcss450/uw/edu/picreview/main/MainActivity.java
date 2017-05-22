@@ -25,19 +25,6 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-
 import group1.tcss450.uw.edu.picreview.MapsActivity;
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
@@ -168,8 +155,15 @@ public class MainActivity   extends     AppCompatActivity
                 break;
             case MAIN_MENU:
                 MainMenuFragment mainMenuFragment = new MainMenuFragment();
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, mainMenuFragment)
+                transaction = getSupportFragmentManager().beginTransaction();
+
+                // Clear the backstack because if they've been routed to main menu
+                // then we probably don't want them going back
+                while (getSupportFragmentManager().getBackStackEntryCount() > 0){
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+
+                transaction.replace(R.id.fragmentContainer, mainMenuFragment)
                         .addToBackStack(null);
                 break;
             case CONFIRM_PIC:
@@ -203,9 +197,8 @@ public class MainActivity   extends     AppCompatActivity
                         .addToBackStack(null);
                 break;
             case DATA_TEST:
-                AsyncTask<String, Void, String> task = new getUserReviewsService();
-                task.execute("John");
                 break;
+
         }
 
         // Change the fragment, assuming we reached a valid case.
@@ -274,120 +267,4 @@ public class MainActivity   extends     AppCompatActivity
     }
 
 
-    // TODO: Transfer these over later to proper fragment
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private class saveNewReviewService extends AsyncTask<String, Void, String> {
-        private final String SERVICE = "http://cssgate.insttech.washington.edu/" +
-                "~demyan15/" + "makeReview.php";
-        @Override
-        protected String doInBackground(String... strings) {
-            if (strings.length != 3) {
-                throw new IllegalArgumentException("Three String arguments required.");
-            }
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            try {
-                URL urlObject = new URL(SERVICE);
-                urlConnection = (HttpURLConnection) urlObject.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-                String data = URLEncoder.encode("Username", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[0], "UTF-8")
-                        + "&" + URLEncoder.encode("tag", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[1], "UTF-8")
-                        + "&" + URLEncoder.encode("reviewText", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[2], "UTF-8");
-                wr.write(data);
-                wr.flush();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
-                while ((s = buffer.readLine()) != null) {
-                    response += s;
-                }
-            } catch (Exception e) {
-                response = "Unable to connect, Reason: "
-                        + e.getMessage();
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-            return response;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-    private class getUserReviewsService extends AsyncTask<String, Void, String> {
-        private final String SERVICE = "http://cssgate.insttech.washington.edu/" +
-                "~demyan15/" + "getUserReviews.php";
-        @Override
-        protected String doInBackground(String... strings) {
-            if (strings.length != 1) {
-                throw new IllegalArgumentException("One String arguments required.");
-            }
-            String response = "";
-            HttpURLConnection urlConnection = null;
-            try {
-                URL urlObject = new URL(SERVICE);
-                urlConnection = (HttpURLConnection) urlObject.openConnection();
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setDoOutput(true);
-                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-                String data = URLEncoder.encode("Username", "UTF-8")
-                        + "=" + URLEncoder.encode(strings[0], "UTF-8");
-                wr.write(data);
-                wr.flush();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
-                while ((s = buffer.readLine()) != null) {
-                    response += s;
-                }
-            } catch (Exception e) {
-                response = "Unable to connect, Reason: "
-                        + e.getMessage();
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-            return response;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            try {
-                JSONObject returnedObject = new JSONObject(result);
-                JSONArray returnedArray = returnedObject.getJSONArray("arrayToReturn");
-                ArrayList<String> reviews = new ArrayList<String>();
-
-                for (int i = 0; i < returnedArray.length(); i++)
-                {
-                    JSONObject review = returnedArray.getJSONObject(i);
-                    String s = "";
-                    s += "Review: \nTagged As: " + review.getString("tag") + "\n";
-                    s += "Comments: " + review.getString("reviewText") + "\n";
-                    reviews.add(s);
-                }
-
-                DisplayReviewsFragment reviewsFrag = new DisplayReviewsFragment();
-                Bundle b = new Bundle();
-                b.putStringArrayList("Reviews", reviews);
-                reviewsFrag.setArguments(b);
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, reviewsFrag)
-                        .addToBackStack(null).commit();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
 }
