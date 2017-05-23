@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_PIC;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
 import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
@@ -60,7 +62,12 @@ public class CaptionFragment    extends     Fragment
     /* Will go forward to the next step of the review process. */
     public void onForwardPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }
+        if (mListener != null)
+        {
+            mListener.onDataStorage( CAPTION,
+                                     getActivity().findViewById(R.id.eCaption));
+            mListener.onFragmentTransition(LIKE_DISLIKE);
+        }
     }
 
     @Override
@@ -102,5 +109,6 @@ public class CaptionFragment    extends     Fragment
     public interface OnFragmentInteractionListener
     {
         void onFragmentTransition(Frags target);
+        void onDataStorage(Frags source, Object data);
     }
 }

@@ -9,18 +9,20 @@ public enum Frags
 {
     // Main Menu
     SEARCH,
-    REVIEW,
     USER_ACCESS,
     DATA_TEST,
     MAIN_MENU,
 
     // Review Service
     CONFIRM_PIC,
-    PHOTO,          // Will be used when we have the photo fragment.
     CAPTION,
     LIKE_DISLIKE,
     LOCATION,
     CONFIRM_REVIEW,
+
+    // User Access
+    LOGIN,
+    REGISTER,
 
     // Silencing Errors Ekks Dee
     UNIMPLEMENTED

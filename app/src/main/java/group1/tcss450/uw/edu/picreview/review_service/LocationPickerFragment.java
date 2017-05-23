@@ -64,7 +64,7 @@ public class LocationPickerFragment     extends     Fragment
     /* Functionality for search nearby locations button. */
     public void onSearchLocationPressed()
     {
-        if (mListener != null) { mListener.onFragmentInteraction("StartMapsActivity"); }
+        if (mListener != null) { mListener.onFunctionCall(Functions.PLACE_PICKER); }
     }
 
     /* Functionality for no location button. */
@@ -136,7 +136,6 @@ public class LocationPickerFragment     extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
-        void onFragmentInteraction(String toStart);
         void onFragmentTransition(Frags target);
         void onFunctionCall(Functions target);
     }

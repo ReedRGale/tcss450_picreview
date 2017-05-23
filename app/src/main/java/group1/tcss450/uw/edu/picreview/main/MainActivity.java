@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -62,16 +63,21 @@ public class MainActivity   extends     AppCompatActivity
 
     // Temporary information gleaned from the fragments.
     private Bitmap mTempBitmap = null;
+    private String mTempCaption = null;
 
+    /**  Value to determine whether the user likes or dislikes the place reviewed.
+        positive:   Good
+        zero:       Unchanged--probably an error
+        negative:   Bad                             */
+    private int mTempLD = 0;
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        Suppressing this because it was causing errors
-//        ~  Jared Lowery
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
 
         if (savedInstanceState == null)
         {
@@ -84,72 +90,29 @@ public class MainActivity   extends     AppCompatActivity
         }
     }
 
-
-    @Override
-    public void onFragmentInteraction(String toStart) {
-        if (toStart.equals(getString(R.string.toStartLoginFragment)))
-        {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, new LoginFragment())
-                    .addToBackStack(null).commit();
-        }
-        else if (toStart.equals(getString(R.string.toStartRegisterFragment)))
-        {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, new RegisterFragment())
-                    .addToBackStack(null).commit();
-        }
-        else if (toStart.equals("StartMapsActivity"))
-        {
-            try {
-                PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-                Intent intent = intentBuilder.build(this);
-                // Start the Intent by requesting a result, identified by a request code.
-                startActivityForResult(intent, REQUEST_PLACE_PICKER);
-
-                // Hide the pick option in the UI to prevent users from starting the picker
-                // multiple times.
-                //showPickAction(false);
-
-            } catch (GooglePlayServicesRepairableException e) {
-//                GooglePlayServicesUtil
-//                        .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-            } catch (GooglePlayServicesNotAvailableException e) {
-//                Toast.makeText(getActivity(), "Google Play Services is not available.",
-//                        Toast.LENGTH_LONG)
-//                        .show();
-            }
-//            Intent i = new Intent(getApplicationContext(), MapsActivity.class);
-//            startActivity(i);
-        }
-    }
-
     /**
-     * {@inheritDoc}
+     * A method to generally handle moving from one fragment to another.
+     * @param target the target fragment to swap to.
      */
+    @Override
     public void onFragmentTransition(Frags target)
     {
         FragmentTransaction transaction = null;
 
         // Prime the transaction to the proper case.
-        switch (target) {
+        switch (target)
+        {
             case SEARCH:
-                SearchFragment searchFragment = new SearchFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, searchFragment)
+                        .replace(R.id.fragmentContainer, new SearchFragment())
                         .addToBackStack(null);
                 break;
             case USER_ACCESS:
-                // TODO: Find more permanent location for this feature.
-                UserAccessFragment userAccessFragment = new UserAccessFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, userAccessFragment)
+                        .replace(R.id.fragmentContainer, new UserAccessFragment())
                         .addToBackStack(null);
                 break;
             case MAIN_MENU:
-                MainMenuFragment mainMenuFragment = new MainMenuFragment();
                 transaction = getSupportFragmentManager().beginTransaction();
 
                 // Clear the backstack because if they've been routed to main menu
@@ -158,40 +121,43 @@ public class MainActivity   extends     AppCompatActivity
                     getSupportFragmentManager().popBackStackImmediate();
                 }
 
-                transaction.replace(R.id.fragmentContainer, mainMenuFragment)
+                transaction.replace(R.id.fragmentContainer, new MainMenuFragment())
                         .addToBackStack(null);
                 break;
             case CONFIRM_PIC:
-                ConfirmPicFragment confirmPicFragment = new ConfirmPicFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, confirmPicFragment)
+                        .replace(R.id.fragmentContainer, new ConfirmPicFragment())
                         .addToBackStack(null);
                 break;
             case CAPTION:
-                CaptionFragment captionFragment = new CaptionFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, captionFragment)
+                        .replace(R.id.fragmentContainer, new CaptionFragment())
                         .addToBackStack(null);
                 break;
             case LIKE_DISLIKE:
-                LikeDislikeFragment likeDislikeFragment = new LikeDislikeFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, likeDislikeFragment)
+                        .replace(R.id.fragmentContainer, new LikeDislikeFragment())
                         .addToBackStack(null);
                 break;
             case LOCATION:
-                LocationPickerFragment locationPickerFragment = new LocationPickerFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, locationPickerFragment)
+                        .replace(R.id.fragmentContainer, new LocationPickerFragment())
                         .addToBackStack(null);
                 break;
             case CONFIRM_REVIEW:
-                PicReviewConfirmFragment picReviewConfirmFragment = new PicReviewConfirmFragment();
                 transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, picReviewConfirmFragment)
+                        .replace(R.id.fragmentContainer, new PicReviewConfirmFragment())
                         .addToBackStack(null);
                 break;
-            case DATA_TEST:
+            case LOGIN:
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new LoginFragment())
+                        .addToBackStack(null);
+                break;
+            case REGISTER:
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new RegisterFragment())
+                        .addToBackStack(null);
                 break;
 
         }
@@ -200,6 +166,11 @@ public class MainActivity   extends     AppCompatActivity
         if (transaction != null) { transaction.commit(); }
     }
 
+    /**
+     * A fragment to handle temporary data storage.
+     * @param source this is the source fragment. Tells us what data is being sent in.
+     * @param data is the data to store.
+     */
     @Override
     public void onDataStorage(Frags source, Object data)
     {
@@ -207,17 +178,36 @@ public class MainActivity   extends     AppCompatActivity
         switch (source) {
             case CONFIRM_PIC:
                 // Store the bitmap.
-                BitmapDrawable temp = (BitmapDrawable) mImageView.getDrawable();
-                mTempBitmap = temp.getBitmap();
+                BitmapDrawable tempBM = (BitmapDrawable) mImageView.getDrawable();
+                mTempBitmap = tempBM.getBitmap();
 
+                break;
+            case CAPTION:
+                EditText tempET = (EditText) data;
+                mTempCaption = tempET.getText().toString();
+
+                break;
+            case LIKE_DISLIKE:
+                mTempLD = (int) data;
+
+                // TODO: Delete this after debugging.
                 // Return a Toast or something to prove it worked.
                 Toast.makeText(this,
-                        "Temp Bitmap Hash" + mTempBitmap.hashCode(),
+                        "Temp Objects: "
+                                + mTempBitmap.hashCode() + " "
+                                + mTempCaption + " "
+                                + mTempLD + " ",
                         Toast.LENGTH_LONG).show();
+
                 break;
         }
     }
 
+    /**
+     * This is a general method to call functionality in other,
+     * external, sources.
+     * @param target the target functionality to retrieve.
+     */
     @Override
     public void onFunctionCall(Functions target) 
     {
@@ -238,10 +228,33 @@ public class MainActivity   extends     AppCompatActivity
                     // TODO: Create a failure dialog box.
                 }
                 break;
+            case PLACE_PICKER:
+                try {
+                    PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+                    Intent intent = intentBuilder.build(this);
+                    // Start the Intent by requesting a result, identified by a request code.
+                    startActivityForResult(intent, REQUEST_PLACE_PICKER);
+
+                    // Hide the pick option in the UI to prevent users from starting the picker
+                    // multiple times.
+                    //showPickAction(false);
+
+                } catch (GooglePlayServicesRepairableException e) {
+//                GooglePlayServicesUtil
+//                        .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    Toast.makeText(this, "Google Play Services is not available.",
+                            Toast.LENGTH_LONG)
+                            .show();
+                }
+                break;
         }
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 

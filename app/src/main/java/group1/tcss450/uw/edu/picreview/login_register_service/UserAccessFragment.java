@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.Frags;
+
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 
 
 /**
@@ -60,11 +63,11 @@ public class UserAccessFragment extends Fragment implements View.OnClickListener
         // Will determine which fragment to start
         if (v.getId() == R.id.login_button)
         {
-            mListener.onFragmentInteraction(getString(R.string.toStartLoginFragment));
+            mListener.onFragmentTransition(LOGIN);
         }
         else if (v.getId() == R.id.register_button)
         {
-            mListener.onFragmentInteraction(getString(R.string.toStartRegisterFragment));
+            mListener.onFragmentTransition(REGISTER);
         }
     }
 
@@ -79,6 +82,6 @@ public class UserAccessFragment extends Fragment implements View.OnClickListener
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(String toStart);
+        void onFragmentTransition(Frags target);
     }
 }

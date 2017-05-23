@@ -16,6 +16,7 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
+import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
@@ -56,12 +57,13 @@ public class LikeDislikeFragment    extends     Fragment
     /* Will notify the proper method of the user's choice. */
     public void onLikePressed()
     {
-        if (mListener != null) { mListener.onFunctionCall(LIKE); }
+        if (mListener != null) { mListener.onDataStorage(LIKE_DISLIKE, 1); }
     }
 
     /* Will notify the proper method of the user's choice. */
-    public void onDislikePressed() {
-        if (mListener != null) { mListener.onFunctionCall(DISLIKE); }
+    public void onDislikePressed()
+    {
+        if (mListener != null) { mListener.onDataStorage(LIKE_DISLIKE, -1); }
     }
 
     /* Will go back to the previous step of the review process. */
@@ -124,6 +126,6 @@ public class LikeDislikeFragment    extends     Fragment
     public interface OnFragmentInteractionListener
     {
         void onFragmentTransition(Frags target);
-        void onFunctionCall(Functions target);
+        void onDataStorage(Frags source, Object data);
     }
 }
