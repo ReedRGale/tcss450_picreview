@@ -8,39 +8,31 @@ package group1.tcss450.uw.edu.picreview.main;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.os.Build;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
-import group1.tcss450.uw.edu.picreview.MapsActivity;
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
 import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
 import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
-import group1.tcss450.uw.edu.picreview.review_service.DisplayReviewsFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
-
-import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 
 /*
  * Main activity that runs the app.
@@ -67,6 +59,9 @@ public class MainActivity   extends     AppCompatActivity
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
     ImageView mImageView = null;
+
+    // Temporary information gleaned from the fragments.
+    private Bitmap mTempBitmap = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,12 +201,29 @@ public class MainActivity   extends     AppCompatActivity
     }
 
     @Override
+    public void onDataStorage(Frags source, Object data)
+    {
+        // Prime the transaction to the proper case.
+        switch (source) {
+            case CONFIRM_PIC:
+                // Store the bitmap.
+                BitmapDrawable temp = (BitmapDrawable) mImageView.getDrawable();
+                mTempBitmap = temp.getBitmap();
+
+                // Return a Toast or something to prove it worked.
+                Toast.makeText(this,
+                        "Temp Bitmap Hash" + mTempBitmap.hashCode(),
+                        Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
+    @Override
     public void onFunctionCall(Functions target) 
     {
         // Prime the transaction to the proper case.
         switch (target) {
             case TAKE_PICTURE:
-                // TODO: Test this.
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
                 {
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

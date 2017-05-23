@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Functions;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 
@@ -26,17 +27,6 @@ public class ConfirmPicFragment     extends     Fragment
 
     // Required empty public constructor
     public ConfirmPicFragment() {}
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        // TODO: Determine if we need to do this.
-
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,7 +52,13 @@ public class ConfirmPicFragment     extends     Fragment
      */
     public void onYesPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
+        if (mListener != null)
+        {
+            /*  Odd case; the bitmap is in the activity right now,
+                so no data needs to be passed. */
+            mListener.onDataStorage(CONFIRM_PIC, null);
+            mListener.onFragmentTransition(CAPTION);
+        }
     }
 
     /**
@@ -70,8 +66,7 @@ public class ConfirmPicFragment     extends     Fragment
      */
     public void onNoPressed()
     {
-        // TODO: When photo fragment is implemented, change this.
-        if (mListener != null) { mListener.onFragmentTransition(MAIN_MENU); }
+        if (mListener != null) { mListener.onFunctionCall(Functions.TAKE_PICTURE); }
     }
 
     @Override
@@ -114,5 +109,7 @@ public class ConfirmPicFragment     extends     Fragment
     public interface OnFragmentInteractionListener
     {
         void onFragmentTransition(Frags target);
+        void onDataStorage(Frags source, Object data);
+        void onFunctionCall(Functions target);
     }
 }
