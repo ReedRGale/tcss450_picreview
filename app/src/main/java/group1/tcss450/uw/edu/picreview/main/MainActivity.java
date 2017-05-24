@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
@@ -35,6 +36,8 @@ import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+
 /*
  * Main activity that runs the app.
  */
@@ -59,7 +62,9 @@ public class MainActivity   extends     AppCompatActivity
     /** Request code passed to camera for identification. */
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
+    // Temporary information gleaned from other activities.
     ImageView mImageView = null;
+    Place mPlace = null;
 
     // Temporary information gleaned from the fragments.
     private Bitmap mTempBitmap = null;
@@ -70,6 +75,7 @@ public class MainActivity   extends     AppCompatActivity
         zero:       Unchanged--probably an error
         negative:   Bad                             */
     private int mTempLD = 0;
+    private Location mTempLocation = null;
 
     /**
      * {@inheritDoc}
@@ -183,12 +189,23 @@ public class MainActivity   extends     AppCompatActivity
 
                 break;
             case CAPTION:
+                // Store the caption.
                 EditText tempET = (EditText) data;
                 mTempCaption = tempET.getText().toString();
 
                 break;
             case LIKE_DISLIKE:
+                // Store the positive/negative data.
                 mTempLD = (int) data;
+
+                break;
+
+            case LOCATION:
+                // Milk the information.
+                Location tempLoc = new Location("");
+                tempLoc.setLatitude(mPlace.getLatLng().latitude);
+                tempLoc.setLatitude(mPlace.getLatLng().longitude);
+                mTempLocation = tempLoc;
 
                 // TODO: Delete this after debugging.
                 // Return a Toast or something to prove it worked.
@@ -196,7 +213,8 @@ public class MainActivity   extends     AppCompatActivity
                         "Temp Objects: "
                                 + mTempBitmap.hashCode() + " "
                                 + mTempCaption + " "
-                                + mTempLD + " ",
+                                + mTempLD + " "
+                                + mTempLocation.toString() + " ",
                         Toast.LENGTH_LONG).show();
 
                 break;
@@ -264,13 +282,8 @@ public class MainActivity   extends     AppCompatActivity
             case REQUEST_PLACE_PICKER:
                 if (resultCode == RESULT_OK)
                 {
-                    Place place = PlacePicker.getPlace(getApplicationContext(), data);
-
-                    String address = place.getAddress().toString();
-                    String location = place.getLatLng().toString();
-
-                    String toastMsg = String.format("Name: %s Address: %s Location: %s", place.getName(), address, location);
-                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                    mPlace = PlacePicker.getPlace(getApplicationContext(), data);
+                    onDataStorage(LOCATION, null);
                 }
                 break;
             case REQUEST_IMAGE_CAPTURE:

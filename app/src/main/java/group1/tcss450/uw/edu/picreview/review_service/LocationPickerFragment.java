@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
+import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**
@@ -64,7 +66,12 @@ public class LocationPickerFragment     extends     Fragment
     /* Functionality for search nearby locations button. */
     public void onSearchLocationPressed()
     {
-        if (mListener != null) { mListener.onFunctionCall(Functions.PLACE_PICKER); }
+        if (mListener != null)
+        {
+            // TODO: Remove debug log.
+            Log.d("DEBUG", "onSearchLocationPressed");
+            mListener.onFunctionCall(PLACE_PICKER);
+        }
     }
 
     /* Functionality for no location button. */
@@ -138,5 +145,6 @@ public class LocationPickerFragment     extends     Fragment
     {
         void onFragmentTransition(Frags target);
         void onFunctionCall(Functions target);
+        void onDataStorage(Frags source, Object data);
     }
 }
