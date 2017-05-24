@@ -8,6 +8,7 @@ package group1.tcss450.uw.edu.picreview.util;
 public enum Functions
 {
     PLACE_PICKER,
+    REVIEW_RETRIEVE,
     TAKE_PICTURE,
     UNIMPLEMENTED
 }

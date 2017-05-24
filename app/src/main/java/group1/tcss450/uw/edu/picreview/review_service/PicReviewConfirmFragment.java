@@ -31,6 +31,7 @@ import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 import static java.lang.Thread.sleep;
 
 /**
@@ -87,6 +88,7 @@ public class PicReviewConfirmFragment   extends     Fragment
     {
         if (mListener != null && mReview != null)
         {
+            mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
             AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
             task.execute(mReview);
         }
@@ -140,7 +142,7 @@ public class PicReviewConfirmFragment   extends     Fragment
     public interface OnFragmentInteractionListener
     {
         void onFragmentTransition(Frags target);
-        void onFunctionCall(Functions target);
+        Object onDataRetrieval(Functions target);
     }
 
     /**

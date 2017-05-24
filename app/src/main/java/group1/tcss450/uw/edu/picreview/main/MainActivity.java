@@ -35,7 +35,9 @@ import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
+import group1.tcss450.uw.edu.picreview.util.Review;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_REVIEW;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
 /*
@@ -65,6 +67,7 @@ public class MainActivity   extends     AppCompatActivity
     // Temporary information gleaned from other activities.
     ImageView mImageView = null;
     Place mPlace = null;
+    Review mTempReview = null;
 
     // Temporary information gleaned from the fragments.
     private Bitmap mTempBitmap = null;
@@ -172,6 +175,38 @@ public class MainActivity   extends     AppCompatActivity
         if (transaction != null) { transaction.commit(); }
     }
 
+    @Override
+    public Object onDataRetrieval(Functions target)
+    {
+        Object theData = null;
+
+        // Prime the transaction to the proper case.
+        switch (target) {
+            case REVIEW_RETRIEVE:
+                // Store the bitmap.
+                mTempReview = new Review();
+                mTempReview.setCaption(mTempCaption);
+                mTempReview.setImage(mTempBitmap);
+                mTempReview.setLocation(mTempLocation);
+
+                // Defaults.
+                mTempReview.setLikes(0);
+                mTempReview.setDislikes(0);
+                mTempReview.setComments("");
+                mTempReview.setTag("");
+
+                // TODO: Determine where these'll be implemented.
+//              mTempReview.setComments("Great Teriyaki");
+//              mTempReview.setTag("Teriyaki");
+
+                theData = mTempReview;
+
+                break;
+        }
+
+        return theData;
+    }
+
     /**
      * A fragment to handle temporary data storage.
      * @param source this is the source fragment. Tells us what data is being sent in.
@@ -206,16 +241,6 @@ public class MainActivity   extends     AppCompatActivity
                 tempLoc.setLatitude(mPlace.getLatLng().latitude);
                 tempLoc.setLatitude(mPlace.getLatLng().longitude);
                 mTempLocation = tempLoc;
-
-                // TODO: Delete this after debugging.
-                // Return a Toast or something to prove it worked.
-                Toast.makeText(this,
-                        "Temp Objects: "
-                                + mTempBitmap.hashCode() + " "
-                                + mTempCaption + " "
-                                + mTempLD + " "
-                                + mTempLocation.toString() + " ",
-                        Toast.LENGTH_LONG).show();
 
                 break;
         }
@@ -269,6 +294,8 @@ public class MainActivity   extends     AppCompatActivity
         }
 
     }
+
+
 
     /**
      * {@inheritDoc}
