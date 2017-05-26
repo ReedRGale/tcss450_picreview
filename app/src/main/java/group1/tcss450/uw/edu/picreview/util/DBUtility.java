@@ -231,36 +231,10 @@ public class DBUtility {
     /* Will get all reviews containing a part of this tag. */
     public static List<Review> getReviewsByTag(String theTag)
     {
-        boolean ConnectionSuccess = true;
         List<Review> reviews = new ArrayList<>();
 
-        // Get reviews in JSON form
-        String response = "";
-        HttpURLConnection urlConnection = null;
-        try {
-            URL urlObject = new URL(SERVICE + "getAllReviews.php");
-            urlConnection = (HttpURLConnection) urlObject.openConnection();
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setDoOutput(true);
-            OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
-            wr.flush();
-            InputStream content = urlConnection.getInputStream();
-            BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-            String s = "";
-            while ((s = buffer.readLine()) != null) {
-                response += s;
-            }
-        } catch (Exception e) {
-            response = "Unable to connect, Reason: "
-                    + e.getMessage();
-            Log.d("Error", "Error Getting all reviews. " + response);
-            ConnectionSuccess = false;
-        } finally {
-            if (urlConnection != null)
-                urlConnection.disconnect();
-        }
-
-        if (ConnectionSuccess)
+        String response = getAllJSonReviews();
+        if (response != null)
         {
             try {
                 // Convert response to JSON Object
@@ -338,8 +312,118 @@ public class DBUtility {
     }
 
     /* Will get all reviews for this location. */
-    public static List<Review> getReviewsByLocation(Location theLocation) { return null; }
+    public static List<Review> getReviewsByLocation(Location theLocation)
+    {
+        List<Review> reviews = new ArrayList<>();
 
+        String response = getAllJSonReviews();
+        if (response != null)
+        {
+            try {
+                // Convert response to JSON Object
+                JSONObject returnedObject = new JSONObject(response);
+                if (returnedObject.has("returnValue") && returnedObject.getInt("returnValue") == 1 && returnedObject.has("arrayToReturn")) {
+                    JSONArray JSONreviews = returnedObject.getJSONArray("arrayToReturn");
+
+                    // Go through reviews and create review objects
+                    for (int i = 0; i < JSONreviews.length(); i++)
+                    {
+                        boolean CreationSuccess = true;
+                        JSONObject JsonReviewObject = (JSONObject) JSONreviews.get(i);
+                        if (!JsonReviewObject.has("caption") || !JsonReviewObject.has("comments") || !JsonReviewObject.has("tags")
+                                || !JsonReviewObject.has("username") || !JsonReviewObject.has("image") || !JsonReviewObject.has("location")
+                                || !JsonReviewObject.has("likes") || !JsonReviewObject.has("dislikes") || !JsonReviewObject.has("ReviewType")) {
+                            CreationSuccess = false;
+                            Log.d("Error", "JSONObject did not contain a required field");
+                        }
+                        else
+                        {
+                            // First, check whether tags match so that we don't do any extra work if we don't need this review
+                            boolean meetsCriteria = false;
+                            Location deserializedLocation = deserializeLocation(JsonReviewObject.getString("location"));
+                            if (deserializedLocation.getLongitude() == theLocation.getLongitude() && deserializedLocation.getLatitude() == theLocation.getLatitude())
+                            {
+                                meetsCriteria = true;
+                            }
+
+
+                            if (meetsCriteria)
+                            {
+                                List<String> deserializedTagList = (List<String>) deserializeString(JsonReviewObject.getString("tags"));
+                                List<String> deserializedCommentList = (List<String>) deserializeString(JsonReviewObject.getString("comments"));
+                                Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
+
+                                // For future debugging purposes
+                                if (deserializedTagList == null) Log.d("Error", "Tags is null");
+                                if (deserializedCommentList == null) Log.d("Error", "Comments is null");
+                                if (deserializedLocation == null) Log.d("Error", "Location is null");
+                                if (deserializedImage == null) Log.d("Error", "Image is null");
+
+                                if (deserializedImage == null || deserializedLocation == null || deserializedTagList.size() == 0) CreationSuccess = false;
+
+                                if (CreationSuccess)
+                                {
+                                    Review review = new Review(JsonReviewObject.getString("caption"), deserializedImage, deserializedLocation, JsonReviewObject.getInt("likes"),
+                                            JsonReviewObject.getInt("dislikes"), JsonReviewObject.getInt("ReviewType"));
+                                    review.setComments(deserializedCommentList);
+                                    review.setTags(deserializedTagList);
+                                    review.setUser(JsonReviewObject.getString("username"));
+                                    reviews.add(review);
+                                }
+                                else
+                                {
+                                    Log.d("Error", "Unable to build Review");
+                                }
+                            }
+
+                        }
+                    }
+
+                }
+
+            } catch (JSONException e) {
+                Log.d("Error", "Error thrown while building review");
+                e.printStackTrace();
+            }
+        }
+
+
+        return reviews;
+
+
+    }
+
+    /*
+    Will get all reviews from the webservice and return the JSon it receives.
+     */
+    private static String getAllJSonReviews()
+    {
+        // Get reviews in JSON form
+        String response = "";
+        HttpURLConnection urlConnection = null;
+        try {
+            URL urlObject = new URL(SERVICE + "getAllReviews.php");
+            urlConnection = (HttpURLConnection) urlObject.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+            OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+            wr.flush();
+            InputStream content = urlConnection.getInputStream();
+            BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+            String s = "";
+            while ((s = buffer.readLine()) != null) {
+                response += s;
+            }
+        } catch (Exception e) {
+            response = null;
+            Log.d("Error", "Error Getting all reviews: " + e.getMessage());
+        } finally {
+            if (urlConnection != null)
+                urlConnection.disconnect();
+        }
+
+        return response;
+    }
 
     // Serialization Methods
 

@@ -150,8 +150,9 @@ public class PicReviewConfirmFragment   extends     Fragment
         @Override
         protected Boolean doInBackground(Review... reviews) {
             //Log.d("CHECK", "" + DBUtility.getReviewsByTag("test").size());
-            return DBUtility.saveReview(reviews[0]);
-            //return true;
+            DBUtility.getReviewsByLocation(mReview.getLocation());
+            //return DBUtility.saveReview(reviews[0]);
+            return true;
         }
 
         @Override
