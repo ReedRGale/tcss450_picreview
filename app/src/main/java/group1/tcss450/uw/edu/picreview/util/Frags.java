@@ -16,6 +16,7 @@ public enum Frags
     // Review Service
     CONFIRM_PIC,
     CAPTION,
+    TAG,
     LIKE_DISLIKE,
     LOCATION,
     CONFIRM_REVIEW,

@@ -88,7 +88,7 @@ public class PicReviewConfirmFragment   extends     Fragment
     {
         if (mListener != null && mReview != null)
         {
-            mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
+            //mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
             AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
             task.execute(mReview);
         }

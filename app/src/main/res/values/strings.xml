@@ -29,6 +29,7 @@
     <string name="button_dislike">Dislike</string>
 
     <string name="display_pic_review_confirmation">Is that everything?</string>
+    <string name="edit_tags">i.e. #diner #pizza #etc...</string>
 
     <!-- Confirm Pic -->
     <string name="username_hint">Username</string>

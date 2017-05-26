@@ -23,6 +23,8 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
+import java.util.ArrayList;
+
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
@@ -32,6 +34,7 @@ import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
+import group1.tcss450.uw.edu.picreview.review_service.TagFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
@@ -52,6 +55,7 @@ public class MainActivity   extends     AppCompatActivity
                                         SearchFragment.OnFragmentInteractionListener,
                                         ConfirmPicFragment.OnFragmentInteractionListener,
                                         CaptionFragment.OnFragmentInteractionListener,
+                                        TagFragment.OnFragmentInteractionListener,
                                         LikeDislikeFragment.OnFragmentInteractionListener,
                                         LocationPickerFragment.OnFragmentInteractionListener,
                                         PicReviewConfirmFragment.OnFragmentInteractionListener
@@ -72,6 +76,7 @@ public class MainActivity   extends     AppCompatActivity
     // Temporary information gleaned from the fragments.
     private Bitmap mTempBitmap = null;
     private String mTempCaption = null;
+    private String[] mTempTags = null;
 
     /**  Value to determine whether the user likes or dislikes the place reviewed.
         positive:   Good
@@ -141,6 +146,11 @@ public class MainActivity   extends     AppCompatActivity
             case CAPTION:
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, new CaptionFragment())
+                        .addToBackStack(null);
+                break;
+            case TAG:
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new TagFragment())
                         .addToBackStack(null);
                 break;
             case LIKE_DISLIKE:
@@ -221,27 +231,26 @@ public class MainActivity   extends     AppCompatActivity
                 // Store the bitmap.
                 BitmapDrawable tempBM = (BitmapDrawable) mImageView.getDrawable();
                 mTempBitmap = tempBM.getBitmap();
-
                 break;
             case CAPTION:
                 // Store the caption.
                 EditText tempET = (EditText) data;
                 mTempCaption = tempET.getText().toString();
-
+                break;
+            case TAG:
+                // Parse the string passed in for tags.
+                mTempTags = parseHashTags((String) data);
                 break;
             case LIKE_DISLIKE:
                 // Store the positive/negative data.
                 mTempLD = (int) data;
-
                 break;
-
             case LOCATION:
                 // Milk the information.
                 Location tempLoc = new Location("");
                 tempLoc.setLatitude(mPlace.getLatLng().latitude);
                 tempLoc.setLatitude(mPlace.getLatLng().longitude);
                 mTempLocation = tempLoc;
-
                 break;
         }
     }
@@ -331,5 +340,49 @@ public class MainActivity   extends     AppCompatActivity
         }
     }
 
+    /* Helper Methods */
 
+    /**
+     * Helper method to turn a string of hashes into a string array.
+     * @param theParsableString is the string peppered with hash tags.
+     * @return
+     */
+    private static String[] parseHashTags(String theParsableString)
+    {
+		/* **** Split initial string. **** */
+
+		if (theParsableString.contains("#"))
+        {
+            String[] hashArray = theParsableString.split("#");
+            int cull = 0;
+            for (int i = 0; i < hashArray.length; i++)
+            {
+                hashArray[i] = "#" + hashArray[i].trim();
+                if (hashArray[i].equals("#")) { cull++; }
+            }
+
+            /* **** Split initial string. **** */
+
+            /* **** Cull off random hashes. **** */
+
+            String[] culledArray = new String[hashArray.length - cull];
+            int j = 0;
+            for (int i = 0; i < hashArray.length && j < culledArray.length; i++)
+            {
+                if (!hashArray[i].equals("#"))
+                {
+                    culledArray[j] = hashArray[i];
+                    j++;
+                }
+            }
+            /* **** Cull off random hashes. **** */
+
+            return culledArray;
+        }
+        else
+        {
+            // Just return theParsableString as the tag.
+            return new String[] { "#" + theParsableString };
+        }
+    }
 }

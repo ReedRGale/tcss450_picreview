@@ -18,6 +18,7 @@ import group1.tcss450.uw.edu.picreview.util.Functions;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+import static group1.tcss450.uw.edu.picreview.util.Frags.TAG;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
@@ -69,7 +70,7 @@ public class LikeDislikeFragment    extends     Fragment
     /* Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
+        if (mListener != null) { mListener.onFragmentTransition(TAG); }
     }
 
     /* Will go forward to the next step of the review process. */
