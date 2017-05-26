@@ -68,16 +68,6 @@ public class PicReviewConfirmFragment   extends     Fragment
         ba.add((Button) v.findViewById(R.id.bReviewConfirm));
         ba.add((Button) v.findViewById(R.id.bReviewDeny));
 
-        // TODO: Somehow pass the review or information to be saved to this fragment
-        mReview = new Review();
-        mReview.setCaption("Great Place");
-        mReview.setComments("Great Teriyaki");
-        mReview.setTag("Teriyaki");
-        mReview.setLikes(1);
-        mReview.setDislikes(0);
-        //mReview.setImage();
-        //mReview.setLocation();
-
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
 
@@ -87,12 +77,9 @@ public class PicReviewConfirmFragment   extends     Fragment
     /** Will proceed with storing the review by handing it off to an asynchronous task.  */
     public void onYesPressed()
     {
-        if (mListener != null && mReview != null)
-        {
-            mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
-            AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
-            task.execute(mReview);
-        }
+        mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
+        AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
+        task.execute(mReview);
     }
 
     /** Will return to the previous step. */
@@ -162,7 +149,9 @@ public class PicReviewConfirmFragment   extends     Fragment
 
         @Override
         protected Boolean doInBackground(Review... reviews) {
+            //Log.d("CHECK", "" + DBUtility.getReviewsByTag("test").size());
             return DBUtility.saveReview(reviews[0]);
+            //return true;
         }
 
         @Override

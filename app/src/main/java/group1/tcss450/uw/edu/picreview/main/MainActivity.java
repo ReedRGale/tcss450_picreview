@@ -24,6 +24,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
@@ -219,9 +220,12 @@ public class MainActivity   extends     AppCompatActivity
                 // Defaults.
                 mTempReview.setLikes(0);
                 mTempReview.setDislikes(0);
-                mTempReview.setComments("");
-                mTempReview.setTag("");
-
+                mTempReview.setComments(new ArrayList<String>());
+                List<String> tagList = new ArrayList<String>();
+                tagList.add("Food");
+                mTempReview.setTags(tagList);
+                mTempReview.setReviewType(1);
+                // TODO: Determine where these'll be implemented.
                 theData = mTempReview;
 
                 break;
