@@ -50,6 +50,7 @@ public class PicReviewConfirmFragment   extends     Fragment
     /* Spinner that appears while review is saving. */
     private ProgressBar waitSpinner;
 
+    /** Empty constructor:  required. */
     public PicReviewConfirmFragment() { }
 
     @Override
@@ -83,18 +84,18 @@ public class PicReviewConfirmFragment   extends     Fragment
         return v;
     }
 
-    /* Will proceed with storing the review by handing it off to an asynchronous task. */
+    /** Will proceed with storing the review by handing it off to an asynchronous task.  */
     public void onYesPressed()
     {
         if (mListener != null && mReview != null)
         {
-            //mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
+            mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
             AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
             task.execute(mReview);
         }
     }
 
-    /* Will return to the previous step. */
+    /** Will return to the previous step. */
     public void onNoPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LOCATION); }

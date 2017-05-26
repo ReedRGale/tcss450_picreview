@@ -21,17 +21,15 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
 import static group1.tcss450.uw.edu.picreview.util.Frags.TAG;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TagFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
+ * A simple Fragment to handle Tagging a Review.
  */
 public class TagFragment    extends     Fragment
                             implements  View.OnClickListener
 {
-
+    /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
+    /** Empty constructor:  required. */
     public TagFragment() { }
 
     @Override
@@ -53,13 +51,16 @@ public class TagFragment    extends     Fragment
         return v;
     }
 
-    /* Will go back to the previous step of the review process. */
+    /** Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
     }
 
-    /* Will go forward to the next step of the review process. */
+    /**
+     * Will go forward to the next step of the review process.
+     * If there are tags, adds them.
+     */
     public void onForwardPressed()
     {
         if (mListener != null)

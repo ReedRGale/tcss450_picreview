@@ -23,9 +23,10 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 public class ConfirmPicFragment     extends     Fragment
                                     implements  View.OnClickListener
 {
+    /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
-    // Required empty public constructor
+    /** Empty constructor: required */
     public ConfirmPicFragment() {}
 
     @Override
@@ -49,6 +50,7 @@ public class ConfirmPicFragment     extends     Fragment
 
     /**
      * A method to move to the next fragment in picReview generation.
+     * Tells the activity to store the image in prep for the Review.
      */
     public void onYesPressed()
     {

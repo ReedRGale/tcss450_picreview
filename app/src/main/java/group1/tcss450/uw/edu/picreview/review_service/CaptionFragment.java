@@ -29,9 +29,10 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
 public class CaptionFragment    extends     Fragment
                                 implements  View.OnClickListener
 {
-
+    /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
+    /** Empty constructor:  required. */
     public CaptionFragment() { }
 
 
@@ -54,13 +55,15 @@ public class CaptionFragment    extends     Fragment
         return v;
     }
 
-    /* Will go back to the previous step of the review process. */
+    /** Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
         if (mListener != null) {  mListener.onFragmentTransition(CONFIRM_PIC); }
     }
 
-    /* Will go forward to the next step of the review process. */
+    /**
+     * Will go forward to the next step of the review process.
+     * If there is a caption to save, it will save it. */
     public void onForwardPressed()
     {
         if (mListener != null)

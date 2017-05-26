@@ -21,16 +21,16 @@ import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**
- * A simple {@link Fragment} subclass.
  * This is designed to allow the user to pick a location for the picture.
  * No location by default.
  */
 public class LocationPickerFragment     extends     Fragment
                                         implements  View.OnClickListener
 {
-
+    /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
+    /** Empty constructor:  required. */
     public LocationPickerFragment() { }
 
 
@@ -57,41 +57,36 @@ public class LocationPickerFragment     extends     Fragment
     }
 
 
-    /* Functionality for use your location button. */
+    /** Functionality for use your location button. */
     public void onMyLocationPressed()
     {
+        // TODO: Delete everything related to this.
         if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
 
-    /* Functionality for search nearby locations button. */
+    /** Functionality for search nearby locations button. */
     public void onSearchLocationPressed()
     {
-        if (mListener != null)
-        {
-            // TODO: Remove debug log.
-            Log.d("DEBUG", "onSearchLocationPressed");
-            mListener.onFunctionCall(PLACE_PICKER);
-        }
+        if (mListener != null) { mListener.onFunctionCall(PLACE_PICKER); }
     }
 
-    /* Functionality for no location button. */
+    /** Functionality for no location button. */
     public void onNoLocationPressed()
     {
         if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
 
-    /* Functionality for proceeding forward. */
+    /** Functionality for proceeding forward. */
     public void onForwardPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(CONFIRM_REVIEW); }
     }
 
-    /* Functionality for going back to previous step. */
+    /** Functionality for going back to previous step. */
     public void onBackPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }
     }
-
 
     @Override
     public void onAttach(Context context)

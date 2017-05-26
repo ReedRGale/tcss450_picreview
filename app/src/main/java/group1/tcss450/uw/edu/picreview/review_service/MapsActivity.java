@@ -36,49 +36,52 @@ import group1.tcss450.uw.edu.picreview.R;
 /**
  * Provides the functionality needed for accessing and interacting with google maps.
  */
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, GoogleMap.OnMapClickListener {
-
+public class MapsActivity   extends     FragmentActivity
+                            implements  OnMapReadyCallback,
+                                        GoogleApiClient.ConnectionCallbacks,
+                                        GoogleApiClient.OnConnectionFailedListener,
+                                        LocationListener, GoogleMap.OnMapClickListener
+{
+    /** A google map used to display the Places. */
     private GoogleMap mGoogleMap;
 
+    /** TODO:  What is this? */
     private GoogleApiClient mGoogleApiClient;
 
-    //LatLng latLng = new LatLng(47.2529, -122.4443);
+    /** TODO:  Remove Test Latitude */
     private double mLat = 47.2529;
 
+    /** TODO:  Remove Test Latitude */
     private double mLng = -122.4443;
 
+    /** Tag indicating the identity of this activity */
     private static final String TAG = "MyLocationsActivity";
 
-    /**
-     * Request code passed to the PlacePicker intent to identify its result when it returns.
-     */
-    private static final int REQUEST_PLACE_PICKER = 1;
     /**
      * The desired interval for location updates. Inexact. Updates may be
      more or less frequent.
      */
     public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+
     /**
-     * The fastest rate for active location updates. Exact. Updates will
-     never be more frequent
-     * than this value.
+     * The fastest rate for active location updates. Exact.
+     * Updates will never be more frequent than this value.
      */
     public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
 
+    /** Unique number acting as an indicator of the location to go for permission. */
     private static final int MY_PERMISSIONS_LOCATIONS = 814;
 
+    /** An object that acts as our request for a location object. */
     private LocationRequest mLocationRequest;
 
+    /** The actual location object we requested. */
     private Location mCurrentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_main);
-
         setContentView(R.layout.activity_maps);
 
         // Create an instance of GoogleAPIClient.
@@ -115,22 +118,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == PLACE_PICKER_REQUEST) {
-//            if (resultCode == RESULT_OK) {
-//                Place place = PlacePicker.getPlace(data, this);
-//                String toastMsg = String.format("Place: %s", place.getName());
-//                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
-//            }
-//        }
-//    }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
      * we just add a marker near Sydney, Australia.
+     *
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.

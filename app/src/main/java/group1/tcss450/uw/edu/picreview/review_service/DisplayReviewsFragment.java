@@ -25,6 +25,7 @@ public class DisplayReviewsFragment extends Fragment {
     /* The view of this fragment. */
     LinearLayout mView;
 
+    /** The activity linked to this fragment. */
     public DisplayReviewsFragment() {
         // Required empty public constructor
     }

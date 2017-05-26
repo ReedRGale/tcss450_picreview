@@ -26,10 +26,10 @@ import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 public class MainMenuFragment   extends     Fragment
                                 implements  View.OnClickListener
 {
-    // This is the activity that swaps this fragment in and out.
+    /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
 
-    // Required empty public constructor
+    /** Required empty public constructor */
     public MainMenuFragment() {}
 
     @Override
@@ -73,8 +73,6 @@ public class MainMenuFragment   extends     Fragment
                 break;
         }
     }
-
-
 
     /**
      * Method that implements functionality of the search button.
@@ -138,8 +136,6 @@ public class MainMenuFragment   extends     Fragment
         mListener = null;
     }
 
-
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -148,16 +144,7 @@ public class MainMenuFragment   extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
-        /**
-         * Transfer from one fragment to another.
-         * @param target the target fragment to swap to.
-         */
         void onFragmentTransition(Frags target);
-
-        /**
-         * Call some functionality that the app can handle.
-         * @param target the target fragment to swap to.
-         */
         void onFunctionCall(Functions target);
     }
 }

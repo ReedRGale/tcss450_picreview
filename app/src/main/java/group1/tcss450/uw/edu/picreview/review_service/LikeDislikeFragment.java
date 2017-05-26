@@ -29,9 +29,10 @@ import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 public class LikeDislikeFragment    extends     Fragment
                                     implements  View.OnClickListener
 {
-
+    /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
+    /** Empty contructor:  required. */
     public LikeDislikeFragment() { }
 
     @Override
@@ -55,25 +56,33 @@ public class LikeDislikeFragment    extends     Fragment
         return v;
     }
 
-    /* Will notify the proper method of the user's choice. */
+    /**
+     * Will notify the proper method of the user's choice.
+     * Should enable the forward button.
+     */
     public void onLikePressed()
     {
+        // TODO: Enable 'forward'
         if (mListener != null) { mListener.onDataStorage(LIKE_DISLIKE, 1); }
     }
 
-    /* Will notify the proper method of the user's choice. */
+    /**
+     * Will notify the proper method of the user's choice.
+     * Should enable the forward button.
+     */
     public void onDislikePressed()
     {
+        // TODO: Enable 'forward'
         if (mListener != null) { mListener.onDataStorage(LIKE_DISLIKE, -1); }
     }
 
-    /* Will go back to the previous step of the review process. */
+    /** Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(TAG); }
     }
 
-    /* Will go forward to the next step of the review process. */
+    /** Will go forward to the next step of the review process. */
     public void onForwardPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LOCATION); }

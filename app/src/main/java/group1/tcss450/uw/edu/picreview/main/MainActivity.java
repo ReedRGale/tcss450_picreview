@@ -43,8 +43,8 @@ import group1.tcss450.uw.edu.picreview.util.Review;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_REVIEW;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
-/*
- * Main activity that runs the app.
+/**
+ * Main activity used when running the app.
  */
 public class MainActivity   extends     AppCompatActivity
 
@@ -68,26 +68,38 @@ public class MainActivity   extends     AppCompatActivity
     /** Request code passed to camera for identification. */
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
-    // Temporary information gleaned from other activities.
-    ImageView mImageView = null;
-    Place mPlace = null;
-    Review mTempReview = null;
+    // Intermediary information gleaned from other activities.
+
+    /** ImageView used when creating a new Review */
+    private ImageView mImageView = null;
+
+    /** Place used when creating a new Review */
+    private Place mPlace = null;
+
+    /** The review just before storage */
+    private Review mTempReview = null;
 
     // Temporary information gleaned from the fragments.
+
+    /** Bitmap used when creating a new Review */
     private Bitmap mTempBitmap = null;
+
+    /** Caption used when creating a new Review */
     private String mTempCaption = null;
+
+    /** Tags used when creating a new Review */
     private String[] mTempTags = null;
 
+    // TODO: Decide if this is bool or not.
     /**  Value to determine whether the user likes or dislikes the place reviewed.
         positive:   Good
         zero:       Unchanged--probably an error
         negative:   Bad                             */
     private int mTempLD = 0;
+
+    /** Location used when creating a new Review */
     private Location mTempLocation = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -185,6 +197,11 @@ public class MainActivity   extends     AppCompatActivity
         if (transaction != null) { transaction.commit(); }
     }
 
+    /**
+     * Method used to give data from the activity to a Fragment
+     * @param target is the fragment to send the data.
+     * @return is data to give to the fragment.
+     */
     @Override
     public Object onDataRetrieval(Functions target)
     {
@@ -204,10 +221,6 @@ public class MainActivity   extends     AppCompatActivity
                 mTempReview.setDislikes(0);
                 mTempReview.setComments("");
                 mTempReview.setTag("");
-
-                // TODO: Determine where these'll be implemented.
-//              mTempReview.setComments("Great Teriyaki");
-//              mTempReview.setTag("Teriyaki");
 
                 theData = mTempReview;
 
@@ -304,11 +317,6 @@ public class MainActivity   extends     AppCompatActivity
 
     }
 
-
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -345,7 +353,7 @@ public class MainActivity   extends     AppCompatActivity
     /**
      * Helper method to turn a string of hashes into a string array.
      * @param theParsableString is the string peppered with hash tags.
-     * @return
+     * @return is the parsed string.
      */
     private static String[] parseHashTags(String theParsableString)
     {
