@@ -36,6 +36,7 @@ import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
 import group1.tcss450.uw.edu.picreview.review_service.TagFragment;
+import group1.tcss450.uw.edu.picreview.search_service.MyReviewsFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
@@ -189,6 +190,11 @@ public class MainActivity   extends     AppCompatActivity
             case REGISTER:
                 transaction = getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, new RegisterFragment())
+                        .addToBackStack(null);
+                break;
+            case MY_REVIEWS:
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new MyReviewsFragment())
                         .addToBackStack(null);
                 break;
 

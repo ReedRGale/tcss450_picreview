@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Globals;
 
 
 /**
@@ -135,6 +136,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
     private class PostWebServiceTask extends AsyncTask<String, Void, String> {
         private final String SERVICE = "registerService.php";
+        private String new_username = Globals.CURRENT_USERNAME;
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length != 3) {
@@ -149,6 +151,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 urlConnection.setRequestMethod("POST");
                 urlConnection.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                new_username = strings[1];
                 String data = URLEncoder.encode("Username", "UTF-8")
                         + "=" + URLEncoder.encode(strings[1], "UTF-8")
                         + "&" + URLEncoder.encode("Password", "UTF-8")
@@ -175,6 +178,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
             if (result.equals(getString(R.string.DBSuccessMessage)))
             {
+                Globals.CURRENT_USERNAME = new_username;
                 Toast.makeText(getContext(), "Registration was successful", Toast.LENGTH_LONG)
                         .show();
                 mListener.onFragmentTransition(Frags.MAIN_MENU);

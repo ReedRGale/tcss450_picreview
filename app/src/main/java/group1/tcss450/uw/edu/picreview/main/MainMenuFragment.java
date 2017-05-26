@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
+import group1.tcss450.uw.edu.picreview.util.Globals;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;
@@ -47,7 +48,13 @@ public class MainMenuFragment   extends     Fragment
 
         // TODO: find more permanent locations for these features.
         ba.add((Button) v.findViewById(R.id.bTempUserAccess));
-        ba.add((Button) v.findViewById(R.id.bTempTest));
+        ba.add((Button) v.findViewById(R.id.my_reviews_button));
+
+        // If user is logged in, then they can view their own reviews
+        if (Globals.CURRENT_USERNAME.length() != 0)
+        {
+            ((Button) v.findViewById(R.id.my_reviews_button)).setVisibility(View.VISIBLE);
+        }
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -68,8 +75,8 @@ public class MainMenuFragment   extends     Fragment
             case R.id.bTempUserAccess:
                 onUserAccessPressed();
                 break;
-            case R.id.bTempTest:
-                onDataTestPressed();
+            case R.id.my_reviews_button:
+                onViewMyReviewsPressed();
                 break;
         }
     }
@@ -109,9 +116,9 @@ public class MainMenuFragment   extends     Fragment
     /**
      * Method that launches fragment for getting data from our database.
      */
-    private void onDataTestPressed()
+    private void onViewMyReviewsPressed()
     {
-        if (mListener != null) { mListener.onFragmentTransition(DATA_TEST); }
+        if (mListener != null) { mListener.onFragmentTransition(MY_REVIEWS); }
     }
 
     @Override

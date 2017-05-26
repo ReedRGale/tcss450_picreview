@@ -10,7 +10,7 @@ public enum Frags
     // Main Menu
     SEARCH,
     USER_ACCESS,
-    DATA_TEST,
+    MY_REVIEWS,
     MAIN_MENU,
 
     // Review Service
