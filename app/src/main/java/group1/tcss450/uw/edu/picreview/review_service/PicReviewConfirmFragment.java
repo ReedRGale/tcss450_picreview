@@ -31,6 +31,7 @@ import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 import static java.lang.Thread.sleep;
 
@@ -77,9 +78,12 @@ public class PicReviewConfirmFragment   extends     Fragment
     /** Will proceed with storing the review by handing it off to an asynchronous task.  */
     public void onYesPressed()
     {
-        mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
-        AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
-        task.execute(mReview);
+        if (mListener != null)
+        {
+            mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
+            AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
+            task.execute(mReview);
+        }
     }
 
     /** Will return to the previous step. */
@@ -160,8 +164,7 @@ public class PicReviewConfirmFragment   extends     Fragment
             if (result)
             {
                 Toast.makeText(getContext(), "Review was successfully saved", Toast.LENGTH_LONG).show();
-
-                // TODO: Should either show the review or return to main menu
+                mListener.onFragmentTransition(MAIN_MENU);
             }
             else
             {

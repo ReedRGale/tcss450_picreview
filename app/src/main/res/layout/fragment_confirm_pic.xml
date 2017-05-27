@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context="group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <Button
         android:id="@+id/bReviewDeny"
         style="@style/Widget.AppCompat.Button.Colored"

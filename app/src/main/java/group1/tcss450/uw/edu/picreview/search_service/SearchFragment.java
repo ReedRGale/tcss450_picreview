@@ -1,7 +1,5 @@
 package group1.tcss450.uw.edu.picreview.search_service;
 
-// TODO: Figure out how to move elements on the screen.
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,40 +15,11 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
  */
 public class SearchFragment extends Fragment
 {
-    // This is the activity that swaps this fragment in and out.
+    /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
 
-    // Required empty public constructor
+    /** Required empty public constructor */
     public SearchFragment() { }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return a new instance of the fragment.
-     */
-    public static SearchFragment newInstance(String param1, String param2)
-    {
-
-        // TODO: Implement factory method.
-
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        // TODO: Implement if need be.
-
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +27,8 @@ public class SearchFragment extends Fragment
     {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
+
+        //TODO:  Link Search button here.
     }
 
     /**

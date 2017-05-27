@@ -32,6 +32,9 @@ public class LikeDislikeFragment    extends     Fragment
     /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
+    /** The forward button. */
+    private Button mForward;
+
     /** Empty contructor:  required. */
     public LikeDislikeFragment() { }
 
@@ -43,6 +46,9 @@ public class LikeDislikeFragment    extends     Fragment
         View v = inflater.inflate(R.layout.fragment_like_dislike, container, false);
 
         ArrayList<Button> ba = new ArrayList<Button>();
+
+        mForward = (Button) v.findViewById(R.id.bForwardLikeDislike);
+        mForward.setEnabled(false);
 
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bBackLikeDislike));
@@ -62,8 +68,11 @@ public class LikeDislikeFragment    extends     Fragment
      */
     public void onLikePressed()
     {
-        // TODO: Enable 'forward'
-        if (mListener != null) { mListener.onDataStorage(LIKE_DISLIKE, 1); }
+        if (mListener != null)
+        {
+            mForward.setEnabled(true);
+            mListener.onDataStorage(LIKE_DISLIKE, 1);
+        }
     }
 
     /**
@@ -72,8 +81,11 @@ public class LikeDislikeFragment    extends     Fragment
      */
     public void onDislikePressed()
     {
-        // TODO: Enable 'forward'
-        if (mListener != null) { mListener.onDataStorage(LIKE_DISLIKE, -1); }
+        if (mListener != null)
+        {
+            mForward.setEnabled(true);
+            mListener.onDataStorage(LIKE_DISLIKE, -1);
+        }
     }
 
     /** Will go back to the previous step of the review process. */

@@ -45,7 +45,6 @@ public class LocationPickerFragment     extends     Fragment
 
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bNoLocation));
-        ba.add((Button) v.findViewById(R.id.bMyLocation));
         ba.add((Button) v.findViewById(R.id.bNearbyLocations));
         ba.add((Button) v.findViewById(R.id.bPickerBack));
         ba.add((Button) v.findViewById(R.id.bPickerForward));
@@ -54,14 +53,6 @@ public class LocationPickerFragment     extends     Fragment
         for (Button b : ba) { b.setOnClickListener(this); }
 
         return v;
-    }
-
-
-    /** Functionality for use your location button. */
-    public void onMyLocationPressed()
-    {
-        // TODO: Delete everything related to this.
-        if (mListener != null) { mListener.onFunctionCall(Functions.UNIMPLEMENTED); }
     }
 
     /** Functionality for search nearby locations button. */
@@ -123,9 +114,6 @@ public class LocationPickerFragment     extends     Fragment
                 break;
             case R.id.bNearbyLocations:
                 onSearchLocationPressed();
-                break;
-            case R.id.bMyLocation:
-                onMyLocationPressed();
                 break;
         }
     }

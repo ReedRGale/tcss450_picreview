@@ -5,6 +5,7 @@
 
 package group1.tcss450.uw.edu.picreview.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,6 +14,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +26,7 @@ import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
@@ -92,7 +95,6 @@ public class MainActivity   extends     AppCompatActivity
     /** Tags used when creating a new Review */
     private String[] mTempTags = null;
 
-    // TODO: Decide if this is bool or not.
     /**  Value to determine whether the user likes or dislikes the place reviewed.
         positive:   Good
         zero:       Unchanged--probably an error
@@ -217,21 +219,27 @@ public class MainActivity   extends     AppCompatActivity
         // Prime the transaction to the proper case.
         switch (target) {
             case REVIEW_RETRIEVE:
-                // Store the bitmap.
+                // Store the review.
                 mTempReview = new Review();
                 mTempReview.setCaption(mTempCaption);
                 mTempReview.setImage(mTempBitmap);
                 mTempReview.setLocation(mTempLocation);
+                mTempReview.setReviewType(mTempLD);
+
+                if (mTempTags != null)
+                {
+                    mTempReview.setTags(Arrays.asList(mTempTags));
+                }
+                else
+                {
+                    mTempReview.setTags(new ArrayList<String>());
+                }
 
                 // Defaults.
                 mTempReview.setLikes(0);
                 mTempReview.setDislikes(0);
                 mTempReview.setComments(new ArrayList<String>());
-                List<String> tagList = new ArrayList<String>();
-                tagList.add("Food");
-                mTempReview.setTags(tagList);
-                mTempReview.setReviewType(1);
-                // TODO: Determine where these'll be implemented.
+
                 theData = mTempReview;
 
                 break;
@@ -300,7 +308,13 @@ public class MainActivity   extends     AppCompatActivity
                 }
                 else
                 {
-                    // TODO: Create a failure dialog box.
+                    // Use the Builder class for convenient dialog construction
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder .setMessage("Failed to take picture...")
+                            .setPositiveButton( "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) { } })
+                            .show();
                 }
                 break;
             case PLACE_PICKER:

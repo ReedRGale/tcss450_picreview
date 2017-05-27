@@ -24,34 +24,6 @@ public class DetailsFragment extends Fragment
     // Required empty public constructor
     public DetailsFragment() {}
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of a DetailsFragment.
-     */
-    public static DetailsFragment newInstance(String param1, String param2)
-    {
-        // TODO: Finish this if it needs completion.
-
-        DetailsFragment fragment = new DetailsFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        // TODO: Implement this if needed.
-
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
-
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

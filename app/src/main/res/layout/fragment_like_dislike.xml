@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context="group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <Button
         android:id="@+id/bBackLikeDislike"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -28,12 +26,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/button_forward"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="8dp"
         app:layout_constraintTop_toBottomOf="@+id/bDislike"
-        app:layout_constraintVertical_bias="0.034" />
+        app:layout_constraintVertical_bias="0.034"
+        android:clickable="false"/>
 
     <Button
         android:id="@+id/bLike"
