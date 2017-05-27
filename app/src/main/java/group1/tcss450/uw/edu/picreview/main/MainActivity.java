@@ -292,7 +292,7 @@ public class MainActivity   extends     AppCompatActivity
      * @param target the target functionality to retrieve.
      */
     @Override
-    public void onFunctionCall(Functions target) 
+    public void onFunctionCall(Functions target)
     {
         // Prime the transaction to the proper case.
         switch (target) {
@@ -336,6 +336,9 @@ public class MainActivity   extends     AppCompatActivity
                             Toast.LENGTH_LONG)
                             .show();
                 }
+                break;
+            case SEARCH_QUERY:
+                // TODO: Figure out how searching works.
                 break;
         }
 
@@ -389,8 +392,8 @@ public class MainActivity   extends     AppCompatActivity
             int cull = 0;
             for (int i = 0; i < hashArray.length; i++)
             {
-                hashArray[i] = "#" + hashArray[i].trim();
-                if (hashArray[i].equals("#")) { cull++; }
+                hashArray[i] = hashArray[i].trim();
+                if (hashArray[i].equals("")) { cull++; }
             }
 
             /* **** Split initial string. **** */
@@ -414,7 +417,7 @@ public class MainActivity   extends     AppCompatActivity
         else
         {
             // Just return theParsableString as the tag.
-            return new String[] { "#" + theParsableString };
+            return new String[] { theParsableString };
         }
     }
 }

@@ -9,6 +9,7 @@ public enum Functions
 {
     PLACE_PICKER,
     REVIEW_RETRIEVE,
+    SEARCH_QUERY,
     TAKE_PICTURE,
     UNIMPLEMENTED
 }
