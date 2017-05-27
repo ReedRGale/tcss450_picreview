@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 
@@ -36,13 +37,13 @@ public class SearchFragment     extends     Fragment
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
 
-        ArrayList<Button> ba = new ArrayList<Button>();
+        ArrayList<ImageButton> ba = new ArrayList<ImageButton>();
 
         // Add all buttons.
-        ba.add((Button) v.findViewById(R.id.bSearch));
+        ba.add((ImageButton) v.findViewById(R.id.bSearch));
 
         // Add the listeners.
-        for (Button b : ba) { b.setOnClickListener(this); }
+        for (ImageButton b : ba) { b.setOnClickListener(this); }
 
         return v;
     }

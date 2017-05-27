@@ -345,7 +345,8 @@ public class MainActivity   extends     AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
 
         // Check which request we're responding to
         switch (requestCode)

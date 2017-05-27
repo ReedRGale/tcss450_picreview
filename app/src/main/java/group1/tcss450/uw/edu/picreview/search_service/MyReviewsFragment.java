@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +60,10 @@ public class MyReviewsFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager tempManager = new LinearLayoutManager(getContext());
+        tempManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mLayoutManager = tempManager;
+
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         AsyncTask<Void, Void, List<Review>> task = new PostWebServiceTask();
