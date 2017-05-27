@@ -1,5 +1,6 @@
 package group1.tcss450.uw.edu.picreview.search_service;
 
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -14,45 +15,46 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.DBUtility;
+import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
+import static group1.tcss450.uw.edu.picreview.util.Functions.QUERY_RETRIEVE;
+
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyReviewsFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  */
-public class MyReviewsFragment extends Fragment {
+public class QueryFragment extends Fragment
+{
+    /** This is the activity that swaps this fragment in and out. */
+    private OnFragmentInteractionListener mListener;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     private ProgressBar waitSpinner;
-
-    private OnFragmentInteractionListener mListener;
+    private String[] mQuery;
 
     /** Required empty public constructor */
-    public MyReviewsFragment() { }
+    public QueryFragment() { }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_my_reviews, container, false);
+        View v = inflater.inflate(R.layout.fragment_query, container, false);
 
-        mRecyclerView = (RecyclerView) v.findViewById(R.id.my_recycler_view);
-        waitSpinner = (ProgressBar) v.findViewById(R.id.progressBar);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView = (RecyclerView) v.findViewById(R.id.rvQuery);
+        waitSpinner = (ProgressBar) v.findViewById(R.id.progressBarQuery);
 
         // use a linear layout manager
         LinearLayoutManager tempManager = new LinearLayoutManager(getContext());
@@ -60,39 +62,17 @@ public class MyReviewsFragment extends Fragment {
         mLayoutManager = tempManager;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
 
+        mQuery = (String[]) mListener.onDataRetrieval(QUERY_RETRIEVE);
         AsyncTask<Void, Void, List<Review>> task = new PostWebServiceTask();
         task.execute();
 
         return v;
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            //throw new RuntimeException(context.toString()
-              //      + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     */
-    public interface OnFragmentInteractionListener { }
-
-    public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+    private class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
+    {
         private List<Review> mDataset;
 
         // Provide a reference to the views for each data item
@@ -100,10 +80,10 @@ public class MyReviewsFragment extends Fragment {
         // you provide access to all the views for a data item in a view holder
         public class ViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
-            public ImageView mImage;
-            public TextView mCaption;
+            private ImageView mImage;
+            private TextView mCaption;
 
-            public ViewHolder(View itemView) {
+            private ViewHolder(View itemView) {
                 super(itemView);
                 mImage = (ImageView) itemView.findViewById(R.id.review_photo);
                 mCaption = (TextView) itemView.findViewById(R.id.caption);
@@ -117,17 +97,20 @@ public class MyReviewsFragment extends Fragment {
 
         // Create new views (invoked by the layout manager)
         @Override
-        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                       int viewType) {
+        public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+        {
             // create a new view
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.review_view, parent, false);
-            ViewHolder vh = new ViewHolder(v);
+            View v = LayoutInflater .from(parent.getContext())
+                                    .inflate(R.layout.review_view,
+                                             parent,
+                                             false);
+            MyAdapter.ViewHolder vh = new MyAdapter.ViewHolder(v);
             return vh;
         }
 
         // Replace the contents of a view (invoked by the layout manager)
         @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.mImage.setImageBitmap(mDataset.get(position).getImage());
@@ -144,7 +127,8 @@ public class MyReviewsFragment extends Fragment {
     /**
      * Will hit the php webservice that will get the reviews needed.
      */
-    private class PostWebServiceTask extends AsyncTask<Void, Void, List<Review>> {
+    private class PostWebServiceTask extends AsyncTask<Void, Void, List<Review>>
+    {
 
         @Override
         protected void onPreExecute() {
@@ -153,8 +137,20 @@ public class MyReviewsFragment extends Fragment {
         }
 
         @Override
-        protected List<Review> doInBackground(Void... params) {
-            return DBUtility.getReviewsByUsername(Globals.CURRENT_USERNAME);
+        protected List<Review> doInBackground(Void... params)
+        {
+            // Collect all review candidates.
+            List<List<Review>> tempReviews = new ArrayList<List<Review>>();
+
+            for (String s : mQuery) { tempReviews.add(DBUtility.getReviewsByUsername(s)); }
+            for (String s : mQuery) { tempReviews.add(DBUtility.getReviewsByTag(s)); }
+
+            // Add all temporary reviews here now.
+            List<Review> finalReviews = new ArrayList<Review>();
+
+            for (List<Review> l : tempReviews) { finalReviews.addAll(l); }
+
+            return finalReviews;
         }
 
         @Override
@@ -175,5 +171,33 @@ public class MyReviewsFragment extends Fragment {
             }
 
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchFragment.OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     */
+    public interface OnFragmentInteractionListener
+    {
+        Object onDataRetrieval(Functions target);
     }
 }

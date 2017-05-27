@@ -1,21 +1,31 @@
 package group1.tcss450.uw.edu.picreview.search_service;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
+import group1.tcss450.uw.edu.picreview.util.DBUtility;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
+import group1.tcss450.uw.edu.picreview.util.Globals;
+import group1.tcss450.uw.edu.picreview.util.Review;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 /**
@@ -27,6 +37,9 @@ public class SearchFragment     extends     Fragment
     /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
 
+    /** This is the string that handles the query. */
+    private String mQuery;
+
     /** Required empty public constructor */
     public SearchFragment() { }
 
@@ -36,6 +49,8 @@ public class SearchFragment     extends     Fragment
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
+        EditText e = (EditText) v.findViewById(R.id.eQuery);
+        mQuery = e.getText().toString();
 
         ArrayList<ImageButton> ba = new ArrayList<ImageButton>();
 
@@ -51,7 +66,11 @@ public class SearchFragment     extends     Fragment
     /** Method that begins a search for a picReview. */
     public void onSearchPressed()
     {
-        if (mListener != null) { mListener.onFunctionCall(SEARCH_QUERY); }
+        if (mListener != null)
+        {
+            mListener.onDataStorage(SEARCH, mQuery);
+            mListener.onFragmentTransition(QUERY);
+        }
     }
 
     @Override
@@ -89,6 +108,7 @@ public class SearchFragment     extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
-        void onFunctionCall(Functions target);
+        void onFragmentTransition(Frags target);
+        void onDataStorage(Frags source, Object data);
     }
 }

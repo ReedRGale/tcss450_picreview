@@ -260,7 +260,7 @@ public class DBUtility {
                             List<String> deserializedTagList = (List<String>) deserializeString(JsonReviewObject.getString("tags"));
                             for (int j = 0; j < deserializedTagList.size(); j++)
                             {
-                                if (deserializedTagList.get(i).equals(theTag))
+                                if (deserializedTagList.get(j).equals(theTag))
                                 {
                                     meetsCriteria = true;
                                     break;
@@ -459,7 +459,8 @@ public class DBUtility {
     }
 
     /* Will serialize a BitMap. */
-    private static String serializeBitmap(Bitmap bitmap){
+    private static String serializeBitmap(Bitmap bitmap)
+    {
         ByteArrayOutputStream baos = new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
         byte [] b=baos.toByteArray();
@@ -472,7 +473,8 @@ public class DBUtility {
      * @param encodedString The serialized Bitmap
      * @return bitmap (from given string)
      */
-    private static Bitmap deserializeBitmap(String encodedString){
+    private static Bitmap deserializeBitmap(String encodedString)
+    {
         try {
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
             Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);

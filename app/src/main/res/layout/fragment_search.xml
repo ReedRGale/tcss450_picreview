@@ -5,6 +5,12 @@
     android:layout_height="match_parent"
     tools:context="group1.tcss450.uw.edu.picreview.search_service.SearchFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBarFragment"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/eQuery"
@@ -36,4 +42,5 @@
         app:layout_constraintTop_toTopOf="@+id/eQuery"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@android:drawable/ic_menu_search" />
+
 </android.support.constraint.ConstraintLayout>

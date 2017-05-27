@@ -40,6 +40,7 @@ import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
 import group1.tcss450.uw.edu.picreview.review_service.TagFragment;
 import group1.tcss450.uw.edu.picreview.search_service.MyReviewsFragment;
+import group1.tcss450.uw.edu.picreview.search_service.QueryFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
@@ -63,7 +64,8 @@ public class MainActivity   extends     AppCompatActivity
                                         TagFragment.OnFragmentInteractionListener,
                                         LikeDislikeFragment.OnFragmentInteractionListener,
                                         LocationPickerFragment.OnFragmentInteractionListener,
-                                        PicReviewConfirmFragment.OnFragmentInteractionListener
+                                        PicReviewConfirmFragment.OnFragmentInteractionListener,
+                                        QueryFragment.OnFragmentInteractionListener
 
 {
 
@@ -103,6 +105,9 @@ public class MainActivity   extends     AppCompatActivity
 
     /** Location used when creating a new Review */
     private Location mTempLocation = null;
+
+    /** Location used when creating a new Review */
+    private String[] mQuery = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +204,11 @@ public class MainActivity   extends     AppCompatActivity
                         .replace(R.id.fragmentContainer, new MyReviewsFragment())
                         .addToBackStack(null);
                 break;
+            case QUERY:
+                transaction = getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainer, new QueryFragment())
+                        .addToBackStack(null);
+                break;
 
         }
 
@@ -219,7 +229,7 @@ public class MainActivity   extends     AppCompatActivity
         // Prime the transaction to the proper case.
         switch (target) {
             case REVIEW_RETRIEVE:
-                // Store the review.
+                // Prime the review.
                 mTempReview = new Review();
                 mTempReview.setCaption(mTempCaption);
                 mTempReview.setImage(mTempBitmap);
@@ -242,6 +252,10 @@ public class MainActivity   extends     AppCompatActivity
 
                 theData = mTempReview;
 
+                break;
+            case QUERY_RETRIEVE:
+                // Return the query.
+                theData = mQuery;
                 break;
         }
 
@@ -282,6 +296,10 @@ public class MainActivity   extends     AppCompatActivity
                 tempLoc.setLatitude(mPlace.getLatLng().latitude);
                 tempLoc.setLatitude(mPlace.getLatLng().longitude);
                 mTempLocation = tempLoc;
+                break;
+            case SEARCH:
+                // Store the positive/negative data.
+                mQuery = parseHashTags((String) data);
                 break;
         }
     }
@@ -336,9 +354,6 @@ public class MainActivity   extends     AppCompatActivity
                             Toast.LENGTH_LONG)
                             .show();
                 }
-                break;
-            case SEARCH_QUERY:
-                // TODO: Figure out how searching works.
                 break;
         }
 
