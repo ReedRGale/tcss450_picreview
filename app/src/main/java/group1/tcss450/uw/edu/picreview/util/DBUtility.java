@@ -50,12 +50,14 @@ public class DBUtility {
             String SerializedTags = (theReview.getTag() != null) ? serializeStringList(theReview.getTag()) : null;
             //if (!deserializeString(SerializedTags).equals(theReview.getTag())) Log.d("Error", "Tags are not the same!");
             String SerializedImage = (theReview.getImage() != null) ? serializeBitmap(theReview.getImage()) : null;
+            //Log.d("Image", "Serialized: Height" + deserializeBitmap(SerializedImage).getHeight() + " Width: " + theReview.getImage().getWidth());
+            //Log.d("Image", "deserialized: Height" + deserializeBitmap(SerializedImage).getHeight() + " Width: " + theReview.getImage().getWidth());
             //if (!deserializeBitmap(SerializedImage).sameAs(theReview.getImage())) Log.d("Error", "Images are not the same!");
             String SerializedLocation = (theReview.getLocation() != null) ? serializeLocation(theReview.getLocation()) : null;
             //if (deserializeLocation(SerializedLocation).getLongitude() != theReview.getLocation().getLongitude()) Log.d("Error", "Locations are not the same");
 
             // Check whether information is valid
-            if (theReview.getCaption() == null || SerializedComments == null || SerializedTags == null || SerializedImage == null || SerializedLocation == null)
+            if (theReview.getCaption() == null || SerializedComments == null || SerializedTags == null || SerializedImage == null)
             {
                 success = false;
             }
@@ -74,7 +76,14 @@ public class DBUtility {
                 jsonReview.put("Comments", SerializedComments);
                 jsonReview.put("Tags", SerializedTags);
                 jsonReview.put("Image", SerializedImage);
-                jsonReview.put("Location", SerializedLocation);
+                if (SerializedLocation != null)
+                {
+                    jsonReview.put("Location", SerializedLocation);
+                }
+                else
+                {
+                    jsonReview.put("Location", "none");
+                }
                 jsonReview.put("Likes", theReview.getLikes());
                 jsonReview.put("Dislikes", theReview.getDislikes());
                 jsonReview.put("ReviewType", theReview.getReviewType());
@@ -190,15 +199,9 @@ public class DBUtility {
                             List<String> deserializedTagList = (List<String>) deserializeString(JsonReviewObject.getString("tags"));
                             List<String> deserializedCommentList = (List<String>) deserializeString(JsonReviewObject.getString("comments"));
                             Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
-                            Location deserializedLocation = deserializeLocation(JsonReviewObject.getString("location"));
+                            Location deserializedLocation = (!JsonReviewObject.getString("location").equals("none")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
 
-                            // For future debugging purposes
-                            if (deserializedTagList == null) Log.d("Error", "Tags is null");
-                            if (deserializedCommentList == null) Log.d("Error", "Comments is null");
-                            if (deserializedLocation == null) Log.d("Error", "Location is null");
-                            if (deserializedImage == null) Log.d("Error", "Image is null");
-
-                            if (deserializedImage == null || deserializedLocation == null || deserializedTagList.size() == 0) CreationSuccess = false;
+                            if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
 
                             if (CreationSuccess)
                             {
@@ -223,7 +226,6 @@ public class DBUtility {
                 e.printStackTrace();
             }
         }
-
 
         return reviews;
     }
@@ -258,6 +260,7 @@ public class DBUtility {
                             // First, check whether tags match so that we don't do any extra work if we don't need this review
                             boolean meetsCriteria = false;
                             List<String> deserializedTagList = (List<String>) deserializeString(JsonReviewObject.getString("tags"));
+                            Log.d("SIZE: ", "" + deserializedTagList.size());
                             for (int j = 0; j < deserializedTagList.size(); j++)
                             {
                                 if (deserializedTagList.get(j).equals(theTag))
@@ -271,15 +274,9 @@ public class DBUtility {
                             {
                                 List<String> deserializedCommentList = (List<String>) deserializeString(JsonReviewObject.getString("comments"));
                                 Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
-                                Location deserializedLocation = deserializeLocation(JsonReviewObject.getString("location"));
+                                Location deserializedLocation = (!JsonReviewObject.getString("location").equals("none")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
 
-                                // For future debugging purposes
-                                if (deserializedTagList == null) Log.d("Error", "Tags is null");
-                                if (deserializedCommentList == null) Log.d("Error", "Comments is null");
-                                if (deserializedLocation == null) Log.d("Error", "Location is null");
-                                if (deserializedImage == null) Log.d("Error", "Image is null");
-
-                                if (deserializedImage == null || deserializedLocation == null || deserializedTagList.size() == 0) CreationSuccess = false;
+                                if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
 
                                 if (CreationSuccess)
                                 {
@@ -340,8 +337,8 @@ public class DBUtility {
                         {
                             // First, check whether tags match so that we don't do any extra work if we don't need this review
                             boolean meetsCriteria = false;
-                            Location deserializedLocation = deserializeLocation(JsonReviewObject.getString("location"));
-                            if (deserializedLocation.getLongitude() == theLocation.getLongitude() && deserializedLocation.getLatitude() == theLocation.getLatitude())
+                            Location deserializedLocation = (!JsonReviewObject.getString("location").equals("none")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
+                            if (deserializedLocation != null && deserializedLocation.getLongitude() == theLocation.getLongitude() && deserializedLocation.getLatitude() == theLocation.getLatitude())
                             {
                                 meetsCriteria = true;
                             }
@@ -353,13 +350,7 @@ public class DBUtility {
                                 List<String> deserializedCommentList = (List<String>) deserializeString(JsonReviewObject.getString("comments"));
                                 Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
 
-                                // For future debugging purposes
-                                if (deserializedTagList == null) Log.d("Error", "Tags is null");
-                                if (deserializedCommentList == null) Log.d("Error", "Comments is null");
-                                if (deserializedLocation == null) Log.d("Error", "Location is null");
-                                if (deserializedImage == null) Log.d("Error", "Image is null");
-
-                                if (deserializedImage == null || deserializedLocation == null || deserializedTagList.size() == 0) CreationSuccess = false;
+                                if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
 
                                 if (CreationSuccess)
                                 {
@@ -368,6 +359,9 @@ public class DBUtility {
                                     review.setComments(deserializedCommentList);
                                     review.setTags(deserializedTagList);
                                     review.setUser(JsonReviewObject.getString("username"));
+                                    review.setLikes(JsonReviewObject.getInt("likes"));
+                                    review.setDislikes(JsonReviewObject.getInt("dislikes"));
+                                    review.setReviewType(JsonReviewObject.getInt("ReviewType"));
                                     reviews.add(review);
                                 }
                                 else
@@ -476,8 +470,12 @@ public class DBUtility {
     private static Bitmap deserializeBitmap(String encodedString)
     {
         try {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inScaled = false;
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
             Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            //Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length, options);
+            Log.d("Image", "Height" + bitmap.getHeight() + " Width: " + bitmap.getWidth());
             return bitmap;
         } catch(Exception e) {
             e.getMessage();

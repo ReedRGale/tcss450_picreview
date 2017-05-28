@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -102,11 +104,15 @@ public class MyReviewsFragment extends Fragment {
             // each data item is just a string in this case
             public ImageView mImage;
             public TextView mCaption;
+            public TextView mLikes;
+            public TextView mDislikes;
 
             public ViewHolder(View itemView) {
                 super(itemView);
                 mImage = (ImageView) itemView.findViewById(R.id.review_photo);
                 mCaption = (TextView) itemView.findViewById(R.id.caption);
+                mLikes = (TextView) itemView.findViewById(R.id.likes);
+                mDislikes = (TextView) itemView.findViewById(R.id.dislikes);
             }
         }
 
@@ -132,6 +138,8 @@ public class MyReviewsFragment extends Fragment {
             // - replace the contents of the view with that element
             holder.mImage.setImageBitmap(mDataset.get(position).getImage());
             holder.mCaption.setText(mDataset.get(position).getCaption());
+            holder.mLikes.setText("" + mDataset.get(position).getLikes());
+            holder.mDislikes.setText("" + mDataset.get(position).getDislikes());
         }
 
         // Return the size of your dataset (invoked by the layout manager)
@@ -167,6 +175,8 @@ public class MyReviewsFragment extends Fragment {
             {
                 mAdapter = new MyAdapter(resultSet);
                 mRecyclerView.setAdapter(mAdapter);
+                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.HORIZONTAL);
+                mRecyclerView.addItemDecoration(dividerItemDecoration);
             }
             else
             {
