@@ -13,6 +13,9 @@ public enum Frags
     MY_REVIEWS,
     MAIN_MENU,
 
+    // Search Service
+    QUERY,
+
     // Review Service
     CONFIRM_PIC,
     CAPTION,
