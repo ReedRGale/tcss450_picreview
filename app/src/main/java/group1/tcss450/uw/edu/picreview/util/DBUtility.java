@@ -210,6 +210,7 @@ public class DBUtility {
                                 review.setComments(deserializedCommentList);
                                 review.setTags(deserializedTagList);
                                 review.setUser(JsonReviewObject.getString("username"));
+                                review.setMyId(Integer.parseInt(JsonReviewObject.getString("id")));
                                 reviews.add(review);
                             }
                             else
@@ -285,6 +286,7 @@ public class DBUtility {
                                     review.setComments(deserializedCommentList);
                                     review.setTags(deserializedTagList);
                                     review.setUser(JsonReviewObject.getString("username"));
+                                    review.setMyId(Integer.parseInt(JsonReviewObject.getString("id")));
                                     reviews.add(review);
                                 }
                                 else
@@ -362,6 +364,7 @@ public class DBUtility {
                                     review.setLikes(JsonReviewObject.getInt("likes"));
                                     review.setDislikes(JsonReviewObject.getInt("dislikes"));
                                     review.setReviewType(JsonReviewObject.getInt("ReviewType"));
+                                    review.setMyId(Integer.parseInt(JsonReviewObject.getString("id")));
                                     reviews.add(review);
                                 }
                                 else
@@ -385,6 +388,92 @@ public class DBUtility {
         return reviews;
 
 
+    }
+
+    /* Will update a field in the review in DB. */
+    public static boolean updateReview(int field, Review theReview)
+    {
+        boolean success = true;
+        JSONObject jsonReview = new JSONObject();
+
+        String SerializedComments = (theReview.getComments() != null) ? serializeStringList(theReview.getComments()) : null;
+        try {
+            jsonReview.put("Comments", SerializedComments);
+            jsonReview.put("Likes", theReview.getLikes());
+            jsonReview.put("Dislikes", theReview.getDislikes());
+            jsonReview.put("id", theReview.getMyId());
+
+            String theField = null;
+            if (field == Globals.LIKE_FIELD)
+            {
+                theField = "likes";
+            }
+            else if (field == Globals.DISLIKE_FIELD)
+            {
+                theField = "dislikes";
+            }
+            else if (field == Globals.COMMENTS_FIELD)
+            {
+                theField = "comments";
+            }
+
+            if (theField != null)
+            {
+                jsonReview.put("update", theField);
+            }
+            else
+            {
+                success = false;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.d("Error", "Crashed when created JSON for updating");
+            success = false;
+        }
+
+        if (success)
+        {
+            Log.d("Error", "JSON OBJECT CREATED: " +jsonReview.toString());
+            // Send the JSON to our webservice
+            String response = "";
+            HttpURLConnection urlConnection = null;
+            try {
+                URL urlObject = new URL(SERVICE + "updateReview.php");
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setDoOutput(true);
+                OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                String data = URLEncoder.encode("jsonReview", "UTF-8") +
+                        "=" + URLEncoder.encode(jsonReview.toString(), "UTF-8");
+                wr.write(data);
+                wr.flush();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    response += s;
+                }
+
+                JSONObject jsonResponse = new JSONObject(response);
+                if (!jsonResponse.has("returnValue") || (jsonResponse.has("returnValue") && jsonResponse.getInt("returnValue") != 1)) success = false;
+                Log.d("Error", jsonResponse.toString());
+            } catch (Exception e) {
+                response = "Unable to connect, Reason: "
+                        + e.getMessage();
+                Log.d("Error", "Error saving review. " + response);
+                success = false;
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+        }
+        else
+        {
+            Log.d("Error", "Unable to update review");
+        }
+
+        return success;
     }
 
     /*

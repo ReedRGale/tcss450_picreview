@@ -36,6 +36,9 @@ public class Review {
     /* Whether the review is positive or negative. */
     private int reviewType;
 
+    /* The id of the review. Assigned by the database. */
+    private int myId;
+
     public String getUser() {
         return mUser;
     }
@@ -141,4 +144,8 @@ public class Review {
     public int getReviewType() { return reviewType; }
 
     public void setReviewType(int reviewType) { this.reviewType = reviewType; }
+
+    public int getMyId() { return myId; }
+
+    public void setMyId(int myId) { this.myId = myId; }
 }

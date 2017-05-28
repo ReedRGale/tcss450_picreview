@@ -175,8 +175,8 @@ public class MyReviewsFragment extends Fragment {
             {
                 mAdapter = new MyAdapter(resultSet);
                 mRecyclerView.setAdapter(mAdapter);
-                DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.HORIZONTAL);
-                mRecyclerView.addItemDecoration(dividerItemDecoration);
+                //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.);
+                //mRecyclerView.addItemDecoration(dividerItemDecoration);
             }
             else
             {
