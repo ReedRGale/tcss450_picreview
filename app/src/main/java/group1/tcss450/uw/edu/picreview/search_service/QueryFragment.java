@@ -170,7 +170,7 @@ public class QueryFragment extends Fragment
             {
                 // Use the Builder class for convenient dialog construction
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder .setMessage("You haven't made any reviews...")
+                builder .setMessage("No reviews found...")
                         .setPositiveButton( "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id)
