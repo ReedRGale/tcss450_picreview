@@ -159,7 +159,7 @@ public class MainActivity   extends     AppCompatActivity
         {
             case SEARCH:
                 transaction = getSupportFragmentManager().beginTransaction();
-
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 // Clear all the way back to the MAIN_MENU fragment.
                 // If this is called from the error dialog, then we don't want that error
                 // on the stack. It creates an infinite loop.
@@ -172,13 +172,14 @@ public class MainActivity   extends     AppCompatActivity
                         .addToBackStack(null);
                 break;
             case USER_ACCESS:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new UserAccessFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+                transaction.replace(R.id.fragmentContainer, new UserAccessFragment())
                         .addToBackStack(null);
                 break;
             case MAIN_MENU:
                 transaction = getSupportFragmentManager().beginTransaction();
-
+                transaction.setCustomAnimations(android.R.anim.fade_out, android.R.anim.fade_in);
                 // Clear the backstack because if they've been routed to main menu
                 // then we probably don't want them going back
                 while (getSupportFragmentManager().getBackStackEntryCount() > 0){
@@ -189,48 +190,57 @@ public class MainActivity   extends     AppCompatActivity
                         .addToBackStack(null);
                 break;
             case CAPTION:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new CaptionFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new CaptionFragment())
                         .addToBackStack(null);
                 break;
             case TAG:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new TagFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new TagFragment())
                         .addToBackStack(null);
                 break;
             case LIKE_DISLIKE:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new LikeDislikeFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new LikeDislikeFragment())
                         .addToBackStack(null);
                 break;
             case LOCATION:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new LocationPickerFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new LocationPickerFragment())
                         .addToBackStack(null);
                 break;
             case CONFIRM_REVIEW:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new PicReviewConfirmFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new PicReviewConfirmFragment())
                         .addToBackStack(null);
                 break;
             case LOGIN:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new LoginFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new LoginFragment())
                         .addToBackStack(null);
                 break;
             case REGISTER:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new RegisterFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new RegisterFragment())
                         .addToBackStack(null);
                 break;
             case MY_REVIEWS:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new MyReviewsFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new MyReviewsFragment())
                         .addToBackStack(null);
                 break;
             case QUERY:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new QueryFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+                transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                transaction.replace(R.id.fragmentContainer, new QueryFragment())
                         .addToBackStack(null);
                 break;
         }
