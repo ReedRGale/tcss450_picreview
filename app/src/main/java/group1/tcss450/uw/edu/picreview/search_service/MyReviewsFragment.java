@@ -1,10 +1,12 @@
 package group1.tcss450.uw.edu.picreview.search_service;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -199,8 +201,17 @@ public class MyReviewsFragment extends Fragment {
             }
             else
             {
-                Log.d("Recycler", "No reviews returned");
-                // TODO: Display a textView telling the user nothing was found
+                // Use the Builder class for convenient dialog construction
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder .setMessage("You haven't made any reviews...")
+                        .setPositiveButton( "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
+                                        mListener.onFragmentTransition(Frags.MAIN_MENU);
+                                    }
+                        })
+                        .show();
             }
 
         }
