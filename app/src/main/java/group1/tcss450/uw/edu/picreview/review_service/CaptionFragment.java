@@ -14,12 +14,11 @@ import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
+import group1.tcss450.uw.edu.picreview.util.Functions;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
-import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_PIC;
-import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
-import static group1.tcss450.uw.edu.picreview.util.Frags.UNIMPLEMENTED;
+import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**
@@ -58,7 +57,7 @@ public class CaptionFragment    extends     Fragment
     /** Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
-        if (mListener != null) {  mListener.onFragmentTransition(CONFIRM_PIC); }
+        if (mListener != null) {  mListener.onFunctionCall(TAKE_PICTURE); }
     }
 
     /**
@@ -122,5 +121,6 @@ public class CaptionFragment    extends     Fragment
     {
         void onFragmentTransition(Frags target);
         void onDataStorage(Frags source, Object data);
+        void onFunctionCall(Functions target);
     }
 }

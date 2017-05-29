@@ -42,7 +42,6 @@ import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment
 import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
 import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
 import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
-import group1.tcss450.uw.edu.picreview.review_service.ConfirmPicFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
 import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
 import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
@@ -55,6 +54,7 @@ import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
 /**
@@ -68,7 +68,6 @@ public class MainActivity   extends     AppCompatActivity
                                         UserAccessFragment.OnFragmentInteractionListener,
                                         MainMenuFragment.OnFragmentInteractionListener,
                                         SearchFragment.OnFragmentInteractionListener,
-                                        ConfirmPicFragment.OnFragmentInteractionListener,
                                         CaptionFragment.OnFragmentInteractionListener,
                                         TagFragment.OnFragmentInteractionListener,
                                         LikeDislikeFragment.OnFragmentInteractionListener,
@@ -162,6 +161,8 @@ public class MainActivity   extends     AppCompatActivity
                 transaction = getSupportFragmentManager().beginTransaction();
 
                 // Clear all the way back to the MAIN_MENU fragment.
+                // If this is called from the error dialog, then we don't want that error
+                // on the stack. It creates an infinite loop.
                 while (getSupportFragmentManager().getBackStackEntryCount() > 0)
                 {
                     getSupportFragmentManager().popBackStackImmediate();
@@ -185,11 +186,6 @@ public class MainActivity   extends     AppCompatActivity
                 }
 
                 transaction.replace(R.id.fragmentContainer, new MainMenuFragment())
-                        .addToBackStack(null);
-                break;
-            case CONFIRM_PIC:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new ConfirmPicFragment())
                         .addToBackStack(null);
                 break;
             case CAPTION:
@@ -357,6 +353,8 @@ public class MainActivity   extends     AppCompatActivity
                         startActivityForResult( takePictureIntent,
                                 REQUEST_IMAGE_CAPTURE);
                     }
+
+                    onFragmentTransition(CAPTION);
                 }
                 else
                 {
@@ -417,8 +415,8 @@ public class MainActivity   extends     AppCompatActivity
                     // Change image on confirmPic to the taken picture.
                     if (mImageView == null)
                     {
-                        mImageView = (ImageView) findViewById(R.id.testImageView);
-                        mImageView.setImageBitmap(imageBitmap);
+                        //mImageView = (ImageView) findViewById(R.id.testImageView);
+                        //mImageView.setImageBitmap(imageBitmap);
                     }
                 }
                 break;
