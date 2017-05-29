@@ -122,7 +122,6 @@ public class MainMenuFragment   extends     Fragment
     {
         if (mListener != null)
         {
-            mListener.onFragmentTransition(CONFIRM_PIC);
             mListener.onFunctionCall(TAKE_PICTURE);
         }
     }
