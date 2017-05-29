@@ -331,20 +331,18 @@ public class MainActivity   extends     AppCompatActivity
             case TAKE_PICTURE:
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
                 {
-                    ContentValues v = new ContentValues();
-                    v.put(MediaStore.Images.Media.TITLE, "New Picture");
-                    v.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
-                    Uri imageUri = getContentResolver()
-                                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
-                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-
-                    if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
                     {
-                        startActivityForResult( takePictureIntent,
-                                                REQUEST_IMAGE_CAPTURE);
+                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        if (takePictureIntent.resolveActivity(getPackageManager()) != null)
+                        {
+                            startActivityForResult( takePictureIntent,
+                                    REQUEST_IMAGE_CAPTURE);
+                        }
+                    }
+                    else
+                    {
+                        // TODO: Create a failure dialog box.
                     }
                 }
                 else
@@ -399,36 +397,16 @@ public class MainActivity   extends     AppCompatActivity
             case REQUEST_IMAGE_CAPTURE:
                 if (resultCode == RESULT_OK && data != null)
                 {
+                    // Retrieve image from activity call.
                     Bundle extras = data.getExtras();
-                    Bitmap imageBmp = (Bitmap) extras.get("data");
-                    Uri imageUri = data.getData();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-                    try
+                    // Change image on confirmPic to the taken picture.
+                    if (mImageView == null)
                     {
-                        //imageBmp =  MediaStore.Images.Media.getBitmap(
-                                //getContentResolver(), imageUri);
-
-                        // Change image on confirmPic to the taken picture.
-                        if (mImageView == null && imageBmp != null)
-                        {
-                            mImageView = (ImageView) findViewById(R.id.testImageView);
-                            mImageView.setImageBitmap(imageBmp);
-                        }
-                        else if (imageBmp == null)
-                        {
-                            Toast.makeText(this, "Image attachment failed...", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                        {
-                            Toast.makeText(this, "Unknown failure. Try again.", Toast.LENGTH_LONG).show();
-                        }
+                        mImageView = (ImageView) findViewById(R.id.testImageView);
+                        mImageView.setImageBitmap(imageBitmap);
                     }
-                    catch (Exception e)
-                    {
-                        Log.e("onActivityResult()", e.getMessage(), e);
-                    }
-
-
                 }
                 break;
         }
