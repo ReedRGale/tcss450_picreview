@@ -5,19 +5,13 @@
 
 package group1.tcss450.uw.edu.picreview.main;
 
-import android.Manifest;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
@@ -35,20 +29,19 @@ import com.google.android.gms.location.places.ui.PlacePicker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
-import group1.tcss450.uw.edu.picreview.login_register_service.UserAccessFragment;
-import group1.tcss450.uw.edu.picreview.login_register_service.LoginFragment;
-import group1.tcss450.uw.edu.picreview.login_register_service.RegisterFragment;
-import group1.tcss450.uw.edu.picreview.review_service.CaptionFragment;
-import group1.tcss450.uw.edu.picreview.review_service.LikeDislikeFragment;
-import group1.tcss450.uw.edu.picreview.review_service.LocationPickerFragment;
-import group1.tcss450.uw.edu.picreview.review_service.PicReviewConfirmFragment;
-import group1.tcss450.uw.edu.picreview.review_service.TagFragment;
-import group1.tcss450.uw.edu.picreview.search_service.MyReviewsFragment;
-import group1.tcss450.uw.edu.picreview.search_service.QueryFragment;
-import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
+import group1.tcss450.uw.edu.picreview.loginregister.UserAccessFragment;
+import group1.tcss450.uw.edu.picreview.loginregister.LoginFragment;
+import group1.tcss450.uw.edu.picreview.loginregister.RegisterFragment;
+import group1.tcss450.uw.edu.picreview.review.CaptionFragment;
+import group1.tcss450.uw.edu.picreview.review.LikeDislikeFragment;
+import group1.tcss450.uw.edu.picreview.review.LocationPickerFragment;
+import group1.tcss450.uw.edu.picreview.review.PicReviewConfirmFragment;
+import group1.tcss450.uw.edu.picreview.review.TagFragment;
+import group1.tcss450.uw.edu.picreview.search.MyReviewsFragment;
+import group1.tcss450.uw.edu.picreview.search.QueryFragment;
+import group1.tcss450.uw.edu.picreview.search.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Globals;

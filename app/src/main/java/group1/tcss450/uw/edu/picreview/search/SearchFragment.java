@@ -1,32 +1,21 @@
-package group1.tcss450.uw.edu.picreview.search_service;
+package group1.tcss450.uw.edu.picreview.search;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
-import group1.tcss450.uw.edu.picreview.util.DBUtility;
 import group1.tcss450.uw.edu.picreview.util.Frags;
-import group1.tcss450.uw.edu.picreview.util.Functions;
-import group1.tcss450.uw.edu.picreview.util.Globals;
-import group1.tcss450.uw.edu.picreview.util.Review;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.*;
-import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 /**
  * A fragment designed to hold the logic for searching the database for picReviews.

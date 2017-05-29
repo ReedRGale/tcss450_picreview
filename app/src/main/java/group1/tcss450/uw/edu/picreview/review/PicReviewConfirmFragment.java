@@ -1,9 +1,6 @@
-package group1.tcss450.uw.edu.picreview.review_service;
+package group1.tcss450.uw.edu.picreview.review;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,13 +12,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
@@ -30,7 +20,6 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
-import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_PIC;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;

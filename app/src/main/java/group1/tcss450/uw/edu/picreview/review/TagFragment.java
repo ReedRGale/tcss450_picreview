@@ -1,7 +1,6 @@
-package group1.tcss450.uw.edu.picreview.review_service;
+package group1.tcss450.uw.edu.picreview.review;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,40 +13,38 @@ import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
-import group1.tcss450.uw.edu.picreview.util.Functions;
 
-import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
-import static group1.tcss450.uw.edu.picreview.util.Functions.*;
-
+import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
+import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
+import static group1.tcss450.uw.edu.picreview.util.Frags.TAG;
 
 /**
- * A simple {@link Fragment} subclass.
- * Allows user to add a caption to their review.
+ * A simple Fragment to handle Tagging a Review.
  */
-public class CaptionFragment    extends     Fragment
-                                implements  View.OnClickListener
+public class TagFragment    extends     Fragment
+                            implements  View.OnClickListener
 {
     /** The activity linked to this fragment. */
     private OnFragmentInteractionListener mListener;
 
     /** Empty constructor:  required. */
-    public CaptionFragment() { }
-
+    public TagFragment() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_caption, container, false);
+        View v = inflater.inflate(R.layout.fragment_tag, container, false);
 
         ArrayList<Button> ba = new ArrayList<Button>();
 
         // Add all buttons.
-        ba.add((Button) v.findViewById(R.id.bCaptionBack));
-        ba.add((Button) v.findViewById(R.id.bCaptionForward));
-        ba.add((Button) v.findViewById(R.id.bCaptionHome));
+        ba.add((Button) v.findViewById(R.id.bBackTag));
+        ba.add((Button) v.findViewById(R.id.bForwardTag));
+        ba.add((Button) v.findViewById(R.id.bTagHome));
+
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
 
@@ -57,19 +54,23 @@ public class CaptionFragment    extends     Fragment
     /** Will go back to the previous step of the review process. */
     public void onBackPressed()
     {
-        if (mListener != null) {  mListener.onFunctionCall(TAKE_PICTURE); }
+        if (mListener != null) { mListener.onFragmentTransition(CAPTION); }
     }
 
     /**
      * Will go forward to the next step of the review process.
-     * If there is a caption to save, it will save it. */
+     * If there are tags, adds them.
+     */
     public void onForwardPressed()
     {
         if (mListener != null)
         {
-            mListener.onDataStorage( CAPTION,
-                                     getActivity().findViewById(R.id.eCaption));
-            mListener.onFragmentTransition(TAG);
+            EditText e = (EditText) getActivity().findViewById(R.id.eTags);
+            String s = e.getText().toString();
+
+            // Only store tags if they tag it.
+            if (!s.equals("")) { mListener.onDataStorage(TAG, s); }
+            mListener.onFragmentTransition(LIKE_DISLIKE);
         }
     }
 
@@ -80,9 +81,10 @@ public class CaptionFragment    extends     Fragment
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context)
+    {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
+        if (context instanceof LikeDislikeFragment.OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
@@ -91,7 +93,8 @@ public class CaptionFragment    extends     Fragment
     }
 
     @Override
-    public void onDetach() {
+    public void onDetach()
+    {
         super.onDetach();
         mListener = null;
     }
@@ -99,15 +102,17 @@ public class CaptionFragment    extends     Fragment
     @Override
     public void onClick(View view)
     {
-        switch (view.getId()) {
-            case R.id.bCaptionForward:
-                onForwardPressed();
-                break;
-            case R.id.bCaptionBack:
+        switch (view.getId())
+        {
+            case R.id.bBackTag:
                 onBackPressed();
                 break;
-            case R.id.bCaptionHome:
+            case R.id.bForwardTag:
+                onForwardPressed();
+                break;
+            case R.id.bTagHome:
                 onHomePressed();
+                break;
         }
     }
 
@@ -121,6 +126,5 @@ public class CaptionFragment    extends     Fragment
     {
         void onFragmentTransition(Frags target);
         void onDataStorage(Frags source, Object data);
-        void onFunctionCall(Functions target);
     }
 }

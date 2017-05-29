@@ -1,17 +1,12 @@
-package group1.tcss450.uw.edu.picreview.search_service;
+package group1.tcss450.uw.edu.picreview.search;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,17 +18,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.DBUtility;

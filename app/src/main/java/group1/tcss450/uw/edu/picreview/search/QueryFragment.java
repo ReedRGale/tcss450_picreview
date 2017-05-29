@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview.search_service;
+package group1.tcss450.uw.edu.picreview.search;
 
 
 import android.content.Context;
@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,8 @@ import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.DBUtility;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
-import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
-import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Functions.QUERY_RETRIEVE;
 
 /**
