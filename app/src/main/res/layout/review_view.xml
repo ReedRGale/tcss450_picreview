@@ -28,72 +28,94 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/likes"
-            android:layout_width="78dp"
-            android:layout_height="24dp"
-            android:layout_marginBottom="8dp"
+            android:layout_width="31dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="65dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="23dp"
+            app:layout_constraintTop_toBottomOf="@+id/review_photo" />
+
+        <Button
+            android:id="@+id/bLike"
+            android:layout_width="69dp"
+            android:layout_height="22dp"
+            android:background="@drawable/like"
+            app:layout_constraintLeft_toRightOf="@+id/likes"
             android:layout_marginLeft="0dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/caption"
-            app:layout_constraintLeft_toLeftOf="@+id/review_photo"
-            app:layout_constraintTop_toBottomOf="@+id/review_photo"
+            app:layout_constraintRight_toLeftOf="@+id/bDislike"
             android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="@+id/review_photo"
             app:layout_constraintHorizontal_bias="0.0"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginTop="23dp"
+            app:layout_constraintTop_toBottomOf="@+id/review_photo" />
 
         <TextView
             android:id="@+id/dislikes"
-            android:layout_width="78dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintRight_toRightOf="@+id/review_photo"
-            app:layout_constraintTop_toBottomOf="@+id/review_photo"
-            android:layout_marginLeft="8dp"
-            app:layout_constraintLeft_toLeftOf="@+id/review_photo"
-            app:layout_constraintHorizontal_bias="1.0"
-            android:layout_marginStart="8dp" />
+            android:layout_width="61dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="26dp"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="23dp"
+            app:layout_constraintTop_toBottomOf="@+id/review_photo" />
+
+        <Button
+            android:id="@+id/bDislike"
+            android:layout_width="69dp"
+            android:layout_height="22dp"
+            android:background="@drawable/dislike"
+            app:layout_constraintRight_toLeftOf="@+id/dislikes"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="23dp"
+            app:layout_constraintTop_toBottomOf="@+id/review_photo" />
+
 
         <TextView
             android:id="@+id/caption"
-            android:layout_width="316dp"
-            android:layout_height="34dp"
+            android:layout_width="317dp"
+            android:layout_height="47dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="48dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/review_photo"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" />
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="60dp"
+            app:layout_constraintTop_toBottomOf="@+id/review_photo" />
 
         <TextView
             android:id="@+id/tags"
             android:layout_width="316dp"
             android:layout_height="29dp"
-            android:ems="10"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@+id/caption"
-            app:layout_constraintLeft_toLeftOf="@+id/caption"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="@+id/caption"
-            app:layout_constraintHorizontal_bias="0.046"
-            android:layout_marginEnd="8dp" />
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="14dp"
+            app:layout_constraintTop_toBottomOf="@+id/caption" />
 
         <TextView
             android:id="@+id/location"
-            android:layout_width="317dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="18dp"
-            app:layout_constraintTop_toBottomOf="@+id/tags"
-            android:layout_marginLeft="8dp"
+            android:layout_width="316dp"
+            android:layout_height="28dp"
+            android:layout_marginLeft="24dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginRight="8dp"
-            app:layout_constraintRight_toRightOf="parent"
-            android:maxLines="5"/>
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/tags"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintVertical_bias="0.357" />
+
+        <TextView
+            android:id="@+id/hiddenView"
+            android:layout_width="24dp"
+            android:layout_height="11dp"
+            android:visibility="gone"
+            tools:layout_editor_absoluteY="469dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/location"/>
 
 
     </android.support.constraint.ConstraintLayout>
