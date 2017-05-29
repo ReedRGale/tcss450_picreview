@@ -1,6 +1,7 @@
 package group1.tcss450.uw.edu.picreview.search_service;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,6 +21,7 @@ import java.util.List;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.DBUtility;
+import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
@@ -92,7 +94,9 @@ public class MyReviewsFragment extends Fragment {
      * to the activity and potentially other fragments contained in that
      * activity.
      */
-    public interface OnFragmentInteractionListener { }
+    public interface OnFragmentInteractionListener {
+        void onFragmentTransition(Frags target);
+    }
 
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private List<Review> mDataset;
@@ -106,6 +110,8 @@ public class MyReviewsFragment extends Fragment {
             public TextView mCaption;
             public TextView mLikes;
             public TextView mDislikes;
+            public TextView mTags;
+            public TextView mLocation;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -113,6 +119,8 @@ public class MyReviewsFragment extends Fragment {
                 mCaption = (TextView) itemView.findViewById(R.id.caption);
                 mLikes = (TextView) itemView.findViewById(R.id.likes);
                 mDislikes = (TextView) itemView.findViewById(R.id.dislikes);
+                mTags = (TextView) itemView.findViewById(R.id.tags);
+                mLocation = (TextView) itemView.findViewById(R.id.location);
             }
         }
 
@@ -139,7 +147,18 @@ public class MyReviewsFragment extends Fragment {
             holder.mImage.setImageBitmap(mDataset.get(position).getImage());
             holder.mCaption.setText(mDataset.get(position).getCaption());
             holder.mLikes.setText("" + mDataset.get(position).getLikes());
-            holder.mDislikes.setText("" + mDataset.get(position).getDislikes());
+            holder.mLikes.setTextColor(Color.GREEN);
+            holder.mDislikes.setText("" +  mDataset.get(position).getDislikes());
+            holder.mDislikes.setTextColor(Color.RED);
+            String tags = "";
+            for (int i = 0; i < mDataset.get(position).getTag().size(); i++)
+            {
+                tags += "#" + mDataset.get(position).getTag().get(i) + " ";
+            }
+            holder.mTags.setText(tags);
+            // Maybe convert location to place?
+            holder.mLocation.setVisibility(View.GONE);
+
         }
 
         // Return the size of your dataset (invoked by the layout manager)
