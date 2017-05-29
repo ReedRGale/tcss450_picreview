@@ -1,10 +1,9 @@
-package group1.tcss450.uw.edu.picreview.login_register_service;
+package group1.tcss450.uw.edu.picreview.loginregister;
 
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,30 +23,31 @@ import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Globals;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.LOGIN;
 import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
-import static group1.tcss450.uw.edu.picreview.util.Frags.REGISTER;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Implements the registration functionality.
+ * Implements the login functionality.
  */
-public class RegisterFragment extends Fragment implements View.OnClickListener {
+public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    /** Objects where text can be entered. */
-    private EditText user_box;
-    private EditText pass_box;
-    private EditText confirm_pass_box;
+    /** Object where the user can enter text for username. */
+    private EditText user_text;
 
-    /* The location of the php scripts. */
+    /** Object where the user can enter text for password. */
+    private EditText pass_text;
+
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
             "~demyan15/";
 
+    private String returnedMessage;
 
-    public RegisterFragment() {
+    public LoginFragment() {
         // Required empty public constructor
     }
 
@@ -56,17 +56,14 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_register, container, false);
-        Button submit_button = (Button) v.findViewById(R.id.register_submit_button);
-        submit_button.setOnClickListener(this);
+        View v = inflater.inflate(R.layout.fragment_login, container, false);
+        Button button = (Button) v.findViewById(R.id.login_submit_button);
+        button.setOnClickListener(this);
 
-        user_box = (EditText) v.findViewById(R.id.register_username_box);
-        pass_box = (EditText) v.findViewById(R.id.register_password_box);
-        confirm_pass_box = (EditText) v.findViewById(R.id.register_confirm_password_box);
-
+        user_text = (EditText) v.findViewById(R.id.login_username_box);
+        pass_text = (EditText) v.findViewById(R.id.login_password_box);
         return v;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -90,55 +87,32 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
 
         boolean canSubmit = true;
 
-        if (user_box.length() == 0)
+        // Check username
+        if(user_text.length() == 0)
         {
             canSubmit = false;
-            user_box.setError(getString(R.string.no_username));
-        }
-        else if (user_box.length() < 4 || user_box.length() > 25)
-        {
-            canSubmit = false;
-            user_box.setError(getString(R.string.short_username));
+            user_text.setError(getString(R.string.no_username));
         }
 
-
-        if (pass_box.length() == 0)
+        if (pass_text.length() == 0)
         {
             canSubmit = false;
-            pass_box.setError(getString(R.string.no_password));
-        }
-        else if (pass_box.length() < 4 || pass_box.length() > 25)
-        {
-            canSubmit = false;
-            pass_box.setError(getString(R.string.short_password));
-        }
-        else if (confirm_pass_box.length() == 0)
-        {
-            canSubmit = false;
-            confirm_pass_box.setError(getString(R.string.no_confirm_pass));
-        }
-        else if (!confirm_pass_box.getText().toString().equals(pass_box.getText().toString()))
-        {
-            canSubmit = false;
-            confirm_pass_box.setError(getString(R.string.no_pass_match));
+            pass_text.setError(getString(R.string.no_password));
         }
 
-        if (user_box.getText().toString().equals(pass_box.getText().toString()))
-        {
-            canSubmit = false;
-            user_box.setError(getString(R.string.pass_username_match));
-
-        }
-
-        if(canSubmit)
+        if (canSubmit)
         {
             AsyncTask<String, Void, String> task = new PostWebServiceTask();
-            task.execute(PARTIAL_URL, user_box.getText().toString(), pass_box.getText().toString());
+            task.execute(PARTIAL_URL, user_text.getText().toString(), pass_text.getText().toString());
         }
+
     }
 
+    /**
+     * Will hit the php code that checks with the database to see whether the credentials exist.
+     */
     private class PostWebServiceTask extends AsyncTask<String, Void, String> {
-        private final String SERVICE = "registerService.php";
+        private final String SERVICE = "loginService.php";
         private String new_username = Globals.CURRENT_USERNAME;
         @Override
         protected String doInBackground(String... strings) {
@@ -178,20 +152,20 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
         @Override
         protected void onPostExecute(String result) {
-
             if (result.equals(getString(R.string.DBSuccessMessage)))
             {
                 Globals.CURRENT_USERNAME = new_username;
-                Toast.makeText(getContext(), "Registration was successful", Toast.LENGTH_LONG)
+                Toast.makeText(getContext(), "Login was successful", Toast.LENGTH_LONG)
                         .show();
-                mListener.onDataStorage(REGISTER, new_username);
+                mListener.onDataStorage(LOGIN, new_username);
                 mListener.onFragmentTransition(MAIN_MENU);
-
             }
             else
             {
-                Toast.makeText(getContext(), "Failed to register. Please try again with different credentials.", Toast.LENGTH_LONG)
+                Toast.makeText(getContext(), "Failed to login. Please re-enter your credentials and try again.", Toast.LENGTH_LONG)
                         .show();
+                user_text.setText("");
+                pass_text.setText("");
             }
         }
     }
@@ -201,10 +175,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         void onFragmentTransition(Frags target);

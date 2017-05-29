@@ -2,12 +2,7 @@ package group1.tcss450.uw.edu.picreview.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
-import android.os.Parcel;
 import android.util.Base64;
 import android.util.Log;
 
@@ -18,8 +13,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -31,12 +24,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
-import group1.tcss450.uw.edu.picreview.R;
-import group1.tcss450.uw.edu.picreview.review_service.DisplayReviewsFragment;
-
-import static android.R.attr.data;
 
 /**
  * Provides methods with which to access the database.

@@ -1,7 +1,6 @@
-package group1.tcss450.uw.edu.picreview.review_service;
+package group1.tcss450.uw.edu.picreview.review;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,14 +12,11 @@ import java.util.ArrayList;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
-import group1.tcss450.uw.edu.picreview.util.Functions;
 
-import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
 import static group1.tcss450.uw.edu.picreview.util.Frags.TAG;
-import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**

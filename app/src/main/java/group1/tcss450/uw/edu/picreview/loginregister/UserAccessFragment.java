@@ -1,4 +1,4 @@
-package group1.tcss450.uw.edu.picreview.login_register_service;
+package group1.tcss450.uw.edu.picreview.loginregister;
 
 import android.content.Context;
 import android.os.Bundle;
