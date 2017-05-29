@@ -39,15 +39,9 @@ public class Review {
     /* The id of the review. Assigned by the database. */
     private int myId;
 
-    public String getUser() {
-        return mUser;
-    }
-
-    public void setUser(String theUser) {
-        this.mUser = theUser;
-    }
-
     private String mUser;
+
+    private String mAddress;
 
     /* No-arg constructor. */
     public Review()
@@ -61,6 +55,7 @@ public class Review {
         reviewType = 0;
         mComments = new ArrayList<>();
         mTags = new ArrayList<>();
+        mAddress = "";
     }
 
     /* Overloaded constructor that allows for cleaner creation of a Review.
@@ -148,4 +143,20 @@ public class Review {
     public int getMyId() { return myId; }
 
     public void setMyId(int myId) { this.myId = myId; }
+
+    public String getUser() {
+        return mUser;
+    }
+
+    public void setUser(String theUser) {
+        this.mUser = theUser;
+    }
+
+    public String getmAddress() {
+        return mAddress;
+    }
+
+    public void setmAddress(String mAddress) {
+        this.mAddress = mAddress;
+    }
 }

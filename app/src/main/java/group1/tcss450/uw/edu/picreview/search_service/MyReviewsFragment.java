@@ -3,6 +3,9 @@ package group1.tcss450.uw.edu.picreview.search_service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +23,17 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.DBUtility;
@@ -39,6 +52,7 @@ public class MyReviewsFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private List<Review> mDataset;
 
     private ProgressBar waitSpinner;
 
@@ -67,6 +81,10 @@ public class MyReviewsFragment extends Fragment {
         mLayoutManager = tempManager;
 
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mDataset = new ArrayList<Review>();
+        mAdapter = new MyAdapter(mDataset);
+        mRecyclerView.setAdapter(mAdapter);
 
         AsyncTask<Void, Void, List<Review>> task = new PostWebServiceTask();
         task.execute();
@@ -103,7 +121,6 @@ public class MyReviewsFragment extends Fragment {
 
     /* Maintains a list of card. */
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-        private List<Review> mDataset;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -117,6 +134,7 @@ public class MyReviewsFragment extends Fragment {
             public TextView mTags;
             public TextView mLocation;
             public TextView mPosition;
+            public TextView mUser;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -127,13 +145,16 @@ public class MyReviewsFragment extends Fragment {
                 mTags = (TextView) itemView.findViewById(R.id.tags);
                 mLocation = (TextView) itemView.findViewById(R.id.location);
                 mPosition = (TextView) itemView.findViewById(R.id.hiddenView);
+                mUser = (TextView) itemView.findViewById(R.id.user);
 
                 Button b = (Button) itemView.findViewById(R.id.bLike);
                 b.setOnClickListener(this);
 
                 b = (Button) itemView.findViewById(R.id.bDislike);
                 b.setOnClickListener(this);
+
             }
+
 
             @Override
             public void onClick(View v) {
@@ -159,6 +180,7 @@ public class MyReviewsFragment extends Fragment {
                     task.execute(review);
                 }
             }
+
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
@@ -193,20 +215,27 @@ public class MyReviewsFragment extends Fragment {
                 tags += "#" + mDataset.get(position).getTag().get(i) + " ";
             }
             holder.mTags.setText(tags);
-            // Maybe convert location to place?
-            holder.mLocation.setVisibility(View.GONE);
             holder.mPosition.setText("" + position);
+            holder.mUser.setText("By: " + mDataset.get(position).getUser());
+            holder.mLocation.setText("Location: " + mDataset.get(position).getmAddress());
 
         }
 
         // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
-            return mDataset.size();
+            if (mDataset != null)
+            {
+                return mDataset.size();
+            }
+            else
+            {
+                return 0;
+            }
+
         }
+
     }
-
-
 
     /**
      * Will hit the php webservice that will get the reviews needed.
@@ -232,8 +261,8 @@ public class MyReviewsFragment extends Fragment {
             // Get all user reviews first
             if (resultSet.size() != 0)
             {
-                mAdapter = new MyAdapter(resultSet);
-                mRecyclerView.setAdapter(mAdapter);
+                mDataset = resultSet;
+                mAdapter.notifyDataSetChanged();
             }
             else
             {

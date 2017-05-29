@@ -2,7 +2,11 @@ package group1.tcss450.uw.edu.picreview.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Parcel;
 import android.util.Base64;
 import android.util.Log;
@@ -14,6 +18,8 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,9 +31,12 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.review_service.DisplayReviewsFragment;
+
+import static android.R.attr.data;
 
 /**
  * Provides methods with which to access the database.
@@ -46,15 +55,14 @@ public class DBUtility {
         try {
             // Serialize everything that needs to be serialized
             String SerializedComments = (theReview.getComments() != null) ? serializeStringList(theReview.getComments()) : null;
-            //if (!deserializeString(SerializedComments).equals(theReview.getComments())) Log.d("Error", "Comments are not the same!");
             String SerializedTags = (theReview.getTag() != null) ? serializeStringList(theReview.getTag()) : null;
-            //if (!deserializeString(SerializedTags).equals(theReview.getTag())) Log.d("Error", "Tags are not the same!");
             String SerializedImage = (theReview.getImage() != null) ? serializeBitmap(theReview.getImage()) : null;
-            //Log.d("Image", "Serialized: Height" + deserializeBitmap(SerializedImage).getHeight() + " Width: " + theReview.getImage().getWidth());
-            //Log.d("Image", "deserialized: Height" + deserializeBitmap(SerializedImage).getHeight() + " Width: " + theReview.getImage().getWidth());
-            //if (!deserializeBitmap(SerializedImage).sameAs(theReview.getImage())) Log.d("Error", "Images are not the same!");
             String SerializedLocation = (theReview.getLocation() != null) ? serializeLocation(theReview.getLocation()) : null;
-            //if (deserializeLocation(SerializedLocation).getLongitude() != theReview.getLocation().getLongitude()) Log.d("Error", "Locations are not the same");
+
+            if (SerializedLocation == null) Log.d("LOCION", "serialized location is null");
+            if (theReview.getLocation() != null) Log.d("LOCION", deserializeLocation(SerializedLocation).toString());
+
+
 
             // Check whether information is valid
             if (theReview.getCaption() == null || SerializedComments == null || SerializedTags == null || SerializedImage == null)
@@ -211,6 +219,15 @@ public class DBUtility {
                                 review.setTags(deserializedTagList);
                                 review.setUser(JsonReviewObject.getString("username"));
                                 review.setMyId(Integer.parseInt(JsonReviewObject.getString("id")));
+                                review.setLocation(deserializedLocation);
+                                if (deserializedLocation != null)
+                                {
+                                    review.setmAddress(getAddress(deserializedLocation));
+                                }
+                                else {
+                                    review.setmAddress("No Location Given");
+                                }
+
                                 reviews.add(review);
                             }
                             else
@@ -287,6 +304,14 @@ public class DBUtility {
                                     review.setTags(deserializedTagList);
                                     review.setUser(JsonReviewObject.getString("username"));
                                     review.setMyId(Integer.parseInt(JsonReviewObject.getString("id")));
+                                    review.setLocation(deserializedLocation);
+                                    if (deserializedLocation != null)
+                                    {
+                                        review.setmAddress(getAddress(deserializedLocation));
+                                    }
+                                    else {
+                                        review.setmAddress("No Location Given");
+                                    }
                                     reviews.add(review);
                                 }
                                 else
@@ -365,6 +390,14 @@ public class DBUtility {
                                     review.setDislikes(JsonReviewObject.getInt("dislikes"));
                                     review.setReviewType(JsonReviewObject.getInt("ReviewType"));
                                     review.setMyId(Integer.parseInt(JsonReviewObject.getString("id")));
+                                    review.setLocation(deserializedLocation);
+                                    if (deserializedLocation != null)
+                                    {
+                                        review.setmAddress(getAddress(deserializedLocation));
+                                    }
+                                    else {
+                                        review.setmAddress("No Location Given");
+                                    }
                                     reviews.add(review);
                                 }
                                 else
@@ -511,12 +544,12 @@ public class DBUtility {
     // Serialization Methods
 
     /* Will serialize a list of string. */
-    private static String serializeStringList(List<String> theStringList)
+    private static String serializeStringList(Object o)
     {
         try {
             ByteArrayOutputStream bo = new ByteArrayOutputStream();
             ObjectOutputStream so = new ObjectOutputStream(bo);
-            so.writeObject(theStringList);
+            so.writeObject(o);
             so.flush();
             return new String(Base64.encode(bo.toByteArray(), Base64.DEFAULT));
         } catch (IOException e) {
@@ -526,10 +559,10 @@ public class DBUtility {
     }
 
     /* Will deserialize a string. */
-    private static Object deserializeString(String theComments)
+    private static Object deserializeString(String theString)
     {
         try {
-            byte b[] = Base64.decode(theComments.getBytes(), Base64.DEFAULT);
+            byte b[] = Base64.decode(theString.getBytes(), Base64.DEFAULT);
             ByteArrayInputStream bi = new ByteArrayInputStream(b);
             ObjectInputStream si = new ObjectInputStream(bi);
             return si.readObject();
@@ -575,22 +608,86 @@ public class DBUtility {
     /* Will serialize a Location object. */
     private static String serializeLocation(Location location)
     {
-        Parcel p = Parcel.obtain();
-        location.writeToParcel(p, 0);
-        final byte[] b = p.marshall();
-        p.recycle();
-        return b.toString();
+        double[] latLong = new double[2];
+        latLong[0] = location.getLatitude();
+        latLong[1] = location.getLongitude();
+
+        return serializeStringList(location);
     }
 
     /* Will deserialize a serialized location into a Location object. */
     private static Location deserializeLocation(String theLocation)
     {
-        byte bytes[] = Base64.decode(theLocation.getBytes(), Base64.DEFAULT);
-        Parcel parcel = Parcel.obtain();
-        parcel.unmarshall(bytes, 0, bytes.length);
-        parcel.setDataPosition(0);
-        Location result = Location.CREATOR.createFromParcel(parcel);
-        parcel.recycle();
-        return result;
+        double[] latLong = (double[]) deserializeString(theLocation);
+        Location l = new Location("");
+        l.setLatitude(latLong[0]);
+        l.setLongitude(latLong[1]);
+        return l;
+    }
+
+    /* Will return the address and name of the location given. */
+    private static String getAddress(Location theLocation)
+    {
+        boolean success = true;
+        StringBuilder address = new StringBuilder();
+        if (theLocation != null)
+        {
+            String SERVICE = "http://maps.googleapis.com/maps/api/geocode/json?";
+                // Send the JSON to our webservice
+                String response = "";
+                HttpURLConnection urlConnection = null;
+                try {
+                    URL urlObject = new URL(SERVICE);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    urlConnection.setRequestMethod("POST");
+                    urlConnection.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
+                    String data = URLEncoder.encode("latlng", "UTF-8") +
+                            "=" + URLEncoder.encode("" + (int)theLocation.getLatitude(), "UTF-8") +
+                            "," + URLEncoder.encode("" + (int)theLocation.getLongitude(), "UTF-8") +
+                            "&" + URLEncoder.encode("sensor", "UTF-8") +
+                            "=" + URLEncoder.encode("true", "UTF-8");
+                    Log.d("Location2", "location: " + data);
+                    wr.write(data);
+                    wr.flush();
+                    InputStream content = urlConnection.getInputStream();
+                    BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                    String s = "";
+                    while ((s = buffer.readLine()) != null) {
+                        response += s;
+                    }
+
+                    JSONObject jsonResponse = new JSONObject(response);
+
+                    JSONArray locations = jsonResponse.getJSONArray("results");
+                    if (locations.length() > 1)
+                    {
+                        JSONObject location = locations.getJSONObject(0);
+                        address.append(location.get("formatted_address").toString());
+                    }
+                    else
+                    {
+                        success = false;
+                    }
+                } catch (Exception e) {
+                    response = "Unable to connect, Reason: "
+                            + e.getMessage();
+                    Log.d("Error", "Error getting locations. " + response);
+                    success = false;
+                } finally {
+                    if (urlConnection != null)
+                        urlConnection.disconnect();
+                }
+
+            }
+        else
+        {
+            success = false;
+        }
+
+        if (!success) address.append("No location given");
+
+        return address.toString();
+
     }
 }
