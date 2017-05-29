@@ -88,6 +88,7 @@ public class LikeDislikeFragment    extends     Fragment
         if (mListener != null)
         {
             mForward.setEnabled(true);
+            mForward.setVisibility(View.VISIBLE);
             mListener.onDataStorage(LIKE_DISLIKE, -1);
         }
     }
