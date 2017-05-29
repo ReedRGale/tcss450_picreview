@@ -29,6 +29,9 @@ public class MainMenuFragment   extends     Fragment
 {
     /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
+    private Button mReview;
+    private Button mMyReviews;
+    private Button mLogin;
 
     /** Required empty public constructor */
     public MainMenuFragment() {}
@@ -42,19 +45,20 @@ public class MainMenuFragment   extends     Fragment
 
         ArrayList<Button> ba = new ArrayList<Button>();
 
+        // Save all buttons whose states can change.
+        mReview = (Button) v.findViewById(R.id.bReview);
+        mMyReviews = (Button) v.findViewById(R.id.my_reviews_button);
+        mLogin = (Button) v.findViewById(R.id.bTempUserAccess);
+
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bSearch));
         ba.add((Button) v.findViewById(R.id.bReview));
-
-        // TODO: find more permanent locations for these features.
         ba.add((Button) v.findViewById(R.id.bTempUserAccess));
         ba.add((Button) v.findViewById(R.id.my_reviews_button));
 
         // If user is logged in, then they can view their own reviews
-        if (Globals.CURRENT_USERNAME.length() != 0)
-        {
-            ((Button) v.findViewById(R.id.my_reviews_button)).setVisibility(View.VISIBLE);
-        }
+        if (Globals.CURRENT_USERNAME.length() != 0) enableReview();
+        else enableLogin();
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -111,7 +115,21 @@ public class MainMenuFragment   extends     Fragment
         if (mListener != null) { mListener.onFragmentTransition(USER_ACCESS); }
     }
 
+    /** Enable review functionality, disabling login. */
+    private void enableReview()
+    {
+        mReview.setVisibility(View.VISIBLE);
+        mMyReviews.setVisibility(View.VISIBLE);
+        mLogin.setVisibility(View.INVISIBLE);
+    }
 
+    /** Enable login functionality, disabling review. */
+    private void enableLogin()
+    {
+        mReview.setVisibility(View.INVISIBLE);
+        mMyReviews.setVisibility(View.INVISIBLE);
+        mLogin.setVisibility(View.VISIBLE);
+    }
 
     /**
      * Method that launches fragment for getting data from our database.

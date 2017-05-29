@@ -102,6 +102,7 @@ public class LikeDislikeFragment    extends     Fragment
         if (mListener != null) { mListener.onFragmentTransition(LOCATION); }
     }
 
+    /** Return to the home screen and abort the review process. */
     public void onHomePressed() {
         if(mListener != null) {
             mListener.onFragmentTransition(MAIN_MENU);

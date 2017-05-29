@@ -331,18 +331,11 @@ public class MainActivity   extends     AppCompatActivity
             case TAKE_PICTURE:
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
                 {
-                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null)
                     {
-                        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        if (takePictureIntent.resolveActivity(getPackageManager()) != null)
-                        {
-                            startActivityForResult( takePictureIntent,
-                                    REQUEST_IMAGE_CAPTURE);
-                        }
-                    }
-                    else
-                    {
-                        // TODO: Create a failure dialog box.
+                        startActivityForResult( takePictureIntent,
+                                REQUEST_IMAGE_CAPTURE);
                     }
                 }
                 else
@@ -461,15 +454,5 @@ public class MainActivity   extends     AppCompatActivity
             // Just return theParsableString as the tag.
             return new String[] { theParsableString };
         }
-    }
-
-    /** Gets the real part of the image from data. */
-    private String getRealPathFromURI(Uri contentUri)
-    {
-        String[] proj = { MediaStore.Images.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 }
