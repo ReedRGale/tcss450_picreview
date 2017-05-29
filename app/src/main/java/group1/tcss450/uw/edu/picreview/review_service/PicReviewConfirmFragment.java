@@ -81,9 +81,6 @@ public class PicReviewConfirmFragment   extends     Fragment
     {
         if (mListener != null)
         {
-            /*  Odd case; the bitmap is in the activity right now,
-                so no data needs to be passed. */
-            mListener.onDataStorage(CONFIRM_PIC, null);
             mReview = (Review) mListener.onDataRetrieval(REVIEW_RETRIEVE);
             AsyncTask<Review, Void, Boolean> task = new PostWebServiceTask();
             task.execute(mReview);
