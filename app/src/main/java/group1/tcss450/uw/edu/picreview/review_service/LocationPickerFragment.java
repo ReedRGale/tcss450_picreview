@@ -48,6 +48,7 @@ public class LocationPickerFragment     extends     Fragment
         ba.add((Button) v.findViewById(R.id.bNearbyLocations));
         ba.add((Button) v.findViewById(R.id.bPickerBack));
         ba.add((Button) v.findViewById(R.id.bPickerForward));
+        ba.add((Button) v.findViewById(R.id.bPickerHome));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -77,6 +78,12 @@ public class LocationPickerFragment     extends     Fragment
     public void onBackPressed()
     {
         if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }
+    }
+
+    public void onHomePressed() {
+        if(mListener != null) {
+            mListener.onFragmentTransition(MAIN_MENU);
+        }
     }
 
     @Override
@@ -114,6 +121,9 @@ public class LocationPickerFragment     extends     Fragment
                 break;
             case R.id.bNearbyLocations:
                 onSearchLocationPressed();
+                break;
+            case R.id.bPickerHome:
+                onHomePressed();
                 break;
         }
     }

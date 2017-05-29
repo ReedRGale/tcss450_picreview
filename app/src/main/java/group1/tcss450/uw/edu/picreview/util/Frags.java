@@ -23,6 +23,7 @@ public enum Frags
     LIKE_DISLIKE,
     LOCATION,
     CONFIRM_REVIEW,
+    HOME,
 
     // User Access
     LOGIN,

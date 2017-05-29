@@ -18,6 +18,7 @@ import group1.tcss450.uw.edu.picreview.util.Functions;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
+import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
 import static group1.tcss450.uw.edu.picreview.util.Frags.TAG;
 import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
@@ -55,6 +56,7 @@ public class LikeDislikeFragment    extends     Fragment
         ba.add((Button) v.findViewById(R.id.bForwardLikeDislike));
         ba.add((Button) v.findViewById(R.id.bLike));
         ba.add((Button) v.findViewById(R.id.bDislike));
+        ba.add((Button) v.findViewById(R.id.bHomeLikeDislike));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -100,6 +102,12 @@ public class LikeDislikeFragment    extends     Fragment
         if (mListener != null) { mListener.onFragmentTransition(LOCATION); }
     }
 
+    public void onHomePressed() {
+        if(mListener != null) {
+            mListener.onFragmentTransition(MAIN_MENU);
+        }
+    }
+
     @Override
     public void onAttach(Context context)
     {
@@ -135,6 +143,9 @@ public class LikeDislikeFragment    extends     Fragment
                 break;
             case R.id.bDislike:
                 onDislikePressed();
+                break;
+            case R.id.bHomeLikeDislike:
+                onHomePressed();
                 break;
         }
     }

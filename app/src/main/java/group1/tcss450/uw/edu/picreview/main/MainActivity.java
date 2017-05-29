@@ -209,7 +209,6 @@ public class MainActivity   extends     AppCompatActivity
                         .replace(R.id.fragmentContainer, new QueryFragment())
                         .addToBackStack(null);
                 break;
-
         }
 
         // Change the fragment, assuming we reached a valid case.

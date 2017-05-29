@@ -48,7 +48,7 @@ public class CaptionFragment    extends     Fragment
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bCaptionBack));
         ba.add((Button) v.findViewById(R.id.bCaptionForward));
-
+        ba.add((Button) v.findViewById(R.id.bCaptionHome));
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
 
@@ -71,6 +71,12 @@ public class CaptionFragment    extends     Fragment
             mListener.onDataStorage( CAPTION,
                                      getActivity().findViewById(R.id.eCaption));
             mListener.onFragmentTransition(TAG);
+        }
+    }
+
+    public void onHomePressed() {
+        if(mListener != null) {
+            mListener.onFragmentTransition(MAIN_MENU);
         }
     }
 
@@ -101,6 +107,8 @@ public class CaptionFragment    extends     Fragment
             case R.id.bCaptionBack:
                 onBackPressed();
                 break;
+            case R.id.bCaptionHome:
+                onHomePressed();
         }
     }
 

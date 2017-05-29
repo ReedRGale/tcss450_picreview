@@ -18,6 +18,7 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
 
 import static group1.tcss450.uw.edu.picreview.util.Frags.CAPTION;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LIKE_DISLIKE;
+import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
 import static group1.tcss450.uw.edu.picreview.util.Frags.TAG;
 
 /**
@@ -44,6 +45,7 @@ public class TagFragment    extends     Fragment
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bBackTag));
         ba.add((Button) v.findViewById(R.id.bForwardTag));
+        ba.add((Button) v.findViewById(R.id.bTagHome));
 
         // Add the listeners.
         for (Button b : ba) { b.setOnClickListener(this); }
@@ -71,6 +73,12 @@ public class TagFragment    extends     Fragment
             // Only store tags if they tag it.
             if (!s.equals("")) { mListener.onDataStorage(TAG, s); }
             mListener.onFragmentTransition(LIKE_DISLIKE);
+        }
+    }
+
+    public void onHomePressed() {
+        if(mListener != null) {
+            mListener.onFragmentTransition(MAIN_MENU);
         }
     }
 
@@ -103,6 +111,9 @@ public class TagFragment    extends     Fragment
                 break;
             case R.id.bForwardTag:
                 onForwardPressed();
+                break;
+            case R.id.bTagHome:
+                onHomePressed();
                 break;
         }
     }
