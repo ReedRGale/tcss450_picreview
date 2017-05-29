@@ -394,6 +394,9 @@ public class MainActivity   extends     AppCompatActivity
                             .show();
                 }
                 break;
+            case UPDATE_PREVIEW:
+                attachToImageView();
+                break;
         }
 
     }
@@ -420,12 +423,7 @@ public class MainActivity   extends     AppCompatActivity
                     Bitmap imageBitmap = (Bitmap) extras.get("data");
 
                     // Change image on confirmPic to the taken picture.
-                    if (mImageView == null)
-                    {
-                        mTempBitmap = imageBitmap;
-                        //mImageView = (ImageView) findViewById(R.id.testImageView);
-                        //mImageView.setImageBitmap(imageBitmap);
-                    }
+                    if (mImageView == null) { mTempBitmap = imageBitmap; }
                 }
                 break;
         }
@@ -471,7 +469,6 @@ public class MainActivity   extends     AppCompatActivity
                 }
             }
             /* **** Cull off random hashes. **** */
-            Log.d("ParseHash", "Cull: " + cull);
 
             return culledArray;
         }
@@ -482,8 +479,16 @@ public class MainActivity   extends     AppCompatActivity
         }
     }
 
+    /** Store the user to prefs so they can still be logged in. */
     private void saveToSharedPrefs(String username)
     {
         mPrefs.edit().putString(getString(R.string.PREF_USERNAME), username).apply();
+    }
+
+    /** Attaches the bitmap to the imageView. */
+    private void attachToImageView()
+    {
+        mImageView = (ImageView) findViewById(R.id.ivPreview);
+        mImageView.setImageBitmap(mTempBitmap);
     }
 }

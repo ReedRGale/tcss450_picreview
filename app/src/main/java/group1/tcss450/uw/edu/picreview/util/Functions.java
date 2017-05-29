@@ -11,5 +11,6 @@ public enum Functions
     QUERY_RETRIEVE,
     REVIEW_RETRIEVE,
     TAKE_PICTURE,
+    UPDATE_PREVIEW,
     UNIMPLEMENTED
 }

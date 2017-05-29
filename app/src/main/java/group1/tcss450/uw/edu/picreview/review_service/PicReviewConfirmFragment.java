@@ -76,6 +76,13 @@ public class PicReviewConfirmFragment   extends     Fragment
         return v;
     }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        mListener.onFunctionCall(Functions.UPDATE_PREVIEW);
+    }
+
     /** Will proceed with storing the review by handing it off to an asynchronous task.  */
     public void onYesPressed()
     {
@@ -136,6 +143,7 @@ public class PicReviewConfirmFragment   extends     Fragment
     {
         void onFragmentTransition(Frags target);
         void onDataStorage(Frags source, Object data);
+        void onFunctionCall(Functions target);
         Object onDataRetrieval(Functions target);
     }
 
