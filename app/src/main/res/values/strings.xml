@@ -58,4 +58,9 @@
     <!-- Preference names. -->
     <string name="PREF_SESSION">group1.tcss450.edu.picreview.SESSION</string>
     <string name="PREF_USERNAME">group1.tcss450.edu.picreview.USERNAME</string>
+
+    <!-- Description -->
+    <string name="caption_description">Add a caption to describe your picture</string>
+    <string name="tag_description">Add a tag to make your picture easy to find</string>
+    <string name="location_picker_description">Add a location so other users know where you capture the image</string>
 </resources>
