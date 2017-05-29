@@ -59,9 +59,7 @@ public class DBUtility {
             String SerializedImage = (theReview.getImage() != null) ? serializeBitmap(theReview.getImage()) : null;
             String SerializedLocation = (theReview.getLocation() != null) ? serializeLocation(theReview.getLocation()) : null;
 
-            if (SerializedLocation == null) Log.d("LOCION", "serialized location is null");
-            if (theReview.getLocation() != null) Log.d("LOCION", deserializeLocation(SerializedLocation).toString());
-
+            Log.d("LOCION", "ORIGINAL LOC:" + theReview.getLocation().toString() + " Deserialized: " + deserializeLocation(SerializedLocation).toString());
 
 
             // Check whether information is valid
@@ -553,6 +551,7 @@ public class DBUtility {
             so.flush();
             return new String(Base64.encode(bo.toByteArray(), Base64.DEFAULT));
         } catch (IOException e) {
+            Log.d("Exception", "Thrown");
             e.printStackTrace();
         }
         return null;
@@ -596,7 +595,6 @@ public class DBUtility {
             options.inScaled = false;
             byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
             Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            //Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length, options);
             Log.d("Image", "Height" + bitmap.getHeight() + " Width: " + bitmap.getWidth());
             return bitmap;
         } catch(Exception e) {
@@ -608,17 +606,17 @@ public class DBUtility {
     /* Will serialize a Location object. */
     private static String serializeLocation(Location location)
     {
-        double[] latLong = new double[2];
+        Double[] latLong = new Double[2];
         latLong[0] = location.getLatitude();
         latLong[1] = location.getLongitude();
 
-        return serializeStringList(location);
+        return serializeStringList(latLong);
     }
 
     /* Will deserialize a serialized location into a Location object. */
     private static Location deserializeLocation(String theLocation)
     {
-        double[] latLong = (double[]) deserializeString(theLocation);
+        Double[] latLong = (Double[]) deserializeString(theLocation);
         Location l = new Location("");
         l.setLatitude(latLong[0]);
         l.setLongitude(latLong[1]);
@@ -637,18 +635,16 @@ public class DBUtility {
                 String response = "";
                 HttpURLConnection urlConnection = null;
                 try {
-                    URL urlObject = new URL(SERVICE);
-                    urlConnection = (HttpURLConnection) urlObject.openConnection();
-                    urlConnection.setRequestMethod("POST");
-                    urlConnection.setDoOutput(true);
-                    OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
                     String data = URLEncoder.encode("latlng", "UTF-8") +
-                            "=" + URLEncoder.encode("" + (int)theLocation.getLatitude(), "UTF-8") +
-                            "," + URLEncoder.encode("" + (int)theLocation.getLongitude(), "UTF-8") +
+                            "=" + URLEncoder.encode("" + theLocation.getLatitude(), "UTF-8") +
+                            "," + URLEncoder.encode("" + theLocation.getLongitude(), "UTF-8") +
                             "&" + URLEncoder.encode("sensor", "UTF-8") +
                             "=" + URLEncoder.encode("true", "UTF-8");
-                    Log.d("Location2", "location: " + data);
-                    wr.write(data);
+                    URL urlObject = new URL(SERVICE + data);
+                    urlConnection = (HttpURLConnection) urlObject.openConnection();
+                    urlConnection.setRequestMethod("GET");
+                    urlConnection.setDoOutput(true);
+                    OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
                     wr.flush();
                     InputStream content = urlConnection.getInputStream();
                     BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
@@ -656,6 +652,8 @@ public class DBUtility {
                     while ((s = buffer.readLine()) != null) {
                         response += s;
                     }
+
+                    Log.d("LINK", SERVICE + data);
 
                     JSONObject jsonResponse = new JSONObject(response);
 
