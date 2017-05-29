@@ -7,8 +7,10 @@ package group1.tcss450.uw.edu.picreview.main;
 
 import android.Manifest;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -50,6 +52,7 @@ import group1.tcss450.uw.edu.picreview.search_service.QueryFragment;
 import group1.tcss450.uw.edu.picreview.search_service.SearchFragment;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
+import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
 import static android.R.attr.thumbnail;
@@ -75,6 +78,7 @@ public class MainActivity   extends     AppCompatActivity
                                         QueryFragment.OnFragmentInteractionListener
 
 {
+    // Constants.
 
     /** Request code passed to the PlacePicker intent for identification. */
     private static final int REQUEST_PLACE_PICKER = 1;
@@ -82,8 +86,11 @@ public class MainActivity   extends     AppCompatActivity
     /** Request code passed to camera for identification. */
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
-    /** Request code passed to camera for identification. */
-    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 3;
+
+    // Prefs saved between instances.
+
+    private SharedPreferences mPrefs;
+
 
     // Intermediary information gleaned from other activities.
 
@@ -96,8 +103,6 @@ public class MainActivity   extends     AppCompatActivity
     /** The review just before storage */
     private Review mTempReview = null;
 
-    /** The review just before storage */
-    private Uri mImageUri = null;
 
     // Temporary information gleaned from the fragments.
 
@@ -122,10 +127,14 @@ public class MainActivity   extends     AppCompatActivity
     /** Location used when creating a new Review */
     private String[] mQuery = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPrefs = getSharedPreferences(getString(R.string.PREF_SESSION), Context.MODE_PRIVATE);
+        Globals.CURRENT_USERNAME = mPrefs.getString(getString(R.string.PREF_USERNAME), "");
 
         if (savedInstanceState == null)
         {
@@ -315,6 +324,10 @@ public class MainActivity   extends     AppCompatActivity
                 mQuery = parseHashTags((String) data);
                 Log.d("The Parsed String", mQuery[0]);
                 break;
+            case LOGIN:
+            case REGISTER:
+                saveToSharedPrefs((String) data);
+                break;
         }
     }
 
@@ -454,5 +467,10 @@ public class MainActivity   extends     AppCompatActivity
             // Just return theParsableString as the tag.
             return new String[] { theParsableString };
         }
+    }
+
+    private void saveToSharedPrefs(String username)
+    {
+        mPrefs.edit().putString(getString(R.string.PREF_USERNAME), username).apply();
     }
 }

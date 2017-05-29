@@ -23,6 +23,10 @@ import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Globals;
 
+import static group1.tcss450.uw.edu.picreview.util.Frags.LOGIN;
+import static group1.tcss450.uw.edu.picreview.util.Frags.MAIN_MENU;
+import static group1.tcss450.uw.edu.picreview.util.Frags.REGISTER;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -154,7 +158,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                 Globals.CURRENT_USERNAME = new_username;
                 Toast.makeText(getContext(), "Login was successful", Toast.LENGTH_LONG)
                         .show();
-                mListener.onFragmentTransition(Frags.MAIN_MENU);
+                mListener.onDataStorage(LOGIN, new_username);
+                mListener.onFragmentTransition(MAIN_MENU);
             }
             else
             {
@@ -174,5 +179,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     public interface OnFragmentInteractionListener {
         void onFragmentTransition(Frags target);
+        void onDataStorage(Frags source, Object data);
     }
 }
