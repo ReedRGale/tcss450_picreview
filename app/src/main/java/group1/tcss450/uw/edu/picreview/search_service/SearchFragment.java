@@ -39,6 +39,7 @@ public class SearchFragment     extends     Fragment
 
     /** This is the string that handles the query. */
     private String mQuery;
+    private EditText eText;
 
     /** Required empty public constructor */
     public SearchFragment() { }
@@ -49,8 +50,7 @@ public class SearchFragment     extends     Fragment
     {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_search, container, false);
-        EditText e = (EditText) v.findViewById(R.id.eQuery);
-        mQuery = e.getText().toString();
+        eText = (EditText) v.findViewById(R.id.eQuery);
 
         ArrayList<ImageButton> ba = new ArrayList<ImageButton>();
 
@@ -68,6 +68,9 @@ public class SearchFragment     extends     Fragment
     {
         if (mListener != null)
         {
+            mQuery = eText.getText().toString();
+            Log.d("TestString", eText.getText().toString());
+
             mListener.onDataStorage(SEARCH, mQuery);
             mListener.onFragmentTransition(QUERY);
         }
