@@ -1,10 +1,12 @@
 package group1.tcss450.uw.edu.picreview.search_service;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -98,13 +101,14 @@ public class MyReviewsFragment extends Fragment {
         void onFragmentTransition(Frags target);
     }
 
+    /* Maintains a list of card. */
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         private List<Review> mDataset;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             // each data item is just a string in this case
             public ImageView mImage;
             public TextView mCaption;
@@ -112,6 +116,7 @@ public class MyReviewsFragment extends Fragment {
             public TextView mDislikes;
             public TextView mTags;
             public TextView mLocation;
+            public TextView mPosition;
 
             public ViewHolder(View itemView) {
                 super(itemView);
@@ -121,6 +126,38 @@ public class MyReviewsFragment extends Fragment {
                 mDislikes = (TextView) itemView.findViewById(R.id.dislikes);
                 mTags = (TextView) itemView.findViewById(R.id.tags);
                 mLocation = (TextView) itemView.findViewById(R.id.location);
+                mPosition = (TextView) itemView.findViewById(R.id.hiddenView);
+
+                Button b = (Button) itemView.findViewById(R.id.bLike);
+                b.setOnClickListener(this);
+
+                b = (Button) itemView.findViewById(R.id.bDislike);
+                b.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.bLike)
+                {
+                    int index = Integer.parseInt(mPosition.getText().toString());
+                    Review review = mDataset.get(index);
+                    int likes = review.getLikes();
+                    review.setLikes(++likes);
+                    mLikes.setText("" + review.getLikes());
+                    AsyncTask<Review, Void, Boolean> task = new PostUpdateLikesWebServiceTask();
+                    task.execute(review);
+
+                }
+                else if (v.getId() == R.id.bDislike)
+                {
+                    int index = Integer.parseInt(mPosition.getText().toString());
+                    Review review = mDataset.get(index);
+                    int dislikes = review.getDislikes();
+                    review.setDislikes(++dislikes);
+                    mDislikes.setText("" + review.getDislikes());
+                    AsyncTask<Review, Void, Boolean> task = new PostUpdateDislikesWebServiceTask();
+                    task.execute(review);
+                }
             }
         }
 
@@ -145,12 +182,12 @@ public class MyReviewsFragment extends Fragment {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.mImage.setImageBitmap(mDataset.get(position).getImage());
-            holder.mCaption.setText(mDataset.get(position).getCaption());
+            holder.mCaption.setText("Caption: " + mDataset.get(position).getCaption());
             holder.mLikes.setText("" + mDataset.get(position).getLikes());
             holder.mLikes.setTextColor(Color.GREEN);
             holder.mDislikes.setText("" +  mDataset.get(position).getDislikes());
             holder.mDislikes.setTextColor(Color.RED);
-            String tags = "";
+            String tags = "Tags: ";
             for (int i = 0; i < mDataset.get(position).getTag().size(); i++)
             {
                 tags += "#" + mDataset.get(position).getTag().get(i) + " ";
@@ -158,6 +195,7 @@ public class MyReviewsFragment extends Fragment {
             holder.mTags.setText(tags);
             // Maybe convert location to place?
             holder.mLocation.setVisibility(View.GONE);
+            holder.mPosition.setText("" + position);
 
         }
 
@@ -167,6 +205,8 @@ public class MyReviewsFragment extends Fragment {
             return mDataset.size();
         }
     }
+
+
 
     /**
      * Will hit the php webservice that will get the reviews needed.
@@ -194,15 +234,72 @@ public class MyReviewsFragment extends Fragment {
             {
                 mAdapter = new MyAdapter(resultSet);
                 mRecyclerView.setAdapter(mAdapter);
-                //DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerView.getContext(), DividerItemDecoration.);
-                //mRecyclerView.addItemDecoration(dividerItemDecoration);
             }
             else
             {
-                Log.d("Recycler", "No reviews returned");
-                // TODO: Display a textView telling the user nothing was found
+                // Use the Builder class for convenient dialog construction
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder .setMessage("You haven't made any reviews...")
+                        .setPositiveButton( "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id)
+                                    {
+                                        mListener.onFragmentTransition(Frags.MAIN_MENU);
+                                    }
+                        })
+                        .show();
             }
 
+        }
+    }
+
+    /**
+     * Will hit the php webservice that will get the reviews needed.
+     */
+    private class PostUpdateLikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            waitSpinner.setVisibility(View.VISIBLE);
+            waitSpinner.incrementProgressBy(90);
+        }
+
+        @Override
+        protected Boolean doInBackground(Review... reviews) {
+            return DBUtility.updateReview(Globals.LIKE_FIELD, reviews[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            waitSpinner.incrementProgressBy(10);
+            waitSpinner.setVisibility(View.GONE);
+
+            Log.d("RESULT", "" + result);
+        }
+    }
+
+    /**
+     * Will hit the php webservice that will get the reviews needed.
+     */
+    private class PostUpdateDislikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            waitSpinner.setVisibility(View.VISIBLE);
+            waitSpinner.incrementProgressBy(90);
+        }
+
+        @Override
+        protected Boolean doInBackground(Review... reviews) {
+            return DBUtility.updateReview(Globals.DISLIKE_FIELD, reviews[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            waitSpinner.incrementProgressBy(10);
+            waitSpinner.setVisibility(View.GONE);
+
+            Log.d("RESULT", "" + result);
         }
     }
 }

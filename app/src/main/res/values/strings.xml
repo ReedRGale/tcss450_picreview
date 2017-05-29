@@ -54,5 +54,7 @@
 
     <string name="DBSuccessMessage">Success</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Preference names. -->
+    <string name="PREF_SESSION">group1.tcss450.edu.picreview.SESSION</string>
+    <string name="PREF_USERNAME">group1.tcss450.edu.picreview.USERNAME</string>
 </resources>
