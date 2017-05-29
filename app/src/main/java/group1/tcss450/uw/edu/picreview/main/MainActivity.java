@@ -404,7 +404,6 @@ public class MainActivity   extends     AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-
         // Check which request we're responding to
         switch (requestCode)
         {
@@ -412,6 +411,11 @@ public class MainActivity   extends     AppCompatActivity
                 if (resultCode == RESULT_OK)
                 {
                     mPlace = PlacePicker.getPlace(getApplicationContext(), data);
+
+                    // Notifies user that a location has been successfully selected
+                    String toastMsg = "Location successfully selected";
+                    Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
                     onDataStorage(LOCATION, null);
                 }
                 break;
