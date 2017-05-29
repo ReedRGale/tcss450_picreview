@@ -50,6 +50,7 @@ public class LikeDislikeFragment    extends     Fragment
 
         mForward = (Button) v.findViewById(R.id.bForwardLikeDislike);
         mForward.setEnabled(false);
+        mForward.setVisibility(View.INVISIBLE);
 
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bBackLikeDislike));
@@ -73,6 +74,7 @@ public class LikeDislikeFragment    extends     Fragment
         if (mListener != null)
         {
             mForward.setEnabled(true);
+            mForward.setVisibility(View.VISIBLE);
             mListener.onDataStorage(LIKE_DISLIKE, 1);
         }
     }

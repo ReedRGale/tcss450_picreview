@@ -8,28 +8,26 @@
     <Button
         android:id="@+id/bCaptionBack"
         style="@style/Widget.AppCompat.Button.Colored"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
         android:background="@android:drawable/ic_menu_revert"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eCaption"
-        app:layout_constraintVertical_bias="0.959" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/bCaptionForward"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
         android:background="@android:drawable/ic_menu_send"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eCaption"
-        app:layout_constraintVertical_bias="0.959" />
+        app:layout_constraintRight_toRightOf="parent" />
 
     <EditText
         android:id="@+id/eCaption"
@@ -47,7 +45,7 @@
         android:id="@+id/bCaptionHome"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/home"
