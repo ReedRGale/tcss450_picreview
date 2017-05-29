@@ -5,17 +5,23 @@
 
 package group1.tcss450.uw.edu.picreview.main;
 
+import android.Manifest;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -46,6 +52,7 @@ import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
+import static android.R.attr.thumbnail;
 import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_REVIEW;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
@@ -75,6 +82,9 @@ public class MainActivity   extends     AppCompatActivity
     /** Request code passed to camera for identification. */
     private static final int REQUEST_IMAGE_CAPTURE = 2;
 
+    /** Request code passed to camera for identification. */
+    private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 3;
+
     // Intermediary information gleaned from other activities.
 
     /** ImageView used when creating a new Review */
@@ -85,6 +95,9 @@ public class MainActivity   extends     AppCompatActivity
 
     /** The review just before storage */
     private Review mTempReview = null;
+
+    /** The review just before storage */
+    private Uri mImageUri = null;
 
     // Temporary information gleaned from the fragments.
 
@@ -251,6 +264,7 @@ public class MainActivity   extends     AppCompatActivity
                 mTempReview.setComments(new ArrayList<String>());
 
                 theData = mTempReview;
+                mImageView = null;
 
                 break;
             case QUERY_RETRIEVE:
@@ -300,6 +314,7 @@ public class MainActivity   extends     AppCompatActivity
             case SEARCH:
                 // Store the positive/negative data.
                 mQuery = parseHashTags((String) data);
+                Log.d("The Parsed String", mQuery[0]);
                 break;
         }
     }
@@ -317,7 +332,16 @@ public class MainActivity   extends     AppCompatActivity
             case TAKE_PICTURE:
                 if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA))
                 {
+                    ContentValues v = new ContentValues();
+                    v.put(MediaStore.Images.Media.TITLE, "New Picture");
+                    v.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+                    Uri imageUri = getContentResolver()
+                                .insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, v);
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+
                     if (takePictureIntent.resolveActivity(getPackageManager()) != null)
                     {
                         startActivityForResult( takePictureIntent,
@@ -374,18 +398,38 @@ public class MainActivity   extends     AppCompatActivity
                 }
                 break;
             case REQUEST_IMAGE_CAPTURE:
-                if (resultCode == RESULT_OK)
+                if (resultCode == RESULT_OK && data != null)
                 {
-                    // Retrieve image from activity call.
                     Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    Bitmap imageBmp = (Bitmap) extras.get("data");
+                    Uri imageUri = data.getData();
 
-                    // Change image on confirmPic to the taken picture.
-                    if (mImageView == null)
+                    try
                     {
-                        mImageView = (ImageView) findViewById(R.id.testImageView);
-                        mImageView.setImageBitmap(imageBitmap);
+                        //imageBmp =  MediaStore.Images.Media.getBitmap(
+                                //getContentResolver(), imageUri);
+
+                        // Change image on confirmPic to the taken picture.
+                        if (mImageView == null && imageBmp != null)
+                        {
+                            mImageView = (ImageView) findViewById(R.id.testImageView);
+                            mImageView.setImageBitmap(imageBmp);
+                        }
+                        else if (imageBmp == null)
+                        {
+                            Toast.makeText(this, "Image attachment failed...", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(this, "Unknown failure. Try again.", Toast.LENGTH_LONG).show();
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        Log.e("onActivityResult()", e.getMessage(), e);
+                    }
+
+
                 }
                 break;
         }
@@ -402,6 +446,8 @@ public class MainActivity   extends     AppCompatActivity
     {
 		/* **** Split initial string. **** */
 
+        Log.d("ParseHash", "in Function...");
+
 		if (theParsableString.contains("#"))
         {
             String[] hashArray = theParsableString.split("#");
@@ -412,6 +458,8 @@ public class MainActivity   extends     AppCompatActivity
                 if (hashArray[i].equals("")) { cull++; }
             }
 
+            Log.d("ParseHash", "Cull: " + cull);
+
             /* **** Split initial string. **** */
 
             /* **** Cull off random hashes. **** */
@@ -420,13 +468,14 @@ public class MainActivity   extends     AppCompatActivity
             int j = 0;
             for (int i = 0; i < hashArray.length && j < culledArray.length; i++)
             {
-                if (!hashArray[i].equals("#"))
+                if (!hashArray[i].equals(""))
                 {
                     culledArray[j] = hashArray[i];
                     j++;
                 }
             }
             /* **** Cull off random hashes. **** */
+            Log.d("ParseHash", "Cull: " + cull);
 
             return culledArray;
         }
@@ -435,5 +484,15 @@ public class MainActivity   extends     AppCompatActivity
             // Just return theParsableString as the tag.
             return new String[] { theParsableString };
         }
+    }
+
+    /** Gets the real part of the image from data. */
+    private String getRealPathFromURI(Uri contentUri)
+    {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
     }
 }
