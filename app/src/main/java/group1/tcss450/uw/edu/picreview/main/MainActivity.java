@@ -55,8 +55,6 @@ import group1.tcss450.uw.edu.picreview.util.Functions;
 import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
-import static android.R.attr.thumbnail;
-import static group1.tcss450.uw.edu.picreview.util.Frags.CONFIRM_REVIEW;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
 /**
@@ -65,6 +63,7 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 public class MainActivity   extends     AppCompatActivity
 
                             implements  LoginFragment.OnFragmentInteractionListener,
+                                        MyReviewsFragment.OnFragmentInteractionListener,
                                         RegisterFragment.OnFragmentInteractionListener,
                                         UserAccessFragment.OnFragmentInteractionListener,
                                         MainMenuFragment.OnFragmentInteractionListener,
@@ -324,6 +323,7 @@ public class MainActivity   extends     AppCompatActivity
                 mQuery = parseHashTags((String) data);
                 Log.d("The Parsed String", mQuery[0]);
                 break;
+            case MAIN_MENU:
             case LOGIN:
             case REGISTER:
                 saveToSharedPrefs((String) data);

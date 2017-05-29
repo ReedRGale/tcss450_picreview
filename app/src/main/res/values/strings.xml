@@ -6,6 +6,7 @@
     <string name="button_review">Review</string>
     <string name="button_search">Search</string>
     <string name="button_my_reviews_text">My Reviews</string>
+    <string name="button_logout">Logout</string>
     <!-- Main Menu -->
 
     <!-- Search -->

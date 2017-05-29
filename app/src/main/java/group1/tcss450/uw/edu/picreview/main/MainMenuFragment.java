@@ -3,6 +3,7 @@ package group1.tcss450.uw.edu.picreview.main;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,22 @@ public class MainMenuFragment   extends     Fragment
 {
     /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
+
+
+    // Buttons that we need to change visibility of.
+
+    /** Review button linked to its respective functionality. */
     private Button mReview;
+
+    /** MyReviews button linked to its respective functionality. */
     private Button mMyReviews;
+
+    /** Login button linked to its respective functionality. */
     private Button mLogin;
+
+    /** Logout button linked to its respective functionality. */
+    private Button mLogout;
+
 
     /** Required empty public constructor */
     public MainMenuFragment() {}
@@ -49,12 +63,14 @@ public class MainMenuFragment   extends     Fragment
         mReview = (Button) v.findViewById(R.id.bReview);
         mMyReviews = (Button) v.findViewById(R.id.my_reviews_button);
         mLogin = (Button) v.findViewById(R.id.bTempUserAccess);
+        mLogout = (Button) v.findViewById(R.id.bLogout);
 
         // Add all buttons.
         ba.add((Button) v.findViewById(R.id.bSearch));
         ba.add((Button) v.findViewById(R.id.bReview));
         ba.add((Button) v.findViewById(R.id.bTempUserAccess));
         ba.add((Button) v.findViewById(R.id.my_reviews_button));
+        ba.add((Button) v.findViewById(R.id.bLogout));
 
         // If user is logged in, then they can view their own reviews
         if (Globals.CURRENT_USERNAME.length() != 0) enableReview();
@@ -81,6 +97,10 @@ public class MainMenuFragment   extends     Fragment
                 break;
             case R.id.my_reviews_button:
                 onViewMyReviewsPressed();
+                break;
+            case R.id.bLogout:
+                Log.d("DEBUG", "I did get pressed...");
+                onLogoutPressed();
                 break;
         }
     }
@@ -115,11 +135,26 @@ public class MainMenuFragment   extends     Fragment
         if (mListener != null) { mListener.onFragmentTransition(USER_ACCESS); }
     }
 
+    /**
+     * Method that implements functionality of the logout button.
+     */
+    private void onLogoutPressed()
+    {
+        if (mListener != null)
+        {
+            Globals.CURRENT_USERNAME = "";
+            mListener.onDataStorage(MAIN_MENU, Globals.CURRENT_USERNAME);
+            enableLogin();
+            mListener.onFragmentTransition(MAIN_MENU);
+        }
+    }
+
     /** Enable review functionality, disabling login. */
     private void enableReview()
     {
         mReview.setVisibility(View.VISIBLE);
         mMyReviews.setVisibility(View.VISIBLE);
+        mLogout.setVisibility(View.VISIBLE);
         mLogin.setVisibility(View.INVISIBLE);
     }
 
@@ -128,6 +163,7 @@ public class MainMenuFragment   extends     Fragment
     {
         mReview.setVisibility(View.INVISIBLE);
         mMyReviews.setVisibility(View.INVISIBLE);
+        mLogout.setVisibility(View.INVISIBLE);
         mLogin.setVisibility(View.VISIBLE);
     }
 
@@ -170,6 +206,7 @@ public class MainMenuFragment   extends     Fragment
     public interface OnFragmentInteractionListener
     {
         void onFragmentTransition(Frags target);
+        void onDataStorage(Frags source, Object data);
         void onFunctionCall(Functions target);
     }
 }
