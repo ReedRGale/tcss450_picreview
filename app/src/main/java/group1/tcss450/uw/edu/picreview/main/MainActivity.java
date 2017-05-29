@@ -259,6 +259,8 @@ public class MainActivity   extends     AppCompatActivity
                 mTempReview.setLocation(mTempLocation);
                 mTempReview.setReviewType(mTempLD);
 
+                Log.d(this.toString(), mTempReview.getLocation().toString());
+
                 if (mTempTags != null)
                 {
                     mTempReview.setTags(Arrays.asList(mTempTags));
@@ -296,11 +298,6 @@ public class MainActivity   extends     AppCompatActivity
     {
         // Prime the transaction to the proper case.
         switch (source) {
-            case CONFIRM_PIC:
-                // Store the bitmap.
-                BitmapDrawable tempBM = (BitmapDrawable) mImageView.getDrawable();
-                mTempBitmap = tempBM.getBitmap();
-                break;
             case CAPTION:
                 // Store the caption.
                 EditText tempET = (EditText) data;
@@ -318,7 +315,7 @@ public class MainActivity   extends     AppCompatActivity
                 // Milk the information.
                 Location tempLoc = new Location("");
                 tempLoc.setLatitude(mPlace.getLatLng().latitude);
-                tempLoc.setLatitude(mPlace.getLatLng().longitude);
+                tempLoc.setLongitude(mPlace.getLatLng().longitude);
                 mTempLocation = tempLoc;
                 break;
             case SEARCH:
@@ -415,6 +412,7 @@ public class MainActivity   extends     AppCompatActivity
                     // Change image on confirmPic to the taken picture.
                     if (mImageView == null)
                     {
+                        mTempBitmap = imageBitmap;
                         //mImageView = (ImageView) findViewById(R.id.testImageView);
                         //mImageView.setImageBitmap(imageBitmap);
                     }
