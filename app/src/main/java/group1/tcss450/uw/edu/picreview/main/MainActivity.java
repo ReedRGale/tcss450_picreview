@@ -159,8 +159,15 @@ public class MainActivity   extends     AppCompatActivity
         switch (target)
         {
             case SEARCH:
-                transaction = getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragmentContainer, new SearchFragment())
+                transaction = getSupportFragmentManager().beginTransaction();
+
+                // Clear all the way back to the MAIN_MENU fragment.
+                while (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                {
+                    getSupportFragmentManager().popBackStackImmediate();
+                }
+
+                transaction.replace(R.id.fragmentContainer, new SearchFragment())
                         .addToBackStack(null);
                 break;
             case USER_ACCESS:
