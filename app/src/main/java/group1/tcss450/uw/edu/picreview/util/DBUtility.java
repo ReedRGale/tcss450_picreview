@@ -193,7 +193,7 @@ public class DBUtility {
 
                             Location deserializedLocation = (!JsonReviewObject.getString("location").equals("null")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
 
-                            if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
+                            if (deserializedImage == null) CreationSuccess = false;
 
                             if (CreationSuccess)
                             {
@@ -217,6 +217,7 @@ public class DBUtility {
                             else
                             {
                                 Log.d("Error", "Unable to build Review");
+
                             }
                         }
                     }
@@ -278,7 +279,7 @@ public class DBUtility {
                                 Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
                                 Location deserializedLocation = (!JsonReviewObject.getString("location").equals("none")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
 
-                                if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
+                                if (deserializedImage == null) CreationSuccess = false;
 
                                 if (CreationSuccess)
                                 {
@@ -361,7 +362,7 @@ public class DBUtility {
                                 List<String> deserializedCommentList = (List<String>) deserializeString(JsonReviewObject.getString("comments"));
                                 Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
 
-                                if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
+                                if (deserializedImage == null) CreationSuccess = false;
 
                                 if (CreationSuccess)
                                 {
