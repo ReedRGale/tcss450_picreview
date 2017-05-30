@@ -101,7 +101,7 @@ public class DBUtility {
                 urlConnection.setDoOutput(true);
                 OutputStreamWriter wr = new OutputStreamWriter(urlConnection.getOutputStream());
                 String data = URLEncoder.encode("Username", "UTF-8") +
-                        "=" + URLEncoder.encode("John", "UTF-8") +
+                        "=" + URLEncoder.encode(Globals.CURRENT_USERNAME, "UTF-8") +
                         "&" + URLEncoder.encode("jsonReview", "UTF-8") +
                         "=" + URLEncoder.encode(jsonReview.toString(), "UTF-8");
                 wr.write(data);
