@@ -262,8 +262,6 @@ public class MainActivity   extends     AppCompatActivity
                 mTempReview.setLocation(mTempLocation);
                 mTempReview.setReviewType(mTempLD);
 
-                Log.d(this.toString(), mTempReview.getLocation().toString());
-
                 if (mTempTags != null)
                 {
                     mTempReview.setTags(Arrays.asList(mTempTags));

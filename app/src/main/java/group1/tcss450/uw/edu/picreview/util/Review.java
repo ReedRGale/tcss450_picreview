@@ -63,8 +63,6 @@ public class Review {
     */
     public Review(String theCaption, Bitmap theImage, Location theLocation, int theLikes, int theDislikes, int theReviewType)
     {
-        if (theImage == null || theLocation == null) throw new IllegalArgumentException("An argument is null");
-
         mCaption = (theCaption != null) ? theCaption : "";
         mImage = theImage;
         mLocation = theLocation;

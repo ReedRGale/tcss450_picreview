@@ -3,15 +3,18 @@ package group1.tcss450.uw.edu.picreview.search;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +26,7 @@ import group1.tcss450.uw.edu.picreview.R;
 import group1.tcss450.uw.edu.picreview.util.DBUtility;
 import group1.tcss450.uw.edu.picreview.util.Frags;
 import group1.tcss450.uw.edu.picreview.util.Functions;
+import group1.tcss450.uw.edu.picreview.util.Globals;
 import group1.tcss450.uw.edu.picreview.util.Review;
 
 import static group1.tcss450.uw.edu.picreview.util.Functions.QUERY_RETRIEVE;
@@ -38,6 +42,8 @@ public class QueryFragment extends Fragment
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private List<Review> mDataset;
 
     private ProgressBar waitSpinner;
     private String[] mQuery;
@@ -64,6 +70,10 @@ public class QueryFragment extends Fragment
         mRecyclerView.setHasFixedSize(true);
 
         mQuery = (String[]) mListener.onDataRetrieval(QUERY_RETRIEVE);
+
+        mDataset = new ArrayList<Review>();
+        mAdapter = new MyAdapter(mDataset);
+        mRecyclerView.setAdapter(mAdapter);
         AsyncTask<Void, Void, List<Review>> task = new PostWebServiceTask();
         task.execute();
 
@@ -72,22 +82,67 @@ public class QueryFragment extends Fragment
 
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
     {
-        private List<Review> mDataset;
-
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             // each data item is just a string in this case
-            private ImageView mImage;
-            private TextView mCaption;
+            public ImageView mImage;
+            public TextView mCaption;
+            public TextView mLikes;
+            public TextView mDislikes;
+            public TextView mTags;
+            public TextView mLocation;
+            public TextView mPosition;
+            public TextView mUser;
 
-            private ViewHolder(View itemView) {
+            public ViewHolder(View itemView) {
                 super(itemView);
                 mImage = (ImageView) itemView.findViewById(R.id.review_photo);
                 mCaption = (TextView) itemView.findViewById(R.id.caption);
+                mLikes = (TextView) itemView.findViewById(R.id.likes);
+                mDislikes = (TextView) itemView.findViewById(R.id.dislikes);
+                mTags = (TextView) itemView.findViewById(R.id.tags);
+                mLocation = (TextView) itemView.findViewById(R.id.location);
+                mPosition = (TextView) itemView.findViewById(R.id.hiddenView);
+                mUser = (TextView) itemView.findViewById(R.id.user);
+
+                Button b = (Button) itemView.findViewById(R.id.bLike);
+                b.setOnClickListener(this);
+
+                b = (Button) itemView.findViewById(R.id.bDislike);
+                b.setOnClickListener(this);
+
             }
+
+
+            @Override
+            public void onClick(View v) {
+                if (v.getId() == R.id.bLike)
+                {
+                    int index = Integer.parseInt(mPosition.getText().toString());
+                    Review review = mDataset.get(index);
+                    int likes = review.getLikes();
+                    review.setLikes(++likes);
+                    mLikes.setText("" + review.getLikes());
+                    AsyncTask<Review, Void, Boolean> task = new PostUpdateLikesWebServiceTask();
+                    task.execute(review);
+
+                }
+                else if (v.getId() == R.id.bDislike)
+                {
+                    int index = Integer.parseInt(mPosition.getText().toString());
+                    Review review = mDataset.get(index);
+                    int dislikes = review.getDislikes();
+                    review.setDislikes(++dislikes);
+                    mDislikes.setText("" + review.getDislikes());
+                    AsyncTask<Review, Void, Boolean> task = new PostUpdateDislikesWebServiceTask();
+                    task.execute(review);
+                }
+            }
+
         }
+
 
         // Provide a suitable constructor (depends on the kind of dataset)
         public MyAdapter(List<Review> myDataset) {
@@ -113,13 +168,33 @@ public class QueryFragment extends Fragment
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.mImage.setImageBitmap(mDataset.get(position).getImage());
-            holder.mCaption.setText(mDataset.get(position).getCaption());
+            holder.mCaption.setText("Caption: " + mDataset.get(position).getCaption());
+            holder.mLikes.setText("" + mDataset.get(position).getLikes());
+            holder.mLikes.setTextColor(Color.GREEN);
+            holder.mDislikes.setText("" +  mDataset.get(position).getDislikes());
+            holder.mDislikes.setTextColor(Color.RED);
+            String tags = "Tags: ";
+            for (int i = 0; i < mDataset.get(position).getTag().size(); i++)
+            {
+                tags += "#" + mDataset.get(position).getTag().get(i) + " ";
+            }
+            holder.mTags.setText(tags);
+            holder.mPosition.setText("" + position);
+            holder.mUser.setText("By: " + mDataset.get(position).getUser());
+            holder.mLocation.setText("Location: " + mDataset.get(position).getmAddress());
         }
 
         // Return the size of your dataset (invoked by the layout manager)
         @Override
         public int getItemCount() {
-            return mDataset.size();
+            if (mDataset != null)
+            {
+                return mDataset.size();
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 
@@ -178,6 +253,56 @@ public class QueryFragment extends Fragment
                         .show();
             }
 
+        }
+    }
+
+    /**
+     * Will hit the php webservice that will get the reviews needed.
+     */
+    private class PostUpdateLikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            waitSpinner.setVisibility(View.VISIBLE);
+            waitSpinner.incrementProgressBy(90);
+        }
+
+        @Override
+        protected Boolean doInBackground(Review... reviews) {
+            return DBUtility.updateReview(Globals.LIKE_FIELD, reviews[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            waitSpinner.incrementProgressBy(10);
+            waitSpinner.setVisibility(View.GONE);
+
+            Log.d("RESULT", "" + result);
+        }
+    }
+
+    /**
+     * Will hit the php webservice that will get the reviews needed.
+     */
+    private class PostUpdateDislikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
+
+        @Override
+        protected void onPreExecute() {
+            waitSpinner.setVisibility(View.VISIBLE);
+            waitSpinner.incrementProgressBy(90);
+        }
+
+        @Override
+        protected Boolean doInBackground(Review... reviews) {
+            return DBUtility.updateReview(Globals.DISLIKE_FIELD, reviews[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            waitSpinner.incrementProgressBy(10);
+            waitSpinner.setVisibility(View.GONE);
+
+            Log.d("RESULT", "" + result);
         }
     }
 

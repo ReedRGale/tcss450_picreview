@@ -46,8 +46,6 @@ public class DBUtility {
             String SerializedImage = (theReview.getImage() != null) ? serializeBitmap(theReview.getImage()) : null;
             String SerializedLocation = (theReview.getLocation() != null) ? serializeLocation(theReview.getLocation()) : null;
 
-            Log.d("LOCION", "ORIGINAL LOC:" + theReview.getLocation().toString() + " Deserialized: " + deserializeLocation(SerializedLocation).toString());
-
 
             // Check whether information is valid
             if (theReview.getCaption() == null || SerializedComments == null || SerializedTags == null || SerializedImage == null)
@@ -192,7 +190,8 @@ public class DBUtility {
                             List<String> deserializedTagList = (List<String>) deserializeString(JsonReviewObject.getString("tags"));
                             List<String> deserializedCommentList = (List<String>) deserializeString(JsonReviewObject.getString("comments"));
                             Bitmap deserializedImage = deserializeBitmap(JsonReviewObject.getString("image"));
-                            Location deserializedLocation = (!JsonReviewObject.getString("location").equals("none")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
+
+                            Location deserializedLocation = (!JsonReviewObject.getString("location").equals("null")) ? deserializeLocation(JsonReviewObject.getString("location")) : null;
 
                             if (deserializedImage == null || deserializedTagList.size() == 0) CreationSuccess = false;
 
