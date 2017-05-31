@@ -67,7 +67,6 @@ public class MainActivity   extends     AppCompatActivity
                                         LocationPickerFragment.OnFragmentInteractionListener,
                                         PicReviewConfirmFragment.OnFragmentInteractionListener,
                                         QueryFragment.OnFragmentInteractionListener
-
 {
     // Constants.
 
@@ -322,7 +321,6 @@ public class MainActivity   extends     AppCompatActivity
             case SEARCH:
                 // Store the positive/negative data.
                 mQuery = parseHashTags((String) data);
-                Log.d("The Parsed String", mQuery[0]);
                 break;
             case MAIN_MENU:
             case LOGIN:

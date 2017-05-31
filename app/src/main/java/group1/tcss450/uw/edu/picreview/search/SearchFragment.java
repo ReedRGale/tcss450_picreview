@@ -26,13 +26,14 @@ public class SearchFragment     extends     Fragment
     /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
 
-    /** This is the string that handles the query. */
+    /** These are the strings that hold the query. */
     private String mQuery;
     private EditText eText;
 
     /** Required empty public constructor */
     public SearchFragment() { }
 
+    /** Will get references to views and add listeners to buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -82,6 +83,7 @@ public class SearchFragment     extends     Fragment
         mListener = null;
     }
 
+    /** Will call a method that handles searches. */
     @Override
     public void onClick(View view)
     {
@@ -100,7 +102,10 @@ public class SearchFragment     extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /** Will be used to start the query fragment. */
         void onFragmentTransition(Frags target);
+
+        /** Will be used to store the query term so that the query fragment can access it. */
         void onDataStorage(Frags source, Object data);
     }
 }

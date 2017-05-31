@@ -35,15 +35,16 @@ public class PicReviewConfirmFragment   extends     Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    /* The review to be saved. */
+    /** The review to be saved. */
     private Review mReview;
 
-    /* Spinner that appears while review is saving. */
+    /** Spinner that appears while review is saving. */
     private ProgressBar waitSpinner;
 
     /** Empty constructor:  required. */
     public PicReviewConfirmFragment() { }
 
+    /** Will attach listeners to all of the buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -108,6 +109,7 @@ public class PicReviewConfirmFragment   extends     Fragment
         mListener = null;
     }
 
+    /** Will detect what button was clicked and call corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -130,9 +132,13 @@ public class PicReviewConfirmFragment   extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /* For navigating between LocationPicker & Main menu fragments. */
         void onFragmentTransition(Frags target);
-        void onDataStorage(Frags source, Object data);
+
+        /* Will be used to display the image taken. */
         void onFunctionCall(Functions target);
+
+        /* Will be used to retrieve the review if the user wants to go ahead and save it.*/
         Object onDataRetrieval(Functions target);
     }
 
@@ -141,20 +147,20 @@ public class PicReviewConfirmFragment   extends     Fragment
      */
     private class PostWebServiceTask extends AsyncTask<Review, Void, Boolean> {
 
+        /** Loads the progressBar 90% of the way. */
         @Override
         protected void onPreExecute() {
             waitSpinner.setVisibility(View.VISIBLE);
-            for (int i = 0; i < 90; i++)
-            {
-                waitSpinner.incrementProgressBy(1);
-            }
+            waitSpinner.incrementProgressBy(90);
         }
 
+        /** Calls a method that will handle the process of contacting the server and saving the review. */
         @Override
         protected Boolean doInBackground(Review... reviews) {
             return DBUtility.saveReview(reviews[0]);
         }
 
+        /** Will increment the progress bar the remaining 10% and notify the user whether the attempt was successfuly. */
         @Override
         protected void onPostExecute(Boolean result) {
             waitSpinner.incrementProgressBy(10);
@@ -170,8 +176,6 @@ public class PicReviewConfirmFragment   extends     Fragment
                 Toast.makeText(getContext(), "Failed to save Review. Please try again.", Toast.LENGTH_LONG).show();
                 waitSpinner.setProgress(0);
             }
-
-            Log.d("RESPONSE", result.toString());
         }
     }
 }

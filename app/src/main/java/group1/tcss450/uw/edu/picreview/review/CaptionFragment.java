@@ -32,7 +32,7 @@ public class CaptionFragment    extends     Fragment
     /** Empty constructor:  required. */
     public CaptionFragment() { }
 
-
+    /** Adds listeners to buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -71,6 +71,7 @@ public class CaptionFragment    extends     Fragment
         }
     }
 
+    /** Will open up the main menu fragment. */
     public void onHomePressed() {
         if(mListener != null) {
             mListener.onFragmentTransition(MAIN_MENU);
@@ -94,6 +95,7 @@ public class CaptionFragment    extends     Fragment
         mListener = null;
     }
 
+    /* Will detect what button was clicked and call the corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -117,8 +119,13 @@ public class CaptionFragment    extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /* For navigating between fragments. */
         void onFragmentTransition(Frags target);
+
+        /* Will pass caption information back to activity. */
         void onDataStorage(Frags source, Object data);
+
+        /* Used to take a picture. */
         void onFunctionCall(Functions target);
     }
 }

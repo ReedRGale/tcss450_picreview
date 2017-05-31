@@ -31,7 +31,7 @@ public class LocationPickerFragment     extends     Fragment
     /** Empty constructor:  required. */
     public LocationPickerFragment() { }
 
-
+    /** Will add listeners to the buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -78,6 +78,7 @@ public class LocationPickerFragment     extends     Fragment
         if (mListener != null) { mListener.onFragmentTransition(LIKE_DISLIKE); }
     }
 
+    /** Will take user back to the main menu. */
     public void onHomePressed() {
         if(mListener != null) {
             mListener.onFragmentTransition(MAIN_MENU);
@@ -103,6 +104,7 @@ public class LocationPickerFragment     extends     Fragment
         mListener = null;
     }
 
+    /* Will detect what button was clicked and call corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -134,8 +136,10 @@ public class LocationPickerFragment     extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /* For navigating between fragments. */
         void onFragmentTransition(Frags target);
+
+        /* Will be used to pass the location chosen to the activity. */
         void onFunctionCall(Functions target);
-        void onDataStorage(Frags source, Object data);
     }
 }

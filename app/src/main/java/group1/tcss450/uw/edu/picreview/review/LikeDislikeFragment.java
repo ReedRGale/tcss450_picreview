@@ -32,9 +32,10 @@ public class LikeDislikeFragment    extends     Fragment
     /** The forward button. */
     private Button mForward;
 
-    /** Empty contructor:  required. */
+    /** Empty constructor:  required. */
     public LikeDislikeFragment() { }
 
+    /* Added listeners to buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -127,6 +128,7 @@ public class LikeDislikeFragment    extends     Fragment
         mListener = null;
     }
 
+    /* Will detect what button was clicked and call corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -158,7 +160,10 @@ public class LikeDislikeFragment    extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /* For navigating between fragments. */
         void onFragmentTransition(Frags target);
+
+        /* Will pass like/dislike data retrieved back to activity. */
         void onDataStorage(Frags source, Object data);
     }
 }

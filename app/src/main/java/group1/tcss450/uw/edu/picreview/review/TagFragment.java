@@ -31,6 +31,7 @@ public class TagFragment    extends     Fragment
     /** Empty constructor:  required. */
     public TagFragment() { }
 
+    /** Will add listeners to the buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -74,6 +75,7 @@ public class TagFragment    extends     Fragment
         }
     }
 
+    /** Will take the user to the main menu. */
     public void onHomePressed() {
         if(mListener != null) {
             mListener.onFragmentTransition(MAIN_MENU);
@@ -99,6 +101,7 @@ public class TagFragment    extends     Fragment
         mListener = null;
     }
 
+    /* Will detect what button was clicked and call corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -124,7 +127,11 @@ public class TagFragment    extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /** Will allow user to navigate back to the caption fragment, forward to likedislike
+         * ragment, or back to the main menu. */
         void onFragmentTransition(Frags target);
+
+        /** Will be used to help build the Review in MainActivity. */
         void onDataStorage(Frags source, Object data);
     }
 }
