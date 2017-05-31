@@ -41,17 +41,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     /** Object where the user can enter text for password. */
     private EditText pass_text;
 
+    /* The link to to folder where our php scripts are contained. */
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
             "~demyan15/";
-
-    private String returnedMessage;
 
     public LoginFragment() {
         // Required empty public constructor
     }
 
-
+    /* Gets references to some views and attaches listeners to submit button. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -82,6 +81,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mListener = null;
     }
 
+    /* Will ensure something has been entered and starts an asyncTask that will attempt to login. */
     @Override
     public void onClick(View v) {
 
@@ -112,8 +112,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * Will hit the php code that checks with the database to see whether the credentials exist.
      */
     private class PostWebServiceTask extends AsyncTask<String, Void, String> {
+
+        /* Name of php file that handles login attempts. */
         private final String SERVICE = "loginService.php";
+
+        /* Will be used to temporarily house the new username. */
         private String new_username = Globals.CURRENT_USERNAME;
+
+        /* Will send a request to the server and return the response. */
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length != 3) {
@@ -150,6 +156,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             }
             return response;
         }
+
+        /* Determines whether the login was successful, if so it saves the username locally and takes the user to the main menu; else it notifies the user of failure. */
         @Override
         protected void onPostExecute(String result) {
             if (result.equals(getString(R.string.DBSuccessMessage)))

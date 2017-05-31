@@ -51,7 +51,7 @@ import static group1.tcss450.uw.edu.picreview.util.Frags.*;
 import static group1.tcss450.uw.edu.picreview.util.Frags.LOCATION;
 
 /**
- * Main activity used when running the app.
+ * Main activity for running the app.
  */
 public class MainActivity   extends     AppCompatActivity
 
@@ -79,7 +79,6 @@ public class MainActivity   extends     AppCompatActivity
 
 
     // Prefs saved between instances.
-
     private SharedPreferences mPrefs;
 
 
@@ -97,13 +96,13 @@ public class MainActivity   extends     AppCompatActivity
 
     // Temporary information gleaned from the fragments.
 
-    /** Bitmap used when creating a new Review */
+    /** Bitmap used when creating a new Review. */
     private Bitmap mTempBitmap = null;
 
-    /** Caption used when creating a new Review */
+    /** Caption used when creating a new Review. */
     private String mTempCaption = null;
 
-    /** Tags used when creating a new Review */
+    /** Tags used when creating a new Review. */
     private String[] mTempTags = null;
 
     /**  Value to determine whether the user likes or dislikes the place reviewed.
@@ -119,6 +118,7 @@ public class MainActivity   extends     AppCompatActivity
     private String[] mQuery = null;
 
 
+    /** Gets the preferences for the app, if any have been set, and starts up the main menu fragment. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -333,8 +333,7 @@ public class MainActivity   extends     AppCompatActivity
     }
 
     /**
-     * This is a general method to call functionality in other,
-     * external, sources.
+     * This is a general method to call functionality in other, external sources.
      * @param target the target functionality to retrieve.
      */
     @Override
@@ -372,13 +371,7 @@ public class MainActivity   extends     AppCompatActivity
                     // Start the Intent by requesting a result, identified by a request code.
                     startActivityForResult(intent, REQUEST_PLACE_PICKER);
 
-                    // Hide the pick option in the UI to prevent users from starting the picker
-                    // multiple times.
-                    //showPickAction(false);
-
                 } catch (GooglePlayServicesRepairableException e) {
-//                GooglePlayServicesUtil
-//                        .getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
                 } catch (GooglePlayServicesNotAvailableException e) {
                     Toast.makeText(this, "Google Play Services is not available.",
                             Toast.LENGTH_LONG)
@@ -392,6 +385,8 @@ public class MainActivity   extends     AppCompatActivity
 
     }
 
+    /** Will determine what activity has returned a value and respond accordingly. Will either notify user that they
+     * successfully chose a location or will get the picture the user took and convert it to a bitmap. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {

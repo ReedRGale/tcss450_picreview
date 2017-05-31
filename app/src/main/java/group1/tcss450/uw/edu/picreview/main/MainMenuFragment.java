@@ -21,7 +21,7 @@ import static group1.tcss450.uw.edu.picreview.util.Functions.*;
 
 
 /**
- * A fragment that handles the main menu.
+ * Sets up the main menu.
  * Currently, there are two things that the main menu must handle:
  * Passing the user to the SearchFragment or to the ReviewFragment.
  */
@@ -50,6 +50,7 @@ public class MainMenuFragment   extends     Fragment
     /** Required empty public constructor */
     public MainMenuFragment() {}
 
+    /* Inflates the view, gets references to some views, and adds listeners to buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -82,6 +83,7 @@ public class MainMenuFragment   extends     Fragment
         return v;
     }
 
+    /* Will detect what button was clicked and invokes corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -99,7 +101,6 @@ public class MainMenuFragment   extends     Fragment
                 onViewMyReviewsPressed();
                 break;
             case R.id.bLogout:
-                Log.d("DEBUG", "I did get pressed...");
                 onLogoutPressed();
                 break;
         }

@@ -40,7 +40,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private EditText pass_box;
     private EditText confirm_pass_box;
 
-    /* The location of the php scripts. */
+    /* The link to to folder where our php scripts are contained. */
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
             "~demyan15/";
@@ -50,7 +50,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-
+    /* Gets references to some views and attaches listeners to submit button. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,6 +84,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         mListener = null;
     }
 
+    /* Will check the input to make sure it is valid before attempting to register by passing data off to an AsyncTask. */
     @Override
     public void onClick(View v) {
 
@@ -136,9 +137,18 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Will hit the php code that checks with the database to see whether the credentials can be registered.
+     */
     private class PostWebServiceTask extends AsyncTask<String, Void, String> {
+
+        /* Name of php file that handles registration attempts. */
         private final String SERVICE = "registerService.php";
+
+        /* Will be used to temporarily house the new username. */
         private String new_username = Globals.CURRENT_USERNAME;
+
+        /* Will send a request to the server and return the response. */
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length != 3) {
@@ -175,6 +185,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             }
             return response;
         }
+
+        /* Determines whether the registration was successful, if so it saves the username locally and takes the user to the main menu; else it notifies the user of failure. */
         @Override
         protected void onPostExecute(String result) {
 

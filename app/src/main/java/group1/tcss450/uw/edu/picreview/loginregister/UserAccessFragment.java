@@ -25,7 +25,7 @@ public class UserAccessFragment extends Fragment implements View.OnClickListener
         // Required empty public constructor
     }
 
-
+    /* Attaches listeners to the buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,6 +58,7 @@ public class UserAccessFragment extends Fragment implements View.OnClickListener
         mListener = null;
     }
 
+    /* Will determine what button was clicked and open the corresponding fragment. */
     @Override
     public void onClick(View v) {
         // Will determine which fragment to start
