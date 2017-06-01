@@ -50,7 +50,7 @@ public class MainMenuFragment   extends     Fragment
     /** Required empty public constructor */
     public MainMenuFragment() {}
 
-    /* Inflates the view, gets references to some views, and adds listeners to buttons. */
+    /** Inflates the view, gets references to some views, and adds listeners to buttons. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
@@ -83,7 +83,7 @@ public class MainMenuFragment   extends     Fragment
         return v;
     }
 
-    /* Will detect what button was clicked and invokes corresponding method. */
+    /** Will detect what button was clicked and invokes corresponding method. */
     @Override
     public void onClick(View view)
     {
@@ -205,8 +205,13 @@ public class MainMenuFragment   extends     Fragment
      */
     public interface OnFragmentInteractionListener
     {
+        /** For navigating between fragments. */
         void onFragmentTransition(Frags target);
+
+        /** Will be used to store username locally on the device. */
         void onDataStorage(Frags source, Object data);
+
+        /** Will be used to start the camera. */
         void onFunctionCall(Functions target);
     }
 }

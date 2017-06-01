@@ -101,7 +101,7 @@ public class TagFragment    extends     Fragment
         mListener = null;
     }
 
-    /* Will detect what button was clicked and call corresponding method. */
+    /** Will detect what button was clicked and call corresponding method. */
     @Override
     public void onClick(View view)
     {

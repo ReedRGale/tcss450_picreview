@@ -83,7 +83,7 @@ public class QueryFragment extends Fragment
         return v;
     }
 
-    /* The list object which holds the reviews. */
+    /** The list object which holds the reviews. */
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
     {
         /** View object that serves as a template for the review. */

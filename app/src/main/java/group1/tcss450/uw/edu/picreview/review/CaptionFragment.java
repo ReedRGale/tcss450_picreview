@@ -95,7 +95,7 @@ public class CaptionFragment    extends     Fragment
         mListener = null;
     }
 
-    /* Will detect what button was clicked and call the corresponding method. */
+    /** Will detect what button was clicked and call the corresponding method. */
     @Override
     public void onClick(View view)
     {

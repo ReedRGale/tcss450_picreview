@@ -8,35 +8,35 @@ import java.util.List;
 
 /**
  * Created by Dema on 5/17/2017.
- * Represents a review. Contains all the information that goes with a review.
+ * Represents a review.
  */
 public class Review {
 
-    /* The caption. */
+    /** The caption. */
     private String mCaption;
 
-    /* Review comments. */
+    /** Review comments. */
     private List<String> mComments;
 
-    /* Review tag, if any. */
+    /** Review tag, if any. */
     private List<String> mTags;
 
-    /* Review image. */
+    /** Review image. */
     private Bitmap mImage;
 
-    /* Location where the object of the review is located. */
+    /** Location where the object of the review is located. */
     private Location mLocation;
 
-    /* Number of likes this review has. */
+    /** Number of likes this review has. */
     private int mLikes;
 
-    /* Number of dislikes this review has. */
+    /** Number of dislikes this review has. */
     private int mDislikes;
 
-    /* Whether the review is positive or negative. */
+    /** Whether the review is positive or negative. */
     private int reviewType;
 
-    /* The id of the review. Assigned by the database. */
+    /** The id of the review. Assigned by the database. */
     private int myId;
 
     /** The user this review belongs to. */
@@ -45,7 +45,7 @@ public class Review {
     /** The address of the review location. */
     private String mAddress;
 
-    /* No-arg constructor. */
+    /** No-arg constructor. Initializes fields with default values. */
     public Review()
     {
         // Default values
@@ -57,6 +57,7 @@ public class Review {
         reviewType = 0;
         mComments = new ArrayList<>();
         mTags = new ArrayList<>();
+        mUser = "";
         mAddress = "";
     }
 

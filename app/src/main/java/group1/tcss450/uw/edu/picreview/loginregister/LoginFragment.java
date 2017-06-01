@@ -41,7 +41,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     /** Object where the user can enter text for password. */
     private EditText pass_text;
 
-    /* The link to to folder where our php scripts are contained. */
+    /** The link to to folder where our php scripts are contained. */
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
             "~demyan15/";
@@ -50,7 +50,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    /* Gets references to some views and attaches listeners to submit button. */
+    /** Gets references to some views and attaches listeners to submit button. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         mListener = null;
     }
 
-    /* Will ensure something has been entered and starts an asyncTask that will attempt to login. */
+    /** Will ensure something has been entered and starts an asyncTask that will attempt to login. */
     @Override
     public void onClick(View v) {
 
@@ -113,13 +113,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      */
     private class PostWebServiceTask extends AsyncTask<String, Void, String> {
 
-        /* Name of php file that handles login attempts. */
+        /** Name of php file that handles login attempts. */
         private final String SERVICE = "loginService.php";
 
-        /* Will be used to temporarily house the new username. */
+        /** Will be used to temporarily house the new username. */
         private String new_username = Globals.CURRENT_USERNAME;
 
-        /* Will send a request to the server and return the response. */
+        /** Will send a request to the server and return the response. */
         @Override
         protected String doInBackground(String... strings) {
             if (strings.length != 3) {
@@ -157,7 +157,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             return response;
         }
 
-        /* Determines whether the login was successful, if so it saves the username locally and takes the user to the main menu; else it notifies the user of failure. */
+        /** Determines whether the login was successful, if so it saves the username locally and takes the user to the main menu; else it notifies the user of failure. */
         @Override
         protected void onPostExecute(String result) {
             if (result.equals(getString(R.string.DBSuccessMessage)))
@@ -185,7 +185,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
      * activity.
      */
     public interface OnFragmentInteractionListener {
+        /** Will be used to launch the main menu fragment. */
         void onFragmentTransition(Frags target);
+
+        /** Will be used to store login credentials locally on the device. */
         void onDataStorage(Frags source, Object data);
     }
 }

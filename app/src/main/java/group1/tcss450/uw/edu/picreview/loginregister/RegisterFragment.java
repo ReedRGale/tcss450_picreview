@@ -40,7 +40,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
     private EditText pass_box;
     private EditText confirm_pass_box;
 
-    /* The link to to folder where our php scripts are contained. */
+    /** The link to to folder where our php scripts are contained. */
     private final String PARTIAL_URL
             = "http://cssgate.insttech.washington.edu/" +
             "~demyan15/";
@@ -50,7 +50,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    /* Gets references to some views and attaches listeners to submit button. */
+    /** Gets references to some views and attaches listeners to submit button. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -84,7 +84,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         mListener = null;
     }
 
-    /* Will check the input to make sure it is valid before attempting to register by passing data off to an AsyncTask. */
+    /** Will check the input to make sure it is valid before attempting to register by passing data off to an AsyncTask. */
     @Override
     public void onClick(View v) {
 
@@ -186,7 +186,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             return response;
         }
 
-        /* Determines whether the registration was successful, if so it saves the username locally and takes the user to the main menu; else it notifies the user of failure. */
+        /** Determines whether the registration was successful, if so it saves the username locally and takes the user to the main menu; else it notifies the user of failure. */
         @Override
         protected void onPostExecute(String result) {
 
@@ -218,7 +218,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+        /** Will be used to start the main menu fragment. */
         void onFragmentTransition(Frags target);
+
+        /** Will be used to store credentials on locally on the device. */
         void onDataStorage(Frags source, Object data);
     }
 }

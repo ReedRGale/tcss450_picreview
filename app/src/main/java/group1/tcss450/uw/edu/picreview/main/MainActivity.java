@@ -384,7 +384,11 @@ public class MainActivity   extends     AppCompatActivity
     }
 
     /** Will determine what activity has returned a value and respond accordingly. Will either notify user that they
-     * successfully chose a location or will get the picture the user took and convert it to a bitmap. */
+     * successfully chose a location or will get the picture the user took and convert it to a bitmap.
+     * @param requestCode The constant for the activity to start.
+     * @param resultCode The result returned by an activity.
+     * @param data the data returned from the acitivty.
+     **/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -467,7 +471,9 @@ public class MainActivity   extends     AppCompatActivity
         }
     }
 
-    /** Store the user to prefs so they can still be logged in. */
+    /** Store the user to prefs so they can still be logged in.
+     * @param username the username to store.
+     */
     private void saveToSharedPrefs(String username)
     {
         mPrefs.edit().putString(getString(R.string.PREF_USERNAME), username).apply();
