@@ -32,26 +32,29 @@ import group1.tcss450.uw.edu.picreview.util.Review;
 import static group1.tcss450.uw.edu.picreview.util.Functions.QUERY_RETRIEVE;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Will get and display reviews matching the search term.
  */
 public class QueryFragment extends Fragment
 {
     /** This is the activity that swaps this fragment in and out. */
     private OnFragmentInteractionListener mListener;
 
+    /** Variables needed to set up the recyclerView. */
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
     private List<Review> mDataset;
 
+    /** Progress bar to show while loading reviews. */
     private ProgressBar waitSpinner;
+
+    /** The search terms. */
     private String[] mQuery;
 
     /** Required empty public constructor */
     public QueryFragment() { }
 
-
+    /** Will get references to view and start the process of getting reviews matching search term. */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -80,13 +83,11 @@ public class QueryFragment extends Fragment
         return v;
     }
 
+    /* The list object which holds the reviews. */
     private class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>
     {
-        // Provide a reference to the views for each data item
-        // Complex data items may need more than one view per item, and
-        // you provide access to all the views for a data item in a view holder
+        /** View object that serves as a template for the review. */
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            // each data item is just a string in this case
             public ImageView mImage;
             public TextView mCaption;
             public TextView mLikes;
@@ -96,6 +97,7 @@ public class QueryFragment extends Fragment
             public TextView mPosition;
             public TextView mUser;
 
+            /** Gets references to all of the views and attaches listeners to the buttons. */
             public ViewHolder(View itemView) {
                 super(itemView);
                 mImage = (ImageView) itemView.findViewById(R.id.review_photo);
@@ -115,7 +117,7 @@ public class QueryFragment extends Fragment
 
             }
 
-
+            /** Determines whether button clicked was a like or dislike, updates corresponding number, and starts the appropriate service. */
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.bLike)
@@ -144,12 +146,12 @@ public class QueryFragment extends Fragment
         }
 
 
-        // Provide a suitable constructor (depends on the kind of dataset)
+        // Doesn't really do anything
         public MyAdapter(List<Review> myDataset) {
             mDataset = myDataset;
         }
 
-        // Create new views (invoked by the layout manager)
+        /** Sets up the viewHolder to use our layout. */
         @Override
         public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
         {
@@ -162,7 +164,7 @@ public class QueryFragment extends Fragment
             return vh;
         }
 
-        // Replace the contents of a view (invoked by the layout manager)
+        /** Replaces the contents of views (invoked by the layout manager) */
         @Override
         public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
             // - get element from your dataset at this position
@@ -184,7 +186,7 @@ public class QueryFragment extends Fragment
             holder.mLocation.setText("Location: " + mDataset.get(position).getmAddress());
         }
 
-        // Return the size of your dataset (invoked by the layout manager)
+        /** Return the size of the dataset (invoked by the layout manager). */
         @Override
         public int getItemCount() {
             if (mDataset != null)
@@ -204,12 +206,14 @@ public class QueryFragment extends Fragment
     private class PostWebServiceTask extends AsyncTask<Void, Void, List<Review>>
     {
 
+        /** Loads the progressBar 90% of the way. */
         @Override
         protected void onPreExecute() {
             waitSpinner.setVisibility(View.VISIBLE);
             waitSpinner.incrementProgressBy(90);
         }
 
+        /** Calls a method that will handle the process of contacting the server and getting reviews. */
         @Override
         protected List<Review> doInBackground(Void... params)
         {
@@ -227,6 +231,9 @@ public class QueryFragment extends Fragment
             return finalReviews;
         }
 
+        /** Will increment the progress bar the remaining 10% and update the set in the RecyclerView or let the user
+         * know that there are no reviews and take them back to the main menu.
+         */
         @Override
         protected void onPostExecute(List<Review> resultSet) {
             waitSpinner.incrementProgressBy(10);
@@ -257,52 +264,54 @@ public class QueryFragment extends Fragment
     }
 
     /**
-     * Will hit the php webservice that will get the reviews needed.
+     * Will hit the php webservice that will update the number of likes for this review.
      */
     private class PostUpdateLikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
 
+        /** Loads the progressBar 90% of the way. */
         @Override
         protected void onPreExecute() {
             waitSpinner.setVisibility(View.VISIBLE);
             waitSpinner.incrementProgressBy(90);
         }
 
+        /** Calls a method that handles the interaction with the server. */
         @Override
         protected Boolean doInBackground(Review... reviews) {
             return DBUtility.updateReview(Globals.LIKE_FIELD, reviews[0]);
         }
 
+        /** Will increment the progress bar the remaining 10%. */
         @Override
         protected void onPostExecute(Boolean result) {
             waitSpinner.incrementProgressBy(10);
             waitSpinner.setVisibility(View.GONE);
-
-            Log.d("RESULT", "" + result);
         }
     }
 
     /**
-     * Will hit the php webservice that will get the reviews needed.
+     * Will hit the php webservice that will update the number of dislikes for this review.
      */
     private class PostUpdateDislikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
 
+        /** Loads the progressBar 90% of the way. */
         @Override
         protected void onPreExecute() {
             waitSpinner.setVisibility(View.VISIBLE);
             waitSpinner.incrementProgressBy(90);
         }
 
+        /** Calls a method that handles the interaction with the server. */
         @Override
         protected Boolean doInBackground(Review... reviews) {
             return DBUtility.updateReview(Globals.DISLIKE_FIELD, reviews[0]);
         }
 
+        /** Will increment the progress bar the remaining 10%. */
         @Override
         protected void onPostExecute(Boolean result) {
             waitSpinner.incrementProgressBy(10);
             waitSpinner.setVisibility(View.GONE);
-
-            Log.d("RESULT", "" + result);
         }
     }
 
@@ -331,7 +340,11 @@ public class QueryFragment extends Fragment
      */
     public interface OnFragmentInteractionListener
     {
+
+        /** Used to retrieve query information. */
         Object onDataRetrieval(Functions target);
+
+        /** Used to take the user back to search when no reviews are found. */
         void onFragmentTransition(Frags target);
     }
 }

@@ -106,12 +106,11 @@ public class MyReviewsFragment extends Fragment {
         void onFragmentTransition(Frags target);
     }
 
-    /* The list object which holds the reviews. */
+    /** The list object which holds the reviews. */
     public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         /** View object that serves as a template for the review. */
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            // each data item is just a string in this case
             public ImageView mImage;
             public TextView mCaption;
             public TextView mLikes;
@@ -184,7 +183,7 @@ public class MyReviewsFragment extends Fragment {
             return vh;
         }
 
-        /** Replacse the contents of views (invoked by the layout manager) */
+        /** Replaces the contents of views (invoked by the layout manager) */
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             // - get element from your dataset at this position
@@ -207,7 +206,7 @@ public class MyReviewsFragment extends Fragment {
 
         }
 
-        /** Return the size of your dataset (invoked by the layout manager). */
+        /** Return the size of the dataset (invoked by the layout manager). */
         @Override
         public int getItemCount() {
             if (mDataset != null)
@@ -242,7 +241,8 @@ public class MyReviewsFragment extends Fragment {
         }
 
         /** Will increment the progress bar the remaining 10% and update the set in the RecyclerView or let the user
-         * know that there are no reviews and take them back to the main menu. */
+         * know that there are no reviews and take them back to the main menu.
+         */
         @Override
         protected void onPostExecute(List<Review> resultSet) {
             waitSpinner.incrementProgressBy(10);
@@ -299,7 +299,7 @@ public class MyReviewsFragment extends Fragment {
     }
 
     /**
-     * Will hit the php webservice that will get the reviews needed.
+     * Will hit the php webservice that will update the number of dislikes for this review.
      */
     private class PostUpdateDislikesWebServiceTask extends AsyncTask<Review, Void, Boolean> {
 

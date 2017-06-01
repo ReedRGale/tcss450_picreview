@@ -39,8 +39,10 @@ public class Review {
     /* The id of the review. Assigned by the database. */
     private int myId;
 
+    /** The user this review belongs to. */
     private String mUser;
 
+    /** The address of the review location. */
     private String mAddress;
 
     /* No-arg constructor. */

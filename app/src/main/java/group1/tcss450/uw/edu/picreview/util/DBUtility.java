@@ -31,10 +31,10 @@ import java.util.List;
  */
 public class DBUtility {
 
-    /* The url to the webservice which will interact with the DB to save the review. */
+    /** The url to the webservice which will interact with the DB to save the review. */
     private final static String SERVICE = "http://cssgate.insttech.washington.edu/~demyan15/";
 
-    /* Will take a review passed in as an argument and will save it to the database. */
+    /** Will take a review passed in as an argument and will save it to the database. */
     public static boolean saveReview(Review theReview)
     {
         boolean success = true;
@@ -131,7 +131,7 @@ public class DBUtility {
         return success;
     }
 
-    /* Will get all reviews belonging to the given user. */
+    /** Will get all reviews belonging to the given user. */
     public static List<Review> getReviewsByUsername(String theUsername)
     {
         boolean ConnectionSuccess = true;
@@ -233,7 +233,7 @@ public class DBUtility {
         return reviews;
     }
 
-    /* Will get all reviews containing a part of this tag. */
+    /* Will get all reviews containing this tag. */
     public static List<Review> getReviewsByTag(String theTag)
     {
         List<Review> reviews = new ArrayList<>();
@@ -320,7 +320,7 @@ public class DBUtility {
         return reviews;
     }
 
-    /* Will get all reviews for this location. */
+    /** Will get all reviews for this location. */
     public static List<Review> getReviewsByLocation(Location theLocation)
     {
         List<Review> reviews = new ArrayList<>();
@@ -408,7 +408,7 @@ public class DBUtility {
 
     }
 
-    /* Will update a field in the review in DB. */
+    /** Will update a field in the review in DB. */
     public static boolean updateReview(int field, Review theReview)
     {
         boolean success = true;
@@ -494,7 +494,7 @@ public class DBUtility {
         return success;
     }
 
-    /*
+    /**
     Will get all reviews from the webservice and return the JSon it receives.
      */
     private static String getAllJSonReviews()
@@ -528,7 +528,7 @@ public class DBUtility {
 
     // Serialization Methods
 
-    /* Will serialize a list of string. */
+    /** Will serialize a list of strings. */
     private static String serializeStringList(Object o)
     {
         try {
@@ -544,7 +544,7 @@ public class DBUtility {
         return null;
     }
 
-    /* Will deserialize a string. */
+    /** Will deserialize a string. */
     private static Object deserializeString(String theString)
     {
         try {
@@ -560,7 +560,7 @@ public class DBUtility {
         return null;
     }
 
-    /* Will serialize a BitMap. */
+    /** Will serialize a BitMap. */
     private static String serializeBitmap(Bitmap bitmap)
     {
         ByteArrayOutputStream baos = new  ByteArrayOutputStream();
@@ -590,7 +590,7 @@ public class DBUtility {
         return null;
     }
 
-    /* Will serialize a Location object. */
+    /** Will serialize a Location object. */
     private static String serializeLocation(Location location)
     {
         Double[] latLong = new Double[2];
@@ -600,7 +600,7 @@ public class DBUtility {
         return serializeStringList(latLong);
     }
 
-    /* Will deserialize a serialized location into a Location object. */
+    /** Will deserialize a serialized location into a Location object. */
     private static Location deserializeLocation(String theLocation)
     {
         Double[] latLong = (Double[]) deserializeString(theLocation);
@@ -610,7 +610,7 @@ public class DBUtility {
         return l;
     }
 
-    /* Will return the address and name of the location given. */
+    /** Will return the address and name of the location given. */
     private static String getAddress(Location theLocation)
     {
         boolean success = true;

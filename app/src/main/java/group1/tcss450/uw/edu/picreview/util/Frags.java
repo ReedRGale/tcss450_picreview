@@ -17,7 +17,6 @@ public enum Frags
     QUERY,
 
     // Review Service
-    CONFIRM_PIC,
     CAPTION,
     TAG,
     LIKE_DISLIKE,
